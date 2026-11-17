@@ -1,0 +1,8 @@
+{"_fonte": "SPTrans - relatório 'Situação dos Ônibus na Cidade de São Paulo / Adequação da Oferta' (https://www.sptrans.com.br/media/18358/atualizacao-site-02102026.pdf, atualizado em 02/10/2026). Soma diária da coluna 'viagens de passageiros' (embarques) por ano. Somente o município de São Paulo. 2020 começa em 20/03/2020 (incompleto); 2026 vai até 30/09/2026. Coletado em 15/10/2026.",
+"anos":{"2020":{"dias":220,"viagens":881389370,"pessoas":327208577,"ultimo_dia":"31/dez","completo":false},
+"2021":{"dias":365,"viagens":1669861197,"pessoas":612456910,"completo":true},
+"2022":{"dias":365,"viagens":2047560547,"pessoas":756067059,"completo":true},
+"2023":{"dias":365,"viagens":2016416818,"pessoas":767348093,"completo":true},
+"2024":{"dias":366,"viagens":2064751655,"pessoas":782197987,"completo":true},
+"2025":{"dias":363,"viagens":2023044096,"pessoas":745371526,"completo":true,"obs":"2 dias sem registro no relatório"},
+"2026":{"dias":272,"viagens":1465657027,"pessoas":540076608,"ultimo_dia":"30/set","completo":false}}}

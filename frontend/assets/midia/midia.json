@@ -1,0 +1,7 @@
+{
+  "cidade":     { "arquivo": "https://images.unsplash.com/photo-1710473492229-888b362df2af?fm=jpg&q=70&w=1600&auto=format&fit=crop", "descricao": "Vista de Campinas (SP)", "credito": "Foto: Felipe Demolin / Unsplash" },
+  "agua":       { "arquivo": "https://images.unsplash.com/photo-1708883562189-fa2d1de7a986?fm=jpg&q=70&w=1600&auto=format&fit=crop", "descricao": "Represa (foto ilustrativa)", "credito": "Foto ilustrativa: Gustavo Papasergio / Unsplash" },
+  "energia":    { "arquivo": "https://images.unsplash.com/photo-1694248407533-d74c41fb5b68?fm=jpg&q=70&w=1600&auto=format&fit=crop", "descricao": "Painéis solares em telhado (foto ilustrativa)", "credito": "Foto ilustrativa: Michael Pointner / Unsplash" },
+  "lixo":       { "arquivo": "https://images.unsplash.com/photo-1777537915230-be1d2ab6a63f?fm=jpg&q=70&w=1600&auto=format&fit=crop", "descricao": "Lixeiras de coleta seletiva (foto ilustrativa)", "credito": "Foto ilustrativa: Marco Cassé / Unsplash" },
+  "transporte": { "arquivo": "https://images.unsplash.com/photo-1638280459638-c1186f39af32?fm=jpg&q=70&w=1600&auto=format&fit=crop", "descricao": "Ônibus em São Paulo (SP)", "credito": "Foto: Bianca Neves / Unsplash" }
+}

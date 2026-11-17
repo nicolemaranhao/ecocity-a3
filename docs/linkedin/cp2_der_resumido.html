@@ -1,0 +1,109 @@
+<!doctype html><html><head><meta charset=utf-8><style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{width:1600px;height:900px;font-family:Inter,sans-serif;color:#163E6E;overflow:hidden;
+ background-color:#FBF8F6;
+ background-image:linear-gradient(#ECE6E3 1px,transparent 1px),linear-gradient(90deg,#ECE6E3 1px,transparent 1px);
+ background-size:32px 32px}
+.head{display:flex;align-items:center;gap:26px;padding:40px 56px 0}
+.head h1{font-family:'Inter Display',Inter;font-weight:800;font-size:44px;line-height:1.08;letter-spacing:-.015em}
+.head .sub{font-size:19px;font-weight:700;letter-spacing:.12em;color:#1D5FA8;margin-top:10px}
+.ck2{margin-left:auto;align-self:flex-start;background:#1D5FA8;color:#fff;font-weight:700;font-size:17px;letter-spacing:.06em;border-radius:40px;padding:11px 22px;margin-top:14px}
+.card{background:#fff;border-radius:20px;box-shadow:0 1px 2px rgba(22,62,110,.06),0 8px 24px rgba(22,62,110,.07);padding:24px 26px}
+.lbl{font-size:15px;font-weight:800;letter-spacing:.12em;color:#1D5FA8;margin-bottom:14px;text-transform:uppercase}
+.item{display:flex;align-items:flex-start;gap:14px;font-size:19px;line-height:1.35;padding:9px 0}
+.ok{flex:0 0 auto;width:26px;height:26px;border-radius:8px;background:#2F8F3F;position:relative;margin-top:1px}
+.ok:after{content:'';position:absolute;left:9px;top:4px;width:6px;height:12px;border:solid #fff;border-width:0 3px 3px 0;transform:rotate(45deg)}
+.pill{display:inline-flex;align-items:center;gap:9px;font-size:16px;font-weight:600;background:#F3F6FA;border-radius:30px;padding:8px 15px;margin:0 7px 9px 0}
+.pill i{width:10px;height:10px;border-radius:50%}
+.win{background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 1px 2px rgba(22,62,110,.06),0 8px 24px rgba(22,62,110,.08)}
+.bar{display:flex;align-items:center;gap:7px;padding:10px 14px;background:#F1F4F8;font-size:13px;font-weight:600;color:#6B7F99}
+.bar i{width:10px;height:10px;border-radius:50%;background:#D5DCE5}
+.stat b{display:block;font-family:'Inter Display';font-size:40px;font-weight:800;line-height:1}
+.stat span{font-size:15px;color:#5B6F8A}
+.step{flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;position:relative}
+.dot{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:17px;position:relative;z-index:2}
+.step b{font-size:17px;margin-top:10px}
+.step small{font-size:14px;color:#5B6F8A;margin-top:2px}
+</style></head><body>
+<div class=head style="padding:30px 44px 0"><svg viewBox="30 30 340 340" width="80">
+<rect x="36" y="36" width="160" height="160" rx="24" fill="#2F8F3F"/><rect x="204" y="36" width="160" height="160" rx="24" fill="#1D5FA8"/><rect x="36" y="204" width="160" height="160" rx="24" fill="#E8892B"/><rect x="204" y="204" width="160" height="160" rx="24" fill="#4FB3E3"/>
+<path fill="none" stroke="#fff" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" d="M62 180 C58 110 110 64 228 62 C224 138 162 182 62 180 Z"/>
+<path fill="none" stroke="#fff" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" d="M68 174 C112 132 160 98 210 72"/>
+<path fill="none" stroke="#fff" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" d="M228 62 C262 96 322 120 322 152 A40 40 0 0 1 242 152 C242 124 240 94 228 62 Z"/>
+<path fill="none" stroke="#fff" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" d="M262 156 C266 168 274 174 286 176"/>
+<g transform="translate(0 14)"><path fill="none" stroke="#fff" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" d="M56 318 H344"/>
+<path fill="none" stroke="#fff" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" d="M78 318 A40 40 0 0 1 158 318"/>
+<path fill="none" stroke="#fff" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" d="M65.4 298.8 L48.5 292.7 M85.9 272.1 L75.6 257.4 M118.0 262.0 L118.0 244.0 M150.1 272.1 L160.4 257.4 M170.6 298.8 L187.5 292.7"/>
+<path fill="none" stroke="#fff" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" d="M226 318 V268 H252 V318 M260 318 V232 H294 V318 M302 318 V278 H330 V318"/>
+<g fill="#fff"><rect x="271" y="248" width="12" height="12" rx="3"/><rect x="271" y="270" width="12" height="12" rx="3"/><rect x="271" y="292" width="12" height="12" rx="3"/></g></g>
+
+</svg><div><h1 style="font-size:38px">Como os dados se ligam</h1>
+<div class=sub style="font-size:17px">DER · AS 8 ENTIDADES PRINCIPAIS DO ECOCITY</div></div><div style="margin-left:auto;align-self:center;display:flex;flex-direction:column;gap:8px;font-size:18px;color:#2C4462;text-align:left"><div><b>Retângulo</b> = tabela &nbsp;·&nbsp; <b>Losango</b> = ligação</div><div><b style="color:#B45309">(1,N)</b> = mínimo e máximo de cada lado</div></div></div>
+<div class=card style="margin:18px 40px 0;padding:14px 20px;height:640px;display:flex;align-items:center;justify-content:center"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 30 1640 680" width="1520" font-family="Inter, Arial">
+<polyline fill="none" stroke="#334155" stroke-width="3" points="270.0,120 470.0,120"/>
+<polyline fill="none" stroke="#334155" stroke-width="3" points="590,168.0 590,322.0"/>
+<polyline fill="none" stroke="#334155" stroke-width="3" points="710.0,370 910.0,370"/>
+<polyline fill="none" stroke="#334155" stroke-width="3" points="1030,322.0 1030,168.0"/>
+<polyline fill="none" stroke="#334155" stroke-width="3" points="1150.0,120 1350.0,120"/>
+<polyline fill="none" stroke="#334155" stroke-width="3" points="590,418.0 590,620 910.0,620"/>
+<polyline fill="none" stroke="#334155" stroke-width="3" points="1150.0,620 1350.0,620"/>
+<polyline fill="none" stroke="#334155" stroke-width="3" points="1470,572.0 1470,168.0"/>
+<polygon points="370.0,89.0 434.0,120.0 370.0,151.0 306.0,120.0" fill="white" stroke="#1E293B" stroke-width="2.5"/>
+<text x="370.0" y="127.0" text-anchor="middle" font-size="20" font-weight="600" fill="#163E6E">fornece</text>
+<text x="304.0" y="96" text-anchor="middle" font-size="22" font-weight="800" fill="#B45309">(1,1)</text>
+<text x="436.0" y="96" text-anchor="middle" font-size="22" font-weight="800" fill="#B45309">(0,N)</text>
+<polygon points="590.0,214.0 652.0,245.0 590.0,276.0 528.0,245.0" fill="white" stroke="#1E293B" stroke-width="2.5"/>
+<text x="590.0" y="252.0" text-anchor="middle" font-size="20" font-weight="600" fill="#163E6E">é de</text>
+<text x="602" y="206.0" font-size="22" font-weight="800" fill="#B45309">(0,N)</text>
+<text x="602" y="300.0" font-size="22" font-weight="800" fill="#B45309">(1,1)</text>
+<polygon points="810.0,339.0 872.0,370.0 810.0,401.0 748.0,370.0" fill="white" stroke="#1E293B" stroke-width="2.5"/>
+<text x="810.0" y="377.0" text-anchor="middle" font-size="20" font-weight="600" fill="#163E6E">obtém</text>
+<text x="744.0" y="346" text-anchor="middle" font-size="22" font-weight="800" fill="#B45309">(1,1)</text>
+<text x="876.0" y="346" text-anchor="middle" font-size="22" font-weight="800" fill="#B45309">(0,N)</text>
+<polygon points="1030.0,214.0 1094.0,245.0 1030.0,276.0 966.0,245.0" fill="white" stroke="#1E293B" stroke-width="2.5"/>
+<text x="1030.0" y="252.0" text-anchor="middle" font-size="20" font-weight="600" fill="#163E6E">calcula</text>
+<text x="1042" y="300.0" font-size="22" font-weight="800" fill="#B45309">(0,N)</text>
+<text x="1042" y="206.0" font-size="22" font-weight="800" fill="#B45309">(1,1)</text>
+<polygon points="1250.0,89.0 1312.0,120.0 1250.0,151.0 1188.0,120.0" fill="white" stroke="#1E293B" stroke-width="2.5"/>
+<text x="1250.0" y="127.0" text-anchor="middle" font-size="20" font-weight="600" fill="#163E6E">tem</text>
+<text x="1184.0" y="96" text-anchor="middle" font-size="22" font-weight="800" fill="#B45309">(1,1)</text>
+<text x="1316.0" y="96" text-anchor="middle" font-size="22" font-weight="800" fill="#B45309">(0,N)</text>
+<polygon points="750.0,589.0 812.0,620.0 750.0,651.0 688.0,620.0" fill="white" stroke="#1E293B" stroke-width="2.5"/>
+<text x="750.0" y="627.0" text-anchor="middle" font-size="20" font-weight="600" fill="#163E6E">recebe</text>
+<text x="602" y="456.0" font-size="22" font-weight="800" fill="#B45309">(1,1)</text>
+<text x="876.0" y="596" text-anchor="middle" font-size="22" font-weight="800" fill="#B45309">(0,N)</text>
+<polygon points="1250.0,589.0 1320.0,620.0 1250.0,651.0 1180.0,620.0" fill="white" stroke="#1E293B" stroke-width="2.5"/>
+<text x="1250.0" y="627.0" text-anchor="middle" font-size="20" font-weight="600" fill="#163E6E">cuida de</text>
+<text x="1184.0" y="596" text-anchor="middle" font-size="22" font-weight="800" fill="#B45309">(0,N)</text>
+<text x="1316.0" y="596" text-anchor="middle" font-size="22" font-weight="800" fill="#B45309">(1,1)</text>
+<polygon points="1470.0,339.0 1532.0,370.0 1470.0,401.0 1408.0,370.0" fill="white" stroke="#1E293B" stroke-width="2.5"/>
+<text x="1470.0" y="377.0" text-anchor="middle" font-size="20" font-weight="600" fill="#163E6E">propõe</text>
+<text x="1482" y="550.0" font-size="22" font-weight="800" fill="#B45309">(1,1)</text>
+<text x="1482" y="206.0" font-size="22" font-weight="800" fill="#B45309">(0,N)</text>
+<rect x="30.0" y="72.0" width="240" height="96" rx="6" fill="#E0E7FF" stroke="#1E293B" stroke-width="3"/>
+<text x="150" y="114" text-anchor="middle" font-size="25" font-weight="800" fill="#0F172A">FONTE_DADOS</text>
+<text x="150" y="148" text-anchor="middle" font-size="20" text-decoration="underline" fill="#334155">id_fonte</text>
+<rect x="470.0" y="72.0" width="240" height="96" rx="6" fill="#E0E7FF" stroke="#1E293B" stroke-width="3"/>
+<text x="590" y="114" text-anchor="middle" font-size="25" font-weight="800" fill="#0F172A">DADO</text>
+<text x="590" y="148" text-anchor="middle" font-size="20" text-decoration="underline" fill="#334155">id_dado</text>
+<rect x="470.0" y="322.0" width="240" height="96" rx="6" fill="#E0E7FF" stroke="#1E293B" stroke-width="3"/>
+<text x="590" y="364" text-anchor="middle" font-size="25" font-weight="800" fill="#0F172A">MUNICIPIO</text>
+<text x="590" y="398" text-anchor="middle" font-size="20" text-decoration="underline" fill="#334155">id_municipio</text>
+<rect x="910.0" y="322.0" width="240" height="96" rx="6" fill="#DCFCE7" stroke="#1E293B" stroke-width="3"/>
+<text x="1030" y="364" text-anchor="middle" font-size="21" font-weight="800" fill="#0F172A">INDICADOR_VALOR</text>
+<text x="1030" y="398" text-anchor="middle" font-size="20" text-decoration="underline" fill="#334155">id_indicador_valor</text>
+<rect x="910.0" y="72.0" width="240" height="96" rx="6" fill="#DCFCE7" stroke="#1E293B" stroke-width="3"/>
+<text x="1030" y="114" text-anchor="middle" font-size="25" font-weight="800" fill="#0F172A">INDICADOR</text>
+<text x="1030" y="148" text-anchor="middle" font-size="20" text-decoration="underline" fill="#334155">id_indicador</text>
+<rect x="1350.0" y="72.0" width="240" height="96" rx="6" fill="#DCFCE7" stroke="#1E293B" stroke-width="3"/>
+<text x="1470" y="114" text-anchor="middle" font-size="25" font-weight="800" fill="#0F172A">META</text>
+<text x="1470" y="148" text-anchor="middle" font-size="20" text-decoration="underline" fill="#334155">id_meta</text>
+<rect x="910.0" y="572.0" width="240" height="96" rx="6" fill="#FEF3C7" stroke="#1E293B" stroke-width="3"/>
+<text x="1030" y="614" text-anchor="middle" font-size="25" font-weight="800" fill="#0F172A">ACAO</text>
+<text x="1030" y="648" text-anchor="middle" font-size="20" text-decoration="underline" fill="#334155">id_acao</text>
+<rect x="1350.0" y="572.0" width="240" height="96" rx="6" fill="#F1F5F9" stroke="#1E293B" stroke-width="3"/>
+<text x="1470" y="614" text-anchor="middle" font-size="25" font-weight="800" fill="#0F172A">USUARIO</text>
+<text x="1470" y="648" text-anchor="middle" font-size="20" text-decoration="underline" fill="#334155">id_usuario</text>
+</svg></div>
+<div style="text-align:center;margin-top:16px;font-size:18px;color:#2C4462">O DER completo tem <b>22 entidades</b> e <b>37 relacionamentos</b> e está no documento do checkpoint.</div>
+</body></html>

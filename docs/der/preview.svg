@@ -1,0 +1,225 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2700" height="1350" font-family="Helvetica" font-size="11"><rect width="100%" height="100%" fill="white"/>
+<polyline fill="none" stroke="#334155" stroke-width="1.3" points="240,190 330,190 420,190"/>
+<polygon points="330.0,165.0 378.0,190.0 330.0,215.0 282.0,190.0" fill="white" stroke="#1E293B"/>
+<text x="330.0" y="194.0" text-anchor="middle" font-size="10">publica</text>
+<text x="254.0" y="206.0" fill="#B45309" font-weight="bold">(1,1)</text>
+<text x="424.0" y="176.0" fill="#B45309" font-weight="bold">(0,N)</text>
+<polyline fill="none" stroke="#334155" stroke-width="1.3" points="620,190 710,190 800,190"/>
+<polygon points="710.0,165.0 758.0,190.0 710.0,215.0 662.0,190.0" fill="white" stroke="#1E293B"/>
+<text x="710.0" y="194.0" text-anchor="middle" font-size="10">fornece</text>
+<text x="634.0" y="206.0" fill="#B45309" font-weight="bold">(1,1)</text>
+<text x="804.0" y="176.0" fill="#B45309" font-weight="bold">(0,N)</text>
+<polyline fill="none" stroke="#334155" stroke-width="1.3" points="1000,190 1090,190 1180,190"/>
+<polygon points="1090.0,165.0 1138.0,190.0 1090.0,215.0 1042.0,190.0" fill="white" stroke="#1E293B"/>
+<text x="1090.0" y="194.0" text-anchor="middle" font-size="10">refere-se a</text>
+<text x="1014.0" y="206.0" fill="#B45309" font-weight="bold">(0,N)</text>
+<text x="1184.0" y="176.0" fill="#B45309" font-weight="bold">(1,1)</text>
+<polyline fill="none" stroke="#334155" stroke-width="1.3" points="1380,190 1470,190 1560,190"/>
+<polygon points="1470.0,165.0 1518.0,190.0 1470.0,215.0 1422.0,190.0" fill="white" stroke="#1E293B"/>
+<text x="1470.0" y="194.0" text-anchor="middle" font-size="10">pertence a</text>
+<text x="1394.0" y="206.0" fill="#B45309" font-weight="bold">(0,N)</text>
+<text x="1564.0" y="176.0" fill="#B45309" font-weight="bold">(1,1)</text>
+<polyline fill="none" stroke="#334155" stroke-width="1.3" points="900,241 900,315 900,389"/>
+<polygon points="900.0,290.0 948.0,315.0 900.0,340.0 852.0,315.0" fill="white" stroke="#1E293B"/>
+<text x="900.0" y="319.0" text-anchor="middle" font-size="10">é de</text>
+<text x="914.0" y="257.0" fill="#B45309" font-weight="bold">(0,N)</text>
+<text x="904.0" y="375.0" fill="#B45309" font-weight="bold">(1,1)</text>
+<polyline fill="none" stroke="#334155" stroke-width="1.3" points="620,440 710,440 800,440"/>
+<polygon points="710.0,415.0 758.0,440.0 710.0,465.0 662.0,440.0" fill="white" stroke="#1E293B"/>
+<text x="710.0" y="444.0" text-anchor="middle" font-size="10">de</text>
+<text x="634.0" y="456.0" fill="#B45309" font-weight="bold">(1,N)</text>
+<text x="804.0" y="426.0" fill="#B45309" font-weight="bold">(1,1)</text>
+<polyline fill="none" stroke="#334155" stroke-width="1.3" points="1000,440 1090,440 1180,440"/>
+<polygon points="1090.0,415.0 1138.0,440.0 1090.0,465.0 1042.0,440.0" fill="white" stroke="#1E293B"/>
+<text x="1090.0" y="444.0" text-anchor="middle" font-size="10">obtém</text>
+<text x="1014.0" y="456.0" fill="#B45309" font-weight="bold">(1,1)</text>
+<text x="1184.0" y="426.0" fill="#B45309" font-weight="bold">(0,N)</text>
+<polyline fill="none" stroke="#334155" stroke-width="1.3" points="1380,440 1470,440 1560,440"/>
+<polygon points="1470.0,415.0 1518.0,440.0 1470.0,465.0 1422.0,440.0" fill="white" stroke="#1E293B"/>
+<text x="1470.0" y="444.0" text-anchor="middle" font-size="10">calcula</text>
+<text x="1394.0" y="456.0" fill="#B45309" font-weight="bold">(0,N)</text>
+<text x="1564.0" y="426.0" fill="#B45309" font-weight="bold">(1,1)</text>
+<polyline fill="none" stroke="#334155" stroke-width="1.3" points="1660,232 1660,306 1660,380"/>
+<polygon points="1660.0,281.0 1708.0,306.0 1660.0,331.0 1612.0,306.0" fill="white" stroke="#1E293B"/>
+<text x="1660.0" y="310.0" text-anchor="middle" font-size="10">agrupa</text>
+<text x="1674.0" y="248.0" fill="#B45309" font-weight="bold">(1,1)</text>
+<text x="1664.0" y="366.0" fill="#B45309" font-weight="bold">(1,N)</text>
+<polyline fill="none" stroke="#334155" stroke-width="1.3" points="1760,440 1850,440 1940,440"/>
+<polygon points="1850.0,415.0 1898.0,440.0 1850.0,465.0 1802.0,440.0" fill="white" stroke="#1E293B"/>
+<text x="1850.0" y="444.0" text-anchor="middle" font-size="10">gera alerta</text>
+<text x="1774.0" y="456.0" fill="#B45309" font-weight="bold">(1,1)</text>
+<text x="1944.0" y="426.0" fill="#B45309" font-weight="bold">(0,N)</text>
+<polyline fill="none" stroke="#334155" stroke-width="1.3" points="1660,500 1660,570 1660,639"/>
+<polygon points="1660.0,544.5 1708.0,569.5 1660.0,594.5 1612.0,569.5" fill="white" stroke="#1E293B"/>
+<text x="1660.0" y="573.5" text-anchor="middle" font-size="10">tem</text>
+<text x="1674.0" y="516.0" fill="#B45309" font-weight="bold">(1,1)</text>
+<text x="1664.0" y="625.0" fill="#B45309" font-weight="bold">(0,N)</text>
+<polyline fill="none" stroke="#334155" stroke-width="1.3" points="2040,491 2040,565 2040,639"/>
+<polygon points="2040.0,540.0 2088.0,565.0 2040.0,590.0 1992.0,565.0" fill="white" stroke="#1E293B"/>
+<text x="2040.0" y="569.0" text-anchor="middle" font-size="10">motiva</text>
+<text x="2054.0" y="507.0" fill="#B45309" font-weight="bold">(0,1)</text>
+<text x="2044.0" y="625.0" fill="#B45309" font-weight="bold">(0,N)</text>
+<polyline fill="none" stroke="#334155" stroke-width="1.3" points="2140,690 2230,690 2320,690"/>
+<polygon points="2230.0,665.0 2278.0,690.0 2230.0,715.0 2182.0,690.0" fill="white" stroke="#1E293B"/>
+<text x="2230.0" y="694.0" text-anchor="middle" font-size="10">produz</text>
+<text x="2154.0" y="706.0" fill="#B45309" font-weight="bold">(1,1)</text>
+<text x="2324.0" y="676.0" fill="#B45309" font-weight="bold">(0,N)</text>
+<polyline fill="none" stroke="#334155" stroke-width="1.3" points="900,491 900,560 900,630"/>
+<polygon points="900.0,535.5 948.0,560.5 900.0,585.5 852.0,560.5" fill="#FDE68A" stroke="#1E293B"/>
+<text x="900.0" y="564.5" text-anchor="middle" font-size="10">é tratado em</text>
+<text x="914.0" y="507.0" fill="#B45309" font-weight="bold">(1,N)</text>
+<text x="904.0" y="616.0" fill="#B45309" font-weight="bold">(0,N)</text>
+<polyline fill="none" stroke="#334155" stroke-width="1.3" points="970,491 970,560 1125,560 1280,560 1280,639"/>
+<polygon points="1125.0,535.5 1173.0,560.5 1125.0,585.5 1077.0,560.5" fill="#FDE68A" stroke="#1E293B"/>
+<text x="1125.0" y="564.5" text-anchor="middle" font-size="10">é abrangido</text>
+<text x="984.0" y="507.0" fill="#B45309" font-weight="bold">(1,N)</text>
+<text x="1284.0" y="625.0" fill="#B45309" font-weight="bold">(0,N)</text>
+<polyline fill="none" stroke="#334155" stroke-width="1.3" points="900,750 900,810 900,871"/>
+<polygon points="900.0,785.5 948.0,810.5 900.0,835.5 852.0,810.5" fill="white" stroke="#1E293B"/>
+<text x="900.0" y="814.5" text-anchor="middle" font-size="10">escreve</text>
+<text x="914.0" y="766.0" fill="#B45309" font-weight="bold">(0,N)</text>
+<text x="904.0" y="857.0" fill="#B45309" font-weight="bold">(1,1)</text>
+<polyline fill="none" stroke="#334155" stroke-width="1.3" points="1280,741 1280,812 1280,899 1000,899"/>
+<polygon points="1280.0,786.8 1328.0,811.8 1280.0,836.8 1232.0,811.8" fill="white" stroke="#1E293B"/>
+<text x="1280.0" y="815.8" text-anchor="middle" font-size="10">solicita</text>
+<text x="1294.0" y="757.0" fill="#B45309" font-weight="bold">(0,N)</text>
+<text x="1004.0" y="884.6" fill="#B45309" font-weight="bold">(1,1)</text>
+<polyline fill="none" stroke="#334155" stroke-width="1.3" points="620,940 710,940 800,940"/>
+<polygon points="710.0,915.0 758.0,940.0 710.0,965.0 662.0,940.0" fill="white" stroke="#1E293B"/>
+<text x="710.0" y="944.0" text-anchor="middle" font-size="10">possui</text>
+<text x="634.0" y="956.0" fill="#B45309" font-weight="bold">(0,1)</text>
+<text x="804.0" y="926.0" fill="#B45309" font-weight="bold">(1,1)</text>
+<polyline fill="none" stroke="#334155" stroke-width="1.3" points="900,1157 900,1083 900,1009"/>
+<polygon points="900.0,1058.0 948.0,1083.0 900.0,1108.0 852.0,1083.0" fill="white" stroke="#1E293B"/>
+<text x="900.0" y="1087.0" text-anchor="middle" font-size="10">define</text>
+<text x="914.0" y="1173.0" fill="#B45309" font-weight="bold">(1,1)</text>
+<text x="904.0" y="995.0" fill="#B45309" font-weight="bold">(0,N)</text>
+<polyline fill="none" stroke="#334155" stroke-width="1.3" points="1660,741 1660,933 1000,933"/>
+<polygon points="1350.0,908.1 1398.0,933.1 1350.0,958.1 1302.0,933.1" fill="white" stroke="#1E293B"/>
+<text x="1350.0" y="937.1" text-anchor="middle" font-size="10">propõe</text>
+<text x="1674.0" y="757.0" fill="#B45309" font-weight="bold">(0,N)</text>
+<text x="1004.0" y="919.1" fill="#B45309" font-weight="bold">(1,1)</text>
+<polyline fill="none" stroke="#334155" stroke-width="1.3" points="2040,741 2040,995 1000,995"/>
+<polygon points="1850.0,970.2 1898.0,995.2 1850.0,1020.2 1802.0,995.2" fill="white" stroke="#1E293B"/>
+<text x="1850.0" y="999.2" text-anchor="middle" font-size="10">é responsável</text>
+<text x="2054.0" y="757.0" fill="#B45309" font-weight="bold">(0,N)</text>
+<text x="1004.0" y="981.2" fill="#B45309" font-weight="bold">(1,1)</text>
+<polyline fill="none" stroke="#334155" stroke-width="1.3" points="980,1009 980,1049 1140,1049 1280,1049 1280,1121"/>
+<polygon points="1140.0,1024.0 1188.0,1049.0 1140.0,1074.0 1092.0,1049.0" fill="white" stroke="#1E293B"/>
+<text x="1140.0" y="1053.0" text-anchor="middle" font-size="10">comprova</text>
+<text x="994.0" y="1025.0" fill="#B45309" font-weight="bold">(1,1)</text>
+<text x="1284.0" y="1107.0" fill="#B45309" font-weight="bold">(0,1)</text>
+<rect x="40.0" y="148.0" width="200" height="84" fill="#E0E7FF" stroke="#1E293B" stroke-width="1.5"/>
+<text x="140.0" y="166.0" text-anchor="middle" font-weight="bold">ORGAO</text>
+<text x="48.0" y="192.0" text-decoration="underline">id_orgao</text>
+<text x="48.0" y="210.0" >nome</text>
+<text x="48.0" y="228.0" >sigla</text>
+<rect x="420.0" y="139.0" width="200" height="102" fill="#E0E7FF" stroke="#1E293B" stroke-width="1.5"/>
+<text x="520.0" y="157.0" text-anchor="middle" font-weight="bold">FONTE_DADOS</text>
+<text x="428.0" y="183.0" text-decoration="underline">id_fonte</text>
+<text x="428.0" y="201.0" >nome</text>
+<text x="428.0" y="219.0" >frequência</text>
+<text x="428.0" y="237.0" >confiabilidade (1 a 5)</text>
+<rect x="800.0" y="139.0" width="200" height="102" fill="#E0E7FF" stroke="#1E293B" stroke-width="1.5"/>
+<text x="900.0" y="157.0" text-anchor="middle" font-weight="bold">DADO</text>
+<text x="808.0" y="183.0" text-decoration="underline">id_dado</text>
+<text x="808.0" y="201.0" >mês de referência</text>
+<text x="808.0" y="219.0" >valor</text>
+<text x="808.0" y="237.0" >origem</text>
+<rect x="1180.0" y="148.0" width="200" height="84" fill="#E0E7FF" stroke="#1E293B" stroke-width="1.5"/>
+<text x="1280.0" y="166.0" text-anchor="middle" font-weight="bold">METRICA</text>
+<text x="1188.0" y="192.0" text-decoration="underline">id_metrica</text>
+<text x="1188.0" y="210.0" >código</text>
+<text x="1188.0" y="228.0" >nome</text>
+<rect x="1560.0" y="148.0" width="200" height="84" fill="#E0E7FF" stroke="#1E293B" stroke-width="1.5"/>
+<text x="1660.0" y="166.0" text-anchor="middle" font-weight="bold">SERVICO_PUBLICO</text>
+<text x="1568.0" y="192.0" text-decoration="underline">id_servico</text>
+<text x="1568.0" y="210.0" >nome</text>
+<text x="1568.0" y="228.0" >descrição</text>
+<rect x="420.0" y="407.0" width="200" height="66" fill="#E0E7FF" stroke="#1E293B" stroke-width="1.5"/>
+<text x="520.0" y="425.0" text-anchor="middle" font-weight="bold">POPULACAO_ANUAL</text>
+<text x="428.0" y="451.0" text-decoration="underline">ano</text>
+<text x="428.0" y="469.0" >população</text>
+<rect x="800.0" y="389.0" width="200" height="102" fill="#E0E7FF" stroke="#1E293B" stroke-width="1.5"/>
+<text x="900.0" y="407.0" text-anchor="middle" font-weight="bold">MUNICIPIO</text>
+<text x="808.0" y="433.0" text-decoration="underline">id_municipio</text>
+<text x="808.0" y="451.0" >nome</text>
+<text x="808.0" y="469.0" >código IBGE</text>
+<text x="808.0" y="487.0" >área (km²)</text>
+<rect x="1180.0" y="389.0" width="200" height="102" fill="#DCFCE7" stroke="#1E293B" stroke-width="1.5"/>
+<text x="1280.0" y="407.0" text-anchor="middle" font-weight="bold">INDICADOR_VALOR</text>
+<text x="1188.0" y="433.0" text-decoration="underline">id_indicador_valor</text>
+<text x="1188.0" y="451.0" >mês</text>
+<text x="1188.0" y="469.0" >valor</text>
+<text x="1188.0" y="487.0" >origem</text>
+<rect x="1560.0" y="380.0" width="200" height="120" fill="#DCFCE7" stroke="#1E293B" stroke-width="1.5"/>
+<text x="1660.0" y="398.0" text-anchor="middle" font-weight="bold">INDICADOR</text>
+<text x="1568.0" y="424.0" text-decoration="underline">id_indicador</text>
+<text x="1568.0" y="442.0" >código</text>
+<text x="1568.0" y="460.0" >nome</text>
+<text x="1568.0" y="478.0" >fórmula</text>
+<text x="1568.0" y="496.0" >peso no índice</text>
+<rect x="1940.0" y="389.0" width="200" height="102" fill="#DCFCE7" stroke="#1E293B" stroke-width="1.5"/>
+<text x="2040.0" y="407.0" text-anchor="middle" font-weight="bold">ANALISE_IA</text>
+<text x="1948.0" y="433.0" text-decoration="underline">id_analise</text>
+<text x="1948.0" y="451.0" >tipo</text>
+<text x="1948.0" y="469.0" >severidade</text>
+<text x="1948.0" y="487.0" >status</text>
+<rect x="800.0" y="630.0" width="200" height="120" fill="#FCE7F3" stroke="#1E293B" stroke-width="1.5"/>
+<text x="900.0" y="648.0" text-anchor="middle" font-weight="bold">ANALISE_PUBLICADA</text>
+<text x="808.0" y="674.0" text-decoration="underline">id_analise_pub</text>
+<text x="808.0" y="692.0" >título</text>
+<text x="808.0" y="710.0" >texto</text>
+<text x="808.0" y="728.0" >nível de confiança</text>
+<text x="808.0" y="746.0" >status</text>
+<rect x="1180.0" y="639.0" width="200" height="102" fill="#FCE7F3" stroke="#1E293B" stroke-width="1.5"/>
+<text x="1280.0" y="657.0" text-anchor="middle" font-weight="bold">RELATORIO_IA</text>
+<text x="1188.0" y="683.0" text-decoration="underline">id_relatorio</text>
+<text x="1188.0" y="701.0" >título</text>
+<text x="1188.0" y="719.0" >período</text>
+<text x="1188.0" y="737.0" >status</text>
+<rect x="1560.0" y="639.0" width="200" height="102" fill="#DCFCE7" stroke="#1E293B" stroke-width="1.5"/>
+<text x="1660.0" y="657.0" text-anchor="middle" font-weight="bold">META</text>
+<text x="1568.0" y="683.0" text-decoration="underline">id_meta</text>
+<text x="1568.0" y="701.0" >valor</text>
+<text x="1568.0" y="719.0" >vigência</text>
+<text x="1568.0" y="737.0" >status</text>
+<rect x="1940.0" y="639.0" width="200" height="102" fill="#FEF3C7" stroke="#1E293B" stroke-width="1.5"/>
+<text x="2040.0" y="657.0" text-anchor="middle" font-weight="bold">ACAO</text>
+<text x="1948.0" y="683.0" text-decoration="underline">id_acao</text>
+<text x="1948.0" y="701.0" >título</text>
+<text x="1948.0" y="719.0" >orçamento</text>
+<text x="1948.0" y="737.0" >status</text>
+<rect x="2320.0" y="639.0" width="200" height="102" fill="#FEF3C7" stroke="#1E293B" stroke-width="1.5"/>
+<text x="2420.0" y="657.0" text-anchor="middle" font-weight="bold">RESULTADO</text>
+<text x="2328.0" y="683.0" text-decoration="underline">id_resultado</text>
+<text x="2328.0" y="701.0" >valor antes</text>
+<text x="2328.0" y="719.0" >valor depois</text>
+<text x="2328.0" y="737.0" >avaliação</text>
+<rect x="420.0" y="889.0" width="200" height="102" fill="#F1F5F9" stroke="#1E293B" stroke-width="1.5"/>
+<text x="520.0" y="907.0" text-anchor="middle" font-weight="bold">CREDENCIAL_ANALISTA</text>
+<text x="428.0" y="933.0" >registro profissional</text>
+<text x="428.0" y="951.0" >nível</text>
+<text x="428.0" y="969.0" >status</text>
+<text x="428.0" y="987.0" >válida até</text>
+<rect x="800.0" y="871.0" width="200" height="138" fill="#F1F5F9" stroke="#1E293B" stroke-width="1.5"/>
+<text x="900.0" y="889.0" text-anchor="middle" font-weight="bold">USUARIO</text>
+<text x="808.0" y="915.0" text-decoration="underline">id_usuario</text>
+<text x="808.0" y="933.0" >nome</text>
+<text x="808.0" y="951.0" >e-mail</text>
+<text x="808.0" y="969.0" >telefone</text>
+<text x="808.0" y="987.0" >senha (hash)</text>
+<text x="808.0" y="1005.0" >situação do cadastro</text>
+<rect x="1180.0" y="1121.0" width="200" height="138" fill="#F1F5F9" stroke="#1E293B" stroke-width="1.5"/>
+<text x="1280.0" y="1139.0" text-anchor="middle" font-weight="bold">CADASTRO_PROFISSIONAL</text>
+<text x="1188.0" y="1165.0" text-decoration="underline">id_usuario</text>
+<text x="1188.0" y="1183.0" >CPF (protegido)</text>
+<text x="1188.0" y="1201.0" >e-mail institucional</text>
+<text x="1188.0" y="1219.0" >órgão e cargo</text>
+<text x="1188.0" y="1237.0" >documento de vínculo</text>
+<text x="1188.0" y="1255.0" >status (aprovado pelo admin)</text>
+<rect x="800.0" y="1157.0" width="200" height="66" fill="#F1F5F9" stroke="#1E293B" stroke-width="1.5"/>
+<text x="900.0" y="1175.0" text-anchor="middle" font-weight="bold">PERFIL</text>
+<text x="808.0" y="1201.0" text-decoration="underline">id_perfil</text>
+<text x="808.0" y="1219.0" >nome</text>
+</svg>

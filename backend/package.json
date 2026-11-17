@@ -1,0 +1,29 @@
+{
+  "name": "ecocity-api",
+  "version": "1.0.0",
+  "description": "API REST do EcoCity — Data Warehouse para Comunidades Sustentáveis",
+  "main": "src/server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "snapshot": "node src/exportar_snapshot.js",
+    "hash": "node src/gerar_hash.js",
+    "coletar": "node src/coleta/coletor.js",
+    "alertas": "node src/ia/alertas.js",
+    "testar-fontes": "node src/coleta/testar_fontes.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.2",
+    "express-rate-limit": "^7.4.1",
+    "helmet": "^8.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "mysql2": "^3.11.5",
+    "pdfjs-dist": "^4.10.38",
+    "xlsx": "^0.18.5",
+    "yauzl": "^3.4.0"
+  }
+}

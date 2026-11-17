@@ -1,0 +1,73 @@
+<!doctype html><html><head><meta charset=utf-8><style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{width:1600px;height:860px;font-family:Inter,sans-serif;color:#2B2B2B;overflow:hidden;
+ background-color:#FBF8F6;
+ background-image:linear-gradient(#ECE6E3 1px,transparent 1px),linear-gradient(90deg,#ECE6E3 1px,transparent 1px);
+ background-size:32px 32px}
+.top{position:relative;text-align:center;padding-top:34px}
+.logo{position:absolute;left:46px;top:26px}
+h1{font-family:Lora,serif;font-weight:500;font-size:54px;line-height:1.04;color:#111}
+.rosa{color:#E0479E;font-weight:700;letter-spacing:.05em;font-size:21px;margin-top:16px}
+.h{font-size:20px;font-weight:800;letter-spacing:.04em;display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.card{background:#fff;border-radius:16px;box-shadow:0 2px 10px rgba(0,0,0,.07);padding:18px 22px}
+.serif{font-family:Lora,serif}
+ul{list-style:none}
+li{font-size:19px;line-height:1.35;padding:6px 0 6px 30px;position:relative}
+li:before{content:'✔';position:absolute;left:0;color:#2F8F3F;font-weight:800}
+.chip{display:inline-block;font-size:17px;font-weight:600;border-radius:10px;padding:9px 14px;margin:0 8px 10px 0}
+.flow{display:flex;align-items:center;gap:14px}
+.flow .b{font-family:Lora,serif;font-weight:700;font-size:18px;text-align:center;border-radius:10px;padding:16px 14px;flex:1;line-height:1.2}
+.flow .b small{display:block;font-family:Inter;font-weight:600;font-size:13px;margin-top:4px}
+.flow .s{font-size:26px;color:#333}
+</style></head><body><div class=top><div class=logo><svg viewBox="30 30 340 430" width="118">
+<rect x="36" y="36" width="160" height="160" rx="24" fill="#2F8F3F"/><rect x="204" y="36" width="160" height="160" rx="24" fill="#1D5FA8"/><rect x="36" y="204" width="160" height="160" rx="24" fill="#E8892B"/><rect x="204" y="204" width="160" height="160" rx="24" fill="#4FB3E3"/>
+<path fill="none" stroke="#fff" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" d="M62 180 C58 110 110 64 228 62 C224 138 162 182 62 180 Z"/>
+<path fill="none" stroke="#fff" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" d="M68 174 C112 132 160 98 210 72"/>
+<path fill="none" stroke="#fff" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" d="M228 62 C262 96 322 120 322 152 A40 40 0 0 1 242 152 C242 124 240 94 228 62 Z"/>
+<path fill="none" stroke="#fff" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" d="M262 156 C266 168 274 174 286 176"/>
+<g transform="translate(0 14)"><path fill="none" stroke="#fff" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" d="M56 318 H344"/>
+<path fill="none" stroke="#fff" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" d="M78 318 A40 40 0 0 1 158 318"/>
+<path fill="none" stroke="#fff" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" d="M65.4 298.8 L48.5 292.7 M85.9 272.1 L75.6 257.4 M118.0 262.0 L118.0 244.0 M150.1 272.1 L160.4 257.4 M170.6 298.8 L187.5 292.7"/>
+<path fill="none" stroke="#fff" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" d="M226 318 V268 H252 V318 M260 318 V232 H294 V318 M302 318 V278 H330 V318"/>
+<g fill="#fff"><rect x="271" y="248" width="12" height="12" rx="3"/><rect x="271" y="270" width="12" height="12" rx="3"/><rect x="271" y="292" width="12" height="12" rx="3"/></g></g>
+<text x="200" y="442" text-anchor="middle" font-family="Inter" font-weight="800" font-size="66" letter-spacing="-1"><tspan fill="#2F8F3F">Eco</tspan><tspan fill="#163E6E">City</tspan></text>
+</svg></div>
+<h1>BD para Comunidades Sustentáveis<br>(Cidades Inteligentes)</h1>
+<div class=rosa>CHECKPOINT 2 · O PROJETO ECOCITY ESTÁ EVOLUINDO</div></div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:34px;padding:40px 60px 0">
+ <div>
+  <div class=h>🏁 O QUE JÁ FOI FEITO</div>
+  <div class=card style="border:2px solid #F3B5D6"><ul>
+   <li>Requisitos do sistema priorizados</li>
+   <li>DER preliminar (modelo de dados)</li>
+   <li>Dados reais mês a mês de 8 cidades de SP</li>
+   <li>Banco criado no MySQL</li>
+   <li>API no ar, com cadastro por perfil e login em 2 etapas</li>
+  </ul></div>
+  <div class=h style="margin-top:24px">⚠️ PRINCIPAL DESAFIO</div>
+  <p class=serif style="font-size:19px;line-height:1.4;color:#444">Muitas fontes só publicam dados por ano. Por isso, cada número no banco mostra se é <b>oficial</b> ou <b>estimado</b>.</p>
+ </div>
+ <div>
+  <div class=h>🛠️ FERRAMENTAS</div>
+  <div>
+   <span class=chip style="background:#DDEBF7">🐬 MySQL</span><span class=chip style="background:#FDE7D2">☁️ Oracle Cloud</span><span class=chip style="background:#DFF1E1">🟢 Node.js</span><span class=chip style="background:#EEE6F7">📐 draw.io</span>
+  </div>
+  <div class=h style="margin-top:16px">🚀 PRÓXIMOS PASSOS</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+   <div class=card><div class=serif style="font-weight:700;font-size:19px">🧩 DER final</div><div class=serif style="font-size:16px;color:#555;margin-top:6px">E o modelo lógico do banco.</div></div>
+   <div class=card><div class=serif style="font-weight:700;font-size:19px">📏 Normalização</div><div class=serif style="font-size:16px;color:#555;margin-top:6px">Até a 3ª forma normal.</div></div>
+   <div class=card><div class=serif style="font-weight:700;font-size:19px">🖥️ Telas do sistema</div><div class=serif style="font-size:16px;color:#555;margin-top:6px">Para cada tipo de usuário.</div></div>
+   <div class=card><div class=serif style="font-weight:700;font-size:19px">☁️ Publicação</div><div class=serif style="font-size:16px;color:#555;margin-top:6px">Banco na Oracle Cloud.</div></div>
+  </div>
+ </div>
+</div>
+<div style="padding:40px 60px 0">
+ <div class=h>📊 ANDAMENTO DO PROJETO</div>
+ <div class=flow>
+  <div class=b style="background:#DFF1E1">FONTES DE DADOS<small>✔ pronto</small></div><span class=s>→</span>
+  <div class=b style="background:#BBD7F0">BANCO MySQL<small>✔ pronto</small></div><span class=s>→</span>
+  <div class=b style="background:#DFF1E1">API<small>✔ pronta</small></div><span class=s>→</span>
+  <div class=b style="background:#FCEFD9">TELAS<small>em desenvolvimento</small></div><span class=s>→</span>
+  <div class=b style="background:#EEF0F2">DECISÕES<small>próximas etapas</small></div>
+ </div>
+</div></body></html>

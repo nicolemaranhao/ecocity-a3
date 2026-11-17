@@ -1,0 +1,109 @@
+<!doctype html><html><head><meta charset=utf-8><style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{width:1600px;height:900px;font-family:Inter,sans-serif;color:#163E6E;overflow:hidden;
+ background-color:#FBF8F6;
+ background-image:linear-gradient(#ECE6E3 1px,transparent 1px),linear-gradient(90deg,#ECE6E3 1px,transparent 1px);
+ background-size:32px 32px}
+.head{display:flex;align-items:center;gap:26px;padding:40px 56px 0}
+.head h1{font-family:'Inter Display',Inter;font-weight:800;font-size:44px;line-height:1.08;letter-spacing:-.015em}
+.head .sub{font-size:19px;font-weight:700;letter-spacing:.12em;color:#1D5FA8;margin-top:10px}
+.ck2{margin-left:auto;align-self:flex-start;background:#1D5FA8;color:#fff;font-weight:700;font-size:17px;letter-spacing:.06em;border-radius:40px;padding:11px 22px;margin-top:14px}
+.card{background:#fff;border-radius:20px;box-shadow:0 1px 2px rgba(22,62,110,.06),0 8px 24px rgba(22,62,110,.07);padding:24px 26px}
+.lbl{font-size:15px;font-weight:800;letter-spacing:.12em;color:#1D5FA8;margin-bottom:14px;text-transform:uppercase}
+.item{display:flex;align-items:flex-start;gap:14px;font-size:19px;line-height:1.35;padding:9px 0}
+.ok{flex:0 0 auto;width:26px;height:26px;border-radius:8px;background:#2F8F3F;position:relative;margin-top:1px}
+.ok:after{content:'';position:absolute;left:9px;top:4px;width:6px;height:12px;border:solid #fff;border-width:0 3px 3px 0;transform:rotate(45deg)}
+.pill{display:inline-flex;align-items:center;gap:9px;font-size:16px;font-weight:600;background:#F3F6FA;border-radius:30px;padding:8px 15px;margin:0 7px 9px 0}
+.pill i{width:10px;height:10px;border-radius:50%}
+.win{background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 1px 2px rgba(22,62,110,.06),0 8px 24px rgba(22,62,110,.08)}
+.bar{display:flex;align-items:center;gap:7px;padding:10px 14px;background:#F1F4F8;font-size:13px;font-weight:600;color:#6B7F99}
+.bar i{width:10px;height:10px;border-radius:50%;background:#D5DCE5}
+.stat b{display:block;font-family:'Inter Display';font-size:40px;font-weight:800;line-height:1}
+.stat span{font-size:15px;color:#5B6F8A}
+.step{flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;position:relative}
+.dot{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:17px;position:relative;z-index:2}
+.step b{font-size:17px;margin-top:10px}
+.step small{font-size:14px;color:#5B6F8A;margin-top:2px}
+</style></head><body>
+<div class=head><svg viewBox="30 30 340 340" width="96">
+<rect x="36" y="36" width="160" height="160" rx="24" fill="#2F8F3F"/><rect x="204" y="36" width="160" height="160" rx="24" fill="#1D5FA8"/><rect x="36" y="204" width="160" height="160" rx="24" fill="#E8892B"/><rect x="204" y="204" width="160" height="160" rx="24" fill="#4FB3E3"/>
+<path fill="none" stroke="#fff" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" d="M62 180 C58 110 110 64 228 62 C224 138 162 182 62 180 Z"/>
+<path fill="none" stroke="#fff" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" d="M68 174 C112 132 160 98 210 72"/>
+<path fill="none" stroke="#fff" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" d="M228 62 C262 96 322 120 322 152 A40 40 0 0 1 242 152 C242 124 240 94 228 62 Z"/>
+<path fill="none" stroke="#fff" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" d="M262 156 C266 168 274 174 286 176"/>
+<g transform="translate(0 14)"><path fill="none" stroke="#fff" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" d="M56 318 H344"/>
+<path fill="none" stroke="#fff" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" d="M78 318 A40 40 0 0 1 158 318"/>
+<path fill="none" stroke="#fff" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" d="M65.4 298.8 L48.5 292.7 M85.9 272.1 L75.6 257.4 M118.0 262.0 L118.0 244.0 M150.1 272.1 L160.4 257.4 M170.6 298.8 L187.5 292.7"/>
+<path fill="none" stroke="#fff" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" d="M226 318 V268 H252 V318 M260 318 V232 H294 V318 M302 318 V278 H330 V318"/>
+<g fill="#fff"><rect x="271" y="248" width="12" height="12" rx="3"/><rect x="271" y="270" width="12" height="12" rx="3"/><rect x="271" y="292" width="12" height="12" rx="3"/></g></g>
+
+</svg><div><h1>BD para Comunidades Sustentáveis<br>(Cidades Inteligentes)</h1><div class=sub>ECOCITY · O PROJETO ESTÁ EVOLUINDO</div></div>
+<div class=ck2>CHECKPOINT 2</div></div><style>
+.tag{display:inline-block;font-size:13px;font-weight:700;border-radius:20px;padding:3px 10px;margin-left:8px;white-space:nowrap}
+.g{background:#E3EDF8;color:#1D5FA8} .n{background:#E6F3E8;color:#2F8F3F}
+.row{display:flex;align-items:center;justify-content:space-between;font-size:19px;padding:13px 0;border-bottom:1px solid #EEF2F7}
+.row:last-child{border-bottom:0}
+.chip{display:inline-flex;align-items:center;gap:8px;font-size:15px;font-weight:600;padding:6px 12px;border-radius:10px;background:#F3F6FA;margin:0 6px 8px 0}
+.chip i{width:14px;height:14px;border-radius:4px}
+.num b{display:block;font-family:'Inter Display';font-weight:800;font-size:30px;line-height:1}
+.num span{font-size:13px;color:#5B6F8A}
+.tl{display:flex;position:relative}
+.tl .p{flex:1;text-align:center;position:relative;padding-top:52px}
+.tl .p .c{position:absolute;left:50%;top:0;transform:translateX(-50%);width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;font-size:17px;z-index:2}
+.tl .p b{font-size:17px;display:block}
+.tl .p small{display:block;font-size:14px;color:#5B6F8A;margin-top:3px;line-height:1.3}
+.aqui{position:absolute;left:50%;top:-30px;transform:translateX(-50%);font-size:12px;font-weight:800;letter-spacing:.08em;color:#fff;background:#1D5FA8;padding:3px 9px;border-radius:12px;white-space:nowrap}
+</style>
+<div style="display:grid;grid-template-columns:450px 1fr 400px;gap:22px;padding:26px 56px 0;grid-template-rows:500px">
+ <div style="display:flex;flex-direction:column;gap:18px">
+  <div class=card style="flex:1">
+   <div class=lbl>O desafio</div>
+   <p style="font-size:17px;line-height:1.4;color:#2C4462">Os dados das cidades ficam espalhados, cada um num site e num formato.</p>
+   <div style="margin-top:10px"><span class=chip><i style="background:#4FB3E3"></i>Água</span><span class=chip><i style="background:#E8892B"></i>Energia</span><span class=chip><i style="background:#2F8F3F"></i>Resíduos</span><span class=chip><i style="background:#1D5FA8"></i>Mobilidade</span></div>
+   <div class=lbl style="margin-top:8px;margin-bottom:10px">Nossa solução</div>
+   <p style="font-size:17px;line-height:1.4;color:#2C4462">Um banco de dados que junta tudo, <b>mês a mês</b>, e dá uma <b>nota de 0 a 100</b> para cada cidade.</p>
+  </div>
+  <div class=card style="border-left:6px solid #E8892B;padding:20px 24px">
+   <div class=lbl style="color:#E8892B">Principal desafio</div>
+   <p style="font-size:17px;line-height:1.45;color:#2C4462">Muitas fontes só publicam dados por ano. Por isso, cada número mostra se é <b>oficial</b> ou <b>estimado</b>.</p>
+  </div>
+ </div>
+ <div class=card style="display:flex;flex-direction:column">
+  <div class=lbl>O que já foi feito</div>
+  <div class=row><span style="display:flex;align-items:center;gap:12px"><span class=ok></span>Requisitos priorizados</span><span class="tag g">Gabriela</span></div>
+  <div class=row><span style="display:flex;align-items:center;gap:12px"><span class=ok></span>Dados reais de 8 cidades de SP</span><span class="tag n">Nicole</span></div>
+  <div class=row><span style="display:flex;align-items:center;gap:12px"><span class=ok></span>Escolha do MySQL e das tecnologias</span><span class="tag g">Gabriela</span></div>
+  <div class=row><span style="display:flex;align-items:center;gap:12px"><span class=ok></span>DER completo no draw.io</span><span class="tag n">Nicole</span></div>
+  <div class=row><span style="display:flex;align-items:center;gap:12px"><span class=ok></span>Banco de dados criado no MySQL</span><span class="tag g">Gabriela</span></div>
+  <div class=row><span style="display:flex;align-items:center;gap:12px"><span class=ok></span>Back-end (API) com login em 2 etapas</span><span class="tag n">Nicole</span></div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:auto;padding-top:14px;border-top:2px solid #EEF2F7">
+   <div class=num><b style="color:#1D5FA8">8</b><span>cidades</span></div>
+   <div class=num><b style="color:#4FB3E3">24</b><span>meses</span></div>
+   <div class=num><b style="color:#2F8F3F">1.536</b><span>medições</span></div>
+   <div class=num><b style="color:#E8892B">22</b><span>entidades</span></div>
+  </div>
+ </div>
+ <div style="display:flex;flex-direction:column;gap:18px">
+  <div class=card>
+   <div class=lbl>Ferramentas</div>
+   <span class=pill><i style="background:#1D5FA8"></i>MySQL</span><span class=pill><i style="background:#E8892B"></i>Oracle Cloud</span>
+   <span class=pill><i style="background:#2F8F3F"></i>Node.js + Express</span><span class=pill><i style="background:#4FB3E3"></i>draw.io</span>
+   <span class=pill><i style="background:#8B5CF6"></i>Python</span>
+  </div>
+  <div class=card style="flex:1">
+   <div class=lbl>Próximos passos</div>
+   <div class=item><b style="color:#1D5FA8;width:22px">1</b><span><b>Modelo lógico</b> do banco</span></div>
+   <div class=item><b style="color:#1D5FA8;width:22px">2</b><span><b>Normalização</b> até a 3ª forma normal</span></div>
+   <div class=item><b style="color:#1D5FA8;width:22px">3</b><span><b>Telas</b> para cada tipo de usuário</span></div>
+  </div>
+ </div>
+</div>
+<div class=card style="margin:22px 56px 0;padding:34px 30px 16px;position:relative">
+ <div style="position:absolute;left:14.5%;right:14.5%;top:55px;height:4px;border-radius:2px;background:linear-gradient(90deg,#2F8F3F 0 34%,#D9E1EA 34% 100%)"></div>
+ <div class=tl>
+  <div class=p><div class=c style="background:#2F8F3F;top:0">✓</div><b>Checkpoint 1 · 01/09</b><small>tema, problema e entidades</small></div>
+  <div class=p><div class=aqui>ESTAMOS AQUI</div><div class=c style="background:#2F8F3F">✓</div><b>Checkpoint 2 · 20/10</b><small>requisitos, DER, banco e API</small></div>
+  <div class=p><div class=c style="background:#fff;border:3px solid #1D5FA8;color:#1D5FA8">3</div><b>Checkpoint 3 · 24/11</b><small>modelo lógico e telas</small></div>
+  <div class=p><div class=c style="background:#fff;border:3px solid #9AAAC0;color:#9AAAC0">4</div><b>Entrega final · 30/11</b><small>sistema completo e apresentação</small></div>
+ </div>
+</div></body></html>

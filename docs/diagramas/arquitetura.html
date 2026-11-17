@@ -1,0 +1,73 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Figtree:wght@400;600;700&family=JetBrains+Mono:wght@500;600&display=swap">
+<style>
+:root{--agua:#0284C7;--ene:#D97706;--res:#16A34A;--mob:#9333EA;--ink:#111833;--mut:#5B6482;--line:#D9DFEC;--acc:#4F46E5}
+*{box-sizing:border-box}body{margin:0;background:#F4F6FB;font:14px/1.4 Figtree,sans-serif;color:var(--ink);width:1600px;padding:34px 40px}
+h1{font:800 30px "Bricolage Grotesque",sans-serif;margin:0 0 4px;letter-spacing:-.02em}.lead{color:var(--mut);margin:0 0 22px}
+.band{height:5px;border-radius:3px;background:linear-gradient(90deg,var(--agua),var(--ene) 33%,var(--res) 66%,var(--mob));margin-bottom:18px}
+.flow{display:grid;grid-template-columns:1.05fr 40px 1.2fr 40px 1.55fr 40px 1.1fr 40px 1.05fr;align-items:stretch}
+.col{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:8px}
+.col h2{font:800 16px "Bricolage Grotesque",sans-serif;margin:0}.k{font:600 10.5px "JetBrains Mono",monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--mut)}
+.box{border-radius:10px;padding:8px 10px;background:#F1F4FA;font-size:12.5px}.box b{display:block;font-size:13px}
+.src{border-left:0;display:flex;gap:8px;align-items:center}.src i{width:10px;height:10px;border-radius:50%;flex:none}
+.arrow{display:grid;place-items:center;color:var(--mut);font-size:26px}
+.db{background:#0F172A;color:#E2E8F0;border-color:#0F172A}.db .k{color:#94A3B8}.db .box{background:#1E293B;color:#CBD5E1}.db h2{color:#fff}
+.layer{border-radius:10px;padding:9px 10px;color:#fff;font-size:12px}.layer b{font-size:13.5px;display:block}
+.mono{font-family:"JetBrains Mono",monospace;font-size:11px}
+.bottom{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:18px}
+.bottom .box{background:#fff;border:1px solid var(--line)}
+.tag{display:inline-block;font:600 10.5px "JetBrains Mono";padding:2px 6px;border-radius:5px;background:#E0E7FF;color:#3730A3;margin:2px 2px 0 0}
+.oci{position:relative;border:2px dashed #C2410C;border-radius:18px;padding:26px 12px 12px;grid-column:3/8;display:grid;grid-template-columns:1.2fr 40px 1.55fr 40px 1.1fr}
+.oci .lbl{position:absolute;top:-12px;left:18px;background:#C2410C;color:#fff;font:700 12px Figtree;padding:3px 10px;border-radius:999px}
+</style></head><body>
+<h1>EcoCity — Arquitetura da solução</h1><p class="lead">Dados mensais (out/2024 a set/2026) de 8 municípios paulistas, do dado bruto ao painel de cada perfil; cada número é marcado como oficial, calculado de oficial ou estimado. Banco MySQL 8 (HeatWave) publicado na Oracle Cloud Infrastructure; código no GitHub.</p>
+<div class="band"></div>
+<div class="flow">
+ <div class="col"><span class="k">1 · Fontes de dados</span><h2>8 municípios de SP</h2>
+  <div class="box src"><i style="background:var(--agua)"></i><div><b>Água</b>SNIS/SINISA: consumo e perdas (anual, distribuído por mês)</div></div>
+  <div class="box src"><i style="background:var(--ene)"></i><div><b>Energia</b>EPE: consumo mensal do Estado · ANEEL: geração distribuída mês a mês</div></div>
+  <div class="box src"><i style="background:var(--res)"></i><div><b>Resíduos</b>SINISA Resíduos · SP Regula (Prefeitura de São Paulo)</div></div>
+  <div class="box src"><i style="background:var(--mob)"></i><div><b>Mobilidade</b>SPTrans: passageiros por dia · SEEG Municípios (CO₂)</div></div>
+  <div class="box"><b>IBGE</b>população por ano, área e código dos 8 municípios</div>
+ </div>
+ <div class="arrow">➜</div>
+ <div class="oci" style="grid-column:3/8"><span class="lbl">Oracle Cloud Infrastructure · VCN privada</span>
+  <div class="col"><span class="k">2 · Integração</span><h2>ETL + IA</h2>
+   <div class="box"><b>Conectores de carga</b>gravam em <span class="mono">stg_medicao_bruta</span> e <span class="mono">lote_carga</span> (usuário <span class="mono">ecocity_etl</span>)</div>
+   <div class="box"><b>Oficial x estimado</b>coluna <span class="mono">origem</span> em cada dado; <span class="mono">sp_atualizar_dado_real</span> troca o estimado pelo oficial</div>
+   <div class="box"><b>Validação no banco</b><span class="mono">sp_processar_staging</span>: métrica, região, data, valor → aceita ou rejeita com motivo</div>
+   <div class="box"><b>Event Scheduler</b><span class="mono">ev_pipeline_mensal</span> (todo dia 5) recalcula indicadores e recarrega o DW</div>
+   <div class="box"><b>Módulo de IA (Python)</b>comparação com o mesmo mês do ano anterior, previsão e z-score → <span class="mono">analise_ia</span></div>
+   <div class="box"><b>Copiloto EcoCity (IA generativa)</b>relatórios por cidades e meses + perguntas em português → SQL só leitura (usuário <span class="mono">ecocity_ia</span>) · aprovação humana</div>
+  </div>
+  <div class="arrow">➜</div>
+  <div class="col db"><span class="k">3 · MySQL HeatWave 8</span><h2>Banco EcoCity</h2>
+   <div class="layer" style="background:#BE185D"><b>Staging</b>dados brutos, sem tipagem, rastreados por lote</div>
+   <div class="layer" style="background:#4338CA"><b>Core relacional (3FN)</b>17 tabelas + 3 do Copiloto · PK/FK · CHECK · UNIQUE · triggers de qualidade, auditoria e revisão</div>
+   <div class="layer" style="background:#0F766E"><b>Data Warehouse (estrela)</b>dim_tempo, dim_municipio, dim_servico, dim_metrica, dim_indicador · fato_medicao, fato_indicador</div>
+   <div class="layer" style="background:#334155"><b>Consumo</b>12 views · funções fn_score / fn_classe_ies · 10 procedures</div>
+   <div class="box">Papéis: <span class="tag">r_cidadao</span><span class="tag">r_analista</span><span class="tag">r_gestor</span><span class="tag">r_etl</span><span class="tag">r_bi</span><span class="tag">r_ia</span><span class="tag">r_dba</span></div>
+  </div>
+  <div class="arrow">➜</div>
+  <div class="col"><span class="k">4 · Backend</span><h2>API REST</h2>
+   <div class="box"><b>Node.js + Express</b>OCI Compute (Always Free)</div>
+   <div class="box"><b>Segurança</b>JWT · bcrypt · RBAC por perfil · Helmet · rate limit · SQL parametrizado</div>
+   <div class="box"><b>Endpoints</b><span class="mono">/public/cidadao · /dados · /admin<br>/copiloto/perguntar<br>/copiloto/relatorios<br>/alertas · /acoes</span></div>
+  </div>
+ </div>
+ <div class="arrow">➜</div>
+ <div class="col"><span class="k">5 · Frontend</span><h2>Painéis</h2>
+  <div class="box"><b>Cidadão · Minha cidade</b>linguagem simples, sinais verde/amarelo/vermelho, dicas</div>
+  <div class="box"><b>Analista · Laboratório</b>séries mensais, mapa de calor, Copiloto</div>
+  <div class="box"><b>Gestor · Sala de situação</b>ranking, matriz de metas, ações, aprovação de relatórios</div>
+  <div class="box"><b>Admin · Central</b>camadas, cargas, usuários, papéis, auditoria</div>
+  <div class="box"><b>Tecnologia</b>HTML, CSS e JavaScript, gráficos SVG próprios, responsivo, tema claro/escuro</div>
+ </div>
+</div>
+<div class="bottom">
+ <div class="box"><b>Backup e recuperação</b>backup diário automático (35 dias) + PITR · dump semanal no Object Storage</div>
+ <div class="box"><b>Segredos</b>senhas e JWT_SECRET no OCI Vault · TLS obrigatório</div>
+ <div class="box"><b>Monitoramento</b>OCI Monitoring + performance_schema + sys schema · alertas de CPU e conexões</div>
+ <div class="box"><b>Auditoria e LGPD</b>tabela auditoria via triggers · cidadão vê apenas dados agregados</div>
+ <div class="box"><b>Repositório GitHub</b>/sql · /backend · /frontend · /ia · /docs</div>
+</div>
+</body></html>

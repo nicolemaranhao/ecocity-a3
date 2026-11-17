@@ -1,0 +1,30 @@
+{
+ "_fonte": "Anuário de Energéticos por Município do Estado de São Paulo (Secretaria de Meio Ambiente, Infraestrutura e Logística - SEMIL). Edição 2025, ano-base 2024: tabela 'Consumo de energia elétrica do Estado de São Paulo (kWh) 2024', coluna TOTAL (https://smastr16.blob.core.windows.net/home/2026/03/Anuario-de-Energeticos-por-Municipios-do-Estado-de-Sao-Paulo-2025-ano-base-2024-1.pdf). Edição 2024, ano-base 2023: só o resumo traz valores em texto (TWh arredondados) para São Paulo, Guarulhos e Campinas; a tabela municipal dessa edição está em imagem. Coletado em 16/11/2026.",
+ "total_kwh": {
+  "2024": {
+   "3550308": 28076109116,
+   "3509502": 3402913285,
+   "3518800": 3854411255,
+   "3547809": 2596598370,
+   "3549904": 2109122740,
+   "3552205": 2394672138,
+   "3543402": 2384534238,
+   "3548500": 1523157373
+  },
+  "2023_resumo_twh": {
+   "3550308": 26.91,
+   "3518800": 3.67,
+   "3509502": 3.21
+  }
+ },
+ "residencial_kwh_2024": {
+  "3550308": 12700203908,
+  "3509502": 1267769850,
+  "3518800": 1138459788,
+  "3547809": 780574073,
+  "3549904": 696025110,
+  "3552205": 825847560,
+  "3543402": 930351724,
+  "3548500": 613644668
+ }
+}

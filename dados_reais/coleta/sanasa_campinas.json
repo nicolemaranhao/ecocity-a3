@@ -1,0 +1,14 @@
+{
+ "_fonte": "SANASA (Campinas). 2025: Relatório de Sustentabilidade 2025 (versão 31/03/2026), p. 11 e 30 (https://www.sanasa.com.br/wp-content/uploads/2026/03/Relatorio-de-Sustentabilidade-2025-versao-31032026_PDF.pdf). 2026: 'Sanasa em Números' de ago/2026 (https://www.sanasa.com.br/wp-content/uploads/2026/08/2026-08-Sanasa-em-Numeros.pdf): volume tratado e distribuído acumulado no ano (jan-jun/2026) e IPD acumulado. Coletado em 16/11/2026.",
+ "2025": {
+  "agua_tratada_distribuida_m3": 102110049,
+  "ipd_pct": 16.58,
+  "volume_faturado_m3": 94088000
+ },
+ "2026_jan_jun": {
+  "agua_tratada_distribuida_m3": 49619259,
+  "media_mensal_m3": 8269877,
+  "ipd_pct": 15.0,
+  "meses": 6
+ }
+}

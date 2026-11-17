@@ -1,0 +1,10 @@
+FOTOS E VÍDEOS DO SITE
+======================
+O arquivo midia.json diz qual foto aparece em cada lugar (cidade, agua, energia, lixo, transporte).
+Hoje ele usa fotos do Unsplash (licença livre, com crédito). Sem internet, aparece o desenho animado.
+
+Para usar uma foto ou vídeo de vocês:
+1. Coloque o arquivo nesta pasta (assets/midia). Formatos: .jpg, .png, .webp, .mp4 ou .webm
+2. No midia.json, troque o "arquivo" pelo nome do arquivo, por exemplo:
+   "agua": { "arquivo": "represa.jpg", "descricao": "Represa Cantareira", "credito": "Foto: Nicole Assis" }
+3. Atualize a página (F5).

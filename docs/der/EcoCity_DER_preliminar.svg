@@ -1,0 +1,281 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2580" height="1310" viewBox="0 0 2580 1310" font-family="Arial, Helvetica, sans-serif">
+<style>.card{font-size:15px;font-weight:bold;fill:#B45309}.at{font-size:13px}.nome{font-size:13px;font-weight:bold}.verbo{font-size:12px}</style>
+<rect width="100%" height="100%" fill="white"/>
+<text x="40" y="52" font-size="30" font-weight="bold">EcoCity — DER preliminar (modelo conceitual)</text>
+<text x="40" y="82" font-size="17" fill="#334155">A3 Banco de Dados · Checkpoint 2 · notação de Chen com cardinalidade (mín,máx)</text>
+<polyline fill="none" stroke="#334155" stroke-width="1.6" points="240,190 330,190 420,190"/>
+<polyline fill="none" stroke="#334155" stroke-width="1.6" points="620,190 710,190 800,190"/>
+<polyline fill="none" stroke="#334155" stroke-width="1.6" points="1000,190 1090,190 1180,190"/>
+<polyline fill="none" stroke="#334155" stroke-width="1.6" points="1380,190 1470,190 1560,190"/>
+<polyline fill="none" stroke="#334155" stroke-width="1.6" points="900,241 900,315 900,389"/>
+<polyline fill="none" stroke="#334155" stroke-width="1.6" points="620,440 710,440 800,440"/>
+<polyline fill="none" stroke="#334155" stroke-width="1.6" points="1000,440 1090,440 1180,440"/>
+<polyline fill="none" stroke="#334155" stroke-width="1.6" points="1380,440 1470,440 1560,440"/>
+<polyline fill="none" stroke="#334155" stroke-width="1.6" points="1660,232 1660,306 1660,380"/>
+<polyline fill="none" stroke="#334155" stroke-width="1.6" points="1760,440 1850,440 1940,440"/>
+<polyline fill="none" stroke="#334155" stroke-width="1.6" points="1660,500 1660,570 1660,639"/>
+<polyline fill="none" stroke="#334155" stroke-width="1.6" points="2040,491 2040,565 2040,639"/>
+<polyline fill="none" stroke="#334155" stroke-width="1.6" points="2140,690 2230,690 2320,690"/>
+<polyline fill="none" stroke="#334155" stroke-width="1.6" points="900,491 900,560 900,630"/>
+<polyline fill="none" stroke="#334155" stroke-width="1.6" points="970,491 970,560 1125,560 1280,560 1280,639"/>
+<polyline fill="none" stroke="#334155" stroke-width="1.6" points="900,750 900,810 900,871"/>
+<polyline fill="none" stroke="#334155" stroke-width="1.6" points="1280,741 1280,812 1280,899 1000,899"/>
+<polyline fill="none" stroke="#334155" stroke-width="1.6" points="620,940 710,940 800,940"/>
+<polyline fill="none" stroke="#334155" stroke-width="1.6" points="900,1157 900,1083 900,1009"/>
+<polyline fill="none" stroke="#334155" stroke-width="1.6" points="1660,741 1660,933 1350,933 1000,933"/>
+<polyline fill="none" stroke="#334155" stroke-width="1.6" points="2040,741 2040,995 1850,995 1000,995"/>
+<polyline fill="none" stroke="#334155" stroke-width="1.6" points="980,1009 980,1049 1140,1049 1280,1049 1280,1121"/>
+<polygon points="330.0,165.0 378.0,190.0 330.0,215.0 282.0,190.0" fill="white" stroke="#1E293B" stroke-width="1.3"/>
+<text x="330.0" y="194.0" text-anchor="middle" class="verbo">publica</text>
+<text x="264" y="183" text-anchor="middle" class="card">(1,1)</text>
+<text x="396" y="183" text-anchor="middle" class="card">(0,N)</text>
+<polygon points="710.0,165.0 758.0,190.0 710.0,215.0 662.0,190.0" fill="white" stroke="#1E293B" stroke-width="1.3"/>
+<text x="710.0" y="194.0" text-anchor="middle" class="verbo">fornece</text>
+<text x="644" y="183" text-anchor="middle" class="card">(1,1)</text>
+<text x="776" y="183" text-anchor="middle" class="card">(0,N)</text>
+<polygon points="1090.0,165.0 1138.0,190.0 1090.0,215.0 1042.0,190.0" fill="white" stroke="#1E293B" stroke-width="1.3"/>
+<text x="1090.0" y="194.0" text-anchor="middle" class="verbo">refere-se a</text>
+<text x="1024" y="183" text-anchor="middle" class="card">(0,N)</text>
+<text x="1156" y="183" text-anchor="middle" class="card">(1,1)</text>
+<polygon points="1470.0,165.0 1518.0,190.0 1470.0,215.0 1422.0,190.0" fill="white" stroke="#1E293B" stroke-width="1.3"/>
+<text x="1470.0" y="194.0" text-anchor="middle" class="verbo">pertence a</text>
+<text x="1404" y="183" text-anchor="middle" class="card">(0,N)</text>
+<text x="1536" y="183" text-anchor="middle" class="card">(1,1)</text>
+<polygon points="900.0,290.0 948.0,315.0 900.0,340.0 852.0,315.0" fill="white" stroke="#1E293B" stroke-width="1.3"/>
+<text x="900.0" y="319.0" text-anchor="middle" class="verbo">é de</text>
+<text x="908" y="270" text-anchor="start" class="card">(0,N)</text>
+<text x="908" y="370" text-anchor="start" class="card">(1,1)</text>
+<polygon points="710.0,415.0 758.0,440.0 710.0,465.0 662.0,440.0" fill="white" stroke="#1E293B" stroke-width="1.3"/>
+<text x="710.0" y="444.0" text-anchor="middle" class="verbo">de</text>
+<text x="644" y="433" text-anchor="middle" class="card">(1,N)</text>
+<text x="776" y="433" text-anchor="middle" class="card">(1,1)</text>
+<polygon points="1090.0,415.0 1138.0,440.0 1090.0,465.0 1042.0,440.0" fill="white" stroke="#1E293B" stroke-width="1.3"/>
+<text x="1090.0" y="444.0" text-anchor="middle" class="verbo">obtém</text>
+<text x="1024" y="433" text-anchor="middle" class="card">(1,1)</text>
+<text x="1156" y="433" text-anchor="middle" class="card">(0,N)</text>
+<polygon points="1470.0,415.0 1518.0,440.0 1470.0,465.0 1422.0,440.0" fill="white" stroke="#1E293B" stroke-width="1.3"/>
+<text x="1470.0" y="444.0" text-anchor="middle" class="verbo">calcula</text>
+<text x="1404" y="433" text-anchor="middle" class="card">(0,N)</text>
+<text x="1536" y="433" text-anchor="middle" class="card">(1,1)</text>
+<polygon points="1660.0,281.0 1708.0,306.0 1660.0,331.0 1612.0,306.0" fill="white" stroke="#1E293B" stroke-width="1.3"/>
+<text x="1660.0" y="310.0" text-anchor="middle" class="verbo">agrupa</text>
+<text x="1668" y="261" text-anchor="start" class="card">(1,1)</text>
+<text x="1668" y="361" text-anchor="start" class="card">(1,N)</text>
+<polygon points="1850.0,415.0 1898.0,440.0 1850.0,465.0 1802.0,440.0" fill="white" stroke="#1E293B" stroke-width="1.3"/>
+<text x="1850.0" y="444.0" text-anchor="middle" class="verbo">gera alerta</text>
+<text x="1784" y="433" text-anchor="middle" class="card">(1,1)</text>
+<text x="1916" y="433" text-anchor="middle" class="card">(0,N)</text>
+<polygon points="1660.0,544.5 1708.0,569.5 1660.0,594.5 1612.0,569.5" fill="white" stroke="#1E293B" stroke-width="1.3"/>
+<text x="1660.0" y="573.5" text-anchor="middle" class="verbo">tem</text>
+<text x="1668" y="529" text-anchor="start" class="card">(1,1)</text>
+<text x="1668" y="620" text-anchor="start" class="card">(0,N)</text>
+<polygon points="2040.0,540.0 2088.0,565.0 2040.0,590.0 1992.0,565.0" fill="white" stroke="#1E293B" stroke-width="1.3"/>
+<text x="2040.0" y="569.0" text-anchor="middle" class="verbo">motiva</text>
+<text x="2048" y="520" text-anchor="start" class="card">(0,1)</text>
+<text x="2048" y="620" text-anchor="start" class="card">(0,N)</text>
+<polygon points="2230.0,665.0 2278.0,690.0 2230.0,715.0 2182.0,690.0" fill="white" stroke="#1E293B" stroke-width="1.3"/>
+<text x="2230.0" y="694.0" text-anchor="middle" class="verbo">produz</text>
+<text x="2164" y="683" text-anchor="middle" class="card">(1,1)</text>
+<text x="2296" y="683" text-anchor="middle" class="card">(0,N)</text>
+<polygon points="900.0,535.5 948.0,560.5 900.0,585.5 852.0,560.5" fill="#FDE68A" stroke="#1E293B" stroke-width="1.3"/>
+<text x="900.0" y="564.5" text-anchor="middle" class="verbo">é tratado em</text>
+<text x="908" y="520" text-anchor="start" class="card">(1,N)</text>
+<text x="908" y="611" text-anchor="start" class="card">(0,N)</text>
+<polygon points="1125.0,535.5 1173.0,560.5 1125.0,585.5 1077.0,560.5" fill="#FDE68A" stroke="#1E293B" stroke-width="1.3"/>
+<text x="1125.0" y="564.5" text-anchor="middle" class="verbo">é abrangido</text>
+<text x="978" y="520" text-anchor="start" class="card">(1,N)</text>
+<text x="1288" y="620" text-anchor="start" class="card">(0,N)</text>
+<polygon points="900.0,785.5 948.0,810.5 900.0,835.5 852.0,810.5" fill="white" stroke="#1E293B" stroke-width="1.3"/>
+<text x="900.0" y="814.5" text-anchor="middle" class="verbo">escreve</text>
+<text x="908" y="779" text-anchor="start" class="card">(0,N)</text>
+<text x="908" y="852" text-anchor="start" class="card">(1,1)</text>
+<polygon points="1280.0,786.8 1328.0,811.8 1280.0,836.8 1232.0,811.8" fill="white" stroke="#1E293B" stroke-width="1.3"/>
+<text x="1280.0" y="815.8" text-anchor="middle" class="verbo">solicita</text>
+<text x="1288" y="770" text-anchor="start" class="card">(0,N)</text>
+<text x="1024" y="892" text-anchor="middle" class="card">(1,1)</text>
+<polygon points="710.0,915.0 758.0,940.0 710.0,965.0 662.0,940.0" fill="white" stroke="#1E293B" stroke-width="1.3"/>
+<text x="710.0" y="944.0" text-anchor="middle" class="verbo">possui</text>
+<text x="644" y="933" text-anchor="middle" class="card">(0,1)</text>
+<text x="776" y="933" text-anchor="middle" class="card">(1,1)</text>
+<polygon points="900.0,1058.0 948.0,1083.0 900.0,1108.0 852.0,1083.0" fill="white" stroke="#1E293B" stroke-width="1.3"/>
+<text x="900.0" y="1087.0" text-anchor="middle" class="verbo">define</text>
+<text x="908" y="1138" text-anchor="start" class="card">(1,1)</text>
+<text x="908" y="1038" text-anchor="start" class="card">(0,N)</text>
+<polygon points="1350.0,908.1 1398.0,933.1 1350.0,958.1 1302.0,933.1" fill="white" stroke="#1E293B" stroke-width="1.3"/>
+<text x="1350.0" y="937.1" text-anchor="middle" class="verbo">propõe</text>
+<text x="1668" y="770" text-anchor="start" class="card">(0,N)</text>
+<text x="1024" y="926" text-anchor="middle" class="card">(1,1)</text>
+<polygon points="1850.0,970.2 1898.0,995.2 1850.0,1020.2 1802.0,995.2" fill="white" stroke="#1E293B" stroke-width="1.3"/>
+<text x="1850.0" y="999.2" text-anchor="middle" class="verbo">é responsável</text>
+<text x="2048" y="770" text-anchor="start" class="card">(0,N)</text>
+<text x="1024" y="988" text-anchor="middle" class="card">(1,1)</text>
+<polygon points="1140.0,1024.0 1188.0,1049.0 1140.0,1074.0 1092.0,1049.0" fill="white" stroke="#1E293B" stroke-width="1.3"/>
+<text x="1140.0" y="1053.0" text-anchor="middle" class="verbo">comprova</text>
+<text x="988" y="1038" text-anchor="start" class="card">(1,1)</text>
+<text x="1288" y="1102" text-anchor="start" class="card">(0,1)</text>
+<rect x="40.0" y="148.0" width="200" height="84" fill="#E0E7FF" stroke="#1E293B" stroke-width="1.8"/>
+<text x="140.0" y="167.0" text-anchor="middle" class="nome">ORGAO</text>
+<line x1="40.0" y1="175.0" x2="240.0" y2="175.0" stroke="#1E293B"/>
+<text x="48.0" y="192.0" class="at" text-decoration="underline">id_orgao</text>
+<text x="48.0" y="210.0" class="at" >nome</text>
+<text x="48.0" y="228.0" class="at" >sigla</text>
+<rect x="420.0" y="139.0" width="200" height="102" fill="#E0E7FF" stroke="#1E293B" stroke-width="1.8"/>
+<text x="520.0" y="158.0" text-anchor="middle" class="nome">FONTE_DADOS</text>
+<line x1="420.0" y1="166.0" x2="620.0" y2="166.0" stroke="#1E293B"/>
+<text x="428.0" y="183.0" class="at" text-decoration="underline">id_fonte</text>
+<text x="428.0" y="201.0" class="at" >nome</text>
+<text x="428.0" y="219.0" class="at" >frequência</text>
+<text x="428.0" y="237.0" class="at" >confiabilidade (1 a 5)</text>
+<rect x="800.0" y="139.0" width="200" height="102" fill="#E0E7FF" stroke="#1E293B" stroke-width="1.8"/>
+<text x="900.0" y="158.0" text-anchor="middle" class="nome">DADO</text>
+<line x1="800.0" y1="166.0" x2="1000.0" y2="166.0" stroke="#1E293B"/>
+<text x="808.0" y="183.0" class="at" text-decoration="underline">id_dado</text>
+<text x="808.0" y="201.0" class="at" >mês de referência</text>
+<text x="808.0" y="219.0" class="at" >valor</text>
+<text x="808.0" y="237.0" class="at" >origem</text>
+<rect x="1180.0" y="148.0" width="200" height="84" fill="#E0E7FF" stroke="#1E293B" stroke-width="1.8"/>
+<text x="1280.0" y="167.0" text-anchor="middle" class="nome">METRICA</text>
+<line x1="1180.0" y1="175.0" x2="1380.0" y2="175.0" stroke="#1E293B"/>
+<text x="1188.0" y="192.0" class="at" text-decoration="underline">id_metrica</text>
+<text x="1188.0" y="210.0" class="at" >código</text>
+<text x="1188.0" y="228.0" class="at" >nome</text>
+<rect x="1560.0" y="148.0" width="200" height="84" fill="#E0E7FF" stroke="#1E293B" stroke-width="1.8"/>
+<text x="1660.0" y="167.0" text-anchor="middle" class="nome">SERVICO_PUBLICO</text>
+<line x1="1560.0" y1="175.0" x2="1760.0" y2="175.0" stroke="#1E293B"/>
+<text x="1568.0" y="192.0" class="at" text-decoration="underline">id_servico</text>
+<text x="1568.0" y="210.0" class="at" >nome</text>
+<text x="1568.0" y="228.0" class="at" >descrição</text>
+<rect x="420.0" y="407.0" width="200" height="66" fill="#E0E7FF" stroke="#1E293B" stroke-width="1.8"/>
+<text x="520.0" y="426.0" text-anchor="middle" class="nome">POPULACAO_ANUAL</text>
+<line x1="420.0" y1="434.0" x2="620.0" y2="434.0" stroke="#1E293B"/>
+<text x="428.0" y="451.0" class="at" text-decoration="underline">ano</text>
+<text x="428.0" y="469.0" class="at" >população</text>
+<rect x="800.0" y="389.0" width="200" height="102" fill="#E0E7FF" stroke="#1E293B" stroke-width="1.8"/>
+<text x="900.0" y="408.0" text-anchor="middle" class="nome">MUNICIPIO</text>
+<line x1="800.0" y1="416.0" x2="1000.0" y2="416.0" stroke="#1E293B"/>
+<text x="808.0" y="433.0" class="at" text-decoration="underline">id_municipio</text>
+<text x="808.0" y="451.0" class="at" >nome</text>
+<text x="808.0" y="469.0" class="at" >código IBGE</text>
+<text x="808.0" y="487.0" class="at" >área (km²)</text>
+<rect x="1180.0" y="389.0" width="200" height="102" fill="#DCFCE7" stroke="#1E293B" stroke-width="1.8"/>
+<text x="1280.0" y="408.0" text-anchor="middle" class="nome">INDICADOR_VALOR</text>
+<line x1="1180.0" y1="416.0" x2="1380.0" y2="416.0" stroke="#1E293B"/>
+<text x="1188.0" y="433.0" class="at" text-decoration="underline">id_indicador_valor</text>
+<text x="1188.0" y="451.0" class="at" >mês</text>
+<text x="1188.0" y="469.0" class="at" >valor</text>
+<text x="1188.0" y="487.0" class="at" >origem</text>
+<rect x="1560.0" y="380.0" width="200" height="120" fill="#DCFCE7" stroke="#1E293B" stroke-width="1.8"/>
+<text x="1660.0" y="399.0" text-anchor="middle" class="nome">INDICADOR</text>
+<line x1="1560.0" y1="407.0" x2="1760.0" y2="407.0" stroke="#1E293B"/>
+<text x="1568.0" y="424.0" class="at" text-decoration="underline">id_indicador</text>
+<text x="1568.0" y="442.0" class="at" >código</text>
+<text x="1568.0" y="460.0" class="at" >nome</text>
+<text x="1568.0" y="478.0" class="at" >fórmula</text>
+<text x="1568.0" y="496.0" class="at" >peso no índice</text>
+<rect x="1940.0" y="389.0" width="200" height="102" fill="#DCFCE7" stroke="#1E293B" stroke-width="1.8"/>
+<text x="2040.0" y="408.0" text-anchor="middle" class="nome">ANALISE_IA</text>
+<line x1="1940.0" y1="416.0" x2="2140.0" y2="416.0" stroke="#1E293B"/>
+<text x="1948.0" y="433.0" class="at" text-decoration="underline">id_analise</text>
+<text x="1948.0" y="451.0" class="at" >tipo</text>
+<text x="1948.0" y="469.0" class="at" >severidade</text>
+<text x="1948.0" y="487.0" class="at" >status</text>
+<rect x="800.0" y="630.0" width="200" height="120" fill="#FCE7F3" stroke="#1E293B" stroke-width="1.8"/>
+<text x="900.0" y="649.0" text-anchor="middle" class="nome">ANALISE_PUBLICADA</text>
+<line x1="800.0" y1="657.0" x2="1000.0" y2="657.0" stroke="#1E293B"/>
+<text x="808.0" y="674.0" class="at" text-decoration="underline">id_analise_pub</text>
+<text x="808.0" y="692.0" class="at" >título</text>
+<text x="808.0" y="710.0" class="at" >texto</text>
+<text x="808.0" y="728.0" class="at" >nível de confiança</text>
+<text x="808.0" y="746.0" class="at" >status</text>
+<rect x="1180.0" y="639.0" width="200" height="102" fill="#FCE7F3" stroke="#1E293B" stroke-width="1.8"/>
+<text x="1280.0" y="658.0" text-anchor="middle" class="nome">RELATORIO_IA</text>
+<line x1="1180.0" y1="666.0" x2="1380.0" y2="666.0" stroke="#1E293B"/>
+<text x="1188.0" y="683.0" class="at" text-decoration="underline">id_relatorio</text>
+<text x="1188.0" y="701.0" class="at" >título</text>
+<text x="1188.0" y="719.0" class="at" >período</text>
+<text x="1188.0" y="737.0" class="at" >status</text>
+<rect x="1560.0" y="639.0" width="200" height="102" fill="#DCFCE7" stroke="#1E293B" stroke-width="1.8"/>
+<text x="1660.0" y="658.0" text-anchor="middle" class="nome">META</text>
+<line x1="1560.0" y1="666.0" x2="1760.0" y2="666.0" stroke="#1E293B"/>
+<text x="1568.0" y="683.0" class="at" text-decoration="underline">id_meta</text>
+<text x="1568.0" y="701.0" class="at" >valor</text>
+<text x="1568.0" y="719.0" class="at" >vigência</text>
+<text x="1568.0" y="737.0" class="at" >status</text>
+<rect x="1940.0" y="639.0" width="200" height="102" fill="#FEF3C7" stroke="#1E293B" stroke-width="1.8"/>
+<text x="2040.0" y="658.0" text-anchor="middle" class="nome">ACAO</text>
+<line x1="1940.0" y1="666.0" x2="2140.0" y2="666.0" stroke="#1E293B"/>
+<text x="1948.0" y="683.0" class="at" text-decoration="underline">id_acao</text>
+<text x="1948.0" y="701.0" class="at" >título</text>
+<text x="1948.0" y="719.0" class="at" >orçamento</text>
+<text x="1948.0" y="737.0" class="at" >status</text>
+<rect x="2320.0" y="639.0" width="200" height="102" fill="#FEF3C7" stroke="#1E293B" stroke-width="1.8"/>
+<text x="2420.0" y="658.0" text-anchor="middle" class="nome">RESULTADO</text>
+<line x1="2320.0" y1="666.0" x2="2520.0" y2="666.0" stroke="#1E293B"/>
+<text x="2328.0" y="683.0" class="at" text-decoration="underline">id_resultado</text>
+<text x="2328.0" y="701.0" class="at" >valor antes</text>
+<text x="2328.0" y="719.0" class="at" >valor depois</text>
+<text x="2328.0" y="737.0" class="at" >avaliação</text>
+<rect x="420.0" y="889.0" width="200" height="102" fill="#F1F5F9" stroke="#1E293B" stroke-width="1.8"/>
+<text x="520.0" y="908.0" text-anchor="middle" class="nome">CREDENCIAL_ANALISTA</text>
+<line x1="420.0" y1="916.0" x2="620.0" y2="916.0" stroke="#1E293B"/>
+<text x="428.0" y="933.0" class="at" >registro profissional</text>
+<text x="428.0" y="951.0" class="at" >nível</text>
+<text x="428.0" y="969.0" class="at" >status</text>
+<text x="428.0" y="987.0" class="at" >válida até</text>
+<rect x="800.0" y="871.0" width="200" height="138" fill="#F1F5F9" stroke="#1E293B" stroke-width="1.8"/>
+<text x="900.0" y="890.0" text-anchor="middle" class="nome">USUARIO</text>
+<line x1="800.0" y1="898.0" x2="1000.0" y2="898.0" stroke="#1E293B"/>
+<text x="808.0" y="915.0" class="at" text-decoration="underline">id_usuario</text>
+<text x="808.0" y="933.0" class="at" >nome</text>
+<text x="808.0" y="951.0" class="at" >e-mail</text>
+<text x="808.0" y="969.0" class="at" >telefone</text>
+<text x="808.0" y="987.0" class="at" >senha (hash)</text>
+<text x="808.0" y="1005.0" class="at" >situação do cadastro</text>
+<rect x="1180.0" y="1121.0" width="200" height="138" fill="#F1F5F9" stroke="#1E293B" stroke-width="1.8"/>
+<text x="1280.0" y="1140.0" text-anchor="middle" class="nome">CADASTRO_PROFISSIONAL</text>
+<line x1="1180.0" y1="1148.0" x2="1380.0" y2="1148.0" stroke="#1E293B"/>
+<text x="1188.0" y="1165.0" class="at" text-decoration="underline">id_usuario</text>
+<text x="1188.0" y="1183.0" class="at" >CPF (protegido)</text>
+<text x="1188.0" y="1201.0" class="at" >e-mail institucional</text>
+<text x="1188.0" y="1219.0" class="at" >órgão e cargo</text>
+<text x="1188.0" y="1237.0" class="at" >documento de vínculo</text>
+<text x="1188.0" y="1255.0" class="at" >status (aprovado pelo admin)</text>
+<rect x="800.0" y="1157.0" width="200" height="66" fill="#F1F5F9" stroke="#1E293B" stroke-width="1.8"/>
+<text x="900.0" y="1176.0" text-anchor="middle" class="nome">PERFIL</text>
+<line x1="800.0" y1="1184.0" x2="1000.0" y2="1184.0" stroke="#1E293B"/>
+<text x="808.0" y="1201.0" class="at" text-decoration="underline">id_perfil</text>
+<text x="808.0" y="1219.0" class="at" >nome</text>
+<rect x="40" y="370" width="300" height="245" rx="8" fill="white" stroke="#94A3B8"/>
+<text x="52" y="396" font-size="14" font-weight="bold">Como ler</text>
+<text x="52" y="416" font-size="12.5" >▭ Retângulo = entidade (vira tabela)</text>
+<text x="52" y="436" font-size="12.5" >◇ Losango = relacionamento (verbo)</text>
+<text x="52" y="456" font-size="12.5" >sublinhado = identificador (chave)</text>
+<text x="52" y="476" font-size="12.5" >(mín,máx) junto da entidade = quantas vezes</text>
+<text x="52" y="496" font-size="12.5" >ELA aparece para UMA do outro lado</text>
+<text x="52" y="516" font-size="12.5" >Losango amarelo = N:N (vira tabela associativa)</text>
+<text x="52" y="536" font-size="12.5" ></text>
+<text x="52" y="556" font-size="12.5" font-weight="bold">Exemplo: ORGAO (1,1) — publica — (0,N) FONTE_DADOS</text>
+<text x="52" y="576" font-size="12.5" >Cada fonte é publicada por 1 órgão;</text>
+<text x="52" y="596" font-size="12.5" >cada órgão publica de 0 a N fontes.</text>
+<rect x="40" y="900" width="290" height="225" rx="8" fill="#F8FAFC" stroke="#CBD5E1" stroke-dasharray="5,4"/>
+<text x="52" y="926" font-size="13.5" font-weight="bold">Fica para o modelo lógico (Checkpoint 3)</text>
+<text x="52" y="946" font-size="12.5" >Tabelas de apoio: UNIDADE_MEDIDA,</text>
+<text x="52" y="966" font-size="12.5" >LOTE_CARGA, STG_MEDICAO_BRUTA,</text>
+<text x="52" y="986" font-size="12.5" >ACESSO_LOG, AUDITORIA,</text>
+<text x="52" y="1006" font-size="12.5" >ANALISE_EVIDENCIA, ANALISE_COMENTARIO,</text>
+<text x="52" y="1026" font-size="12.5" >PERGUNTA_IA e o Data Warehouse.</text>
+<text x="52" y="1046" font-size="12.5" >Também no CP3: chaves estrangeiras,</text>
+<text x="52" y="1066" font-size="12.5" >tipos de dado e os vínculos extras</text>
+<text x="52" y="1086" font-size="12.5" >(aprovação da meta, revisão de análises,</text>
+<text x="52" y="1106" font-size="12.5" >avaliação das fontes e do cadastro).</text>
+<rect x="1560.0" y="1120" width="24" height="18" fill="#E0E7FF" stroke="#1E293B"/>
+<text x="1594.0" y="1134" font-size="14">Cidades, fontes e dados mensais</text>
+<rect x="1560.0" y="1150" width="24" height="18" fill="#DCFCE7" stroke="#1E293B"/>
+<text x="1594.0" y="1164" font-size="14">Indicadores, metas e alertas</text>
+<rect x="1560.0" y="1180" width="24" height="18" fill="#FCE7F3" stroke="#1E293B"/>
+<text x="1594.0" y="1194" font-size="14">Análises e relatórios</text>
+<rect x="1560.0" y="1210" width="24" height="18" fill="#FEF3C7" stroke="#1E293B"/>
+<text x="1594.0" y="1224" font-size="14">Ações e resultados</text>
+<rect x="1560.0" y="1240" width="24" height="18" fill="#F1F5F9" stroke="#1E293B"/>
+<text x="1594.0" y="1254" font-size="14">Pessoas, cadastro e acesso</text>
+</svg>

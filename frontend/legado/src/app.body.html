@@ -1,0 +1,164 @@
+<div id="aviso" class="aviso-demo" hidden><div class="wrap" id="avisoTxt"></div></div>
+
+<!-- ============================ PORTAL ============================ -->
+<section id="v-portal" class="portal-mundo">
+  <header class="mundo-top">
+    <div class="wrap">
+      <span class="marca" id="marcaPortal"></span>
+      <div class="top-acoes">
+        <span class="modo" id="modoPortal"></span>
+        <button type="button" class="iconbtn" data-tema aria-label="Alternar tema claro/escuro"></button>
+      </div>
+    </div>
+  </header>
+  <main class="wrap portal">
+    <div class="portal-hero">
+      <h1>Água, energia, lixo e transporte de 8 cidades paulistas, <em>mês a mês, num só banco</em>.</h1>
+      <p>O EcoCity junta dados públicos que hoje ficam espalhados em órgãos diferentes, calcula indicadores de sustentabilidade e mostra cada um para quem precisa dele. Escolha como você quer entrar.</p>
+    </div>
+    <div class="portas">
+      <button type="button" class="porta p-cid" data-ir="CIDADAO">
+        <span class="tag">Cidadão · sem login</span>
+        <h2>Minha cidade</h2>
+        <p>Como está a sua cidade este mês, em linguagem simples, e o que você pode fazer para ajudar.</p>
+        <span class="ir">Ver minha cidade →</span>
+      </button>
+      <button type="button" class="porta p-ana" data-ir="ANALISTA">
+        <span class="tag">&gt; analista</span>
+        <h2>Laboratório de dados</h2>
+        <p>Séries mensais, comparação entre cidades, análises da IA e o Copiloto, que responde perguntas e escreve relatórios.</p>
+        <span class="ir">Entrar no laboratório →</span>
+      </button>
+      <button type="button" class="porta p-ges" data-ir="GESTOR">
+        <span class="tag">Gestor público</span>
+        <h2>Sala de situação</h2>
+        <p>Ranking, metas de cada serviço, ações e resultados, e aprovação dos relatórios escritos pela IA.</p>
+        <span class="ir">Abrir a sala →</span>
+      </button>
+      <button type="button" class="porta p-adm" data-ir="ADMIN">
+        <span class="tag">root@ecocity</span>
+        <h2>Central do sistema</h2>
+        <p>Camadas do banco, cargas de dados, fontes, usuários, papéis de segurança e auditoria.</p>
+        <span class="ir">Abrir a central →</span>
+      </button>
+    </div>
+    <div class="portal-faixa" id="faixaPortal"></div>
+  </main>
+</section>
+
+<!-- ============================ CIDADÃO ============================ -->
+<section id="v-cidadao" class="w-cid" hidden>
+  <header class="mundo-top">
+    <div class="wrap">
+      <span class="marca" data-marca="Minha cidade"></span>
+      <div class="top-acoes">
+        <button type="button" class="btn" data-sair>Trocar de perfil</button>
+        <button type="button" class="iconbtn" data-tema aria-label="Alternar tema claro/escuro"></button>
+      </div>
+    </div>
+  </header>
+  <main class="wrap">
+    <div class="cid-cab">
+      <h1 id="cidTitulo">Como está a sua cidade?</h1>
+      <p>Escolha a cidade:</p>
+      <div class="cid-chips" id="cidChips" role="group" aria-label="Cidade"></div>
+    </div>
+    <div id="cidConteudo"></div>
+    <div class="cid-sec">
+      <h2>Relatórios para você</h2>
+      <p style="color:var(--c-fg-2)">Textos escritos pelo Copiloto EcoCity (a inteligência artificial do sistema) e revisados por um gestor público antes de aparecerem aqui.</p>
+      <div id="cidRelatorios" style="display:grid;gap:14px"></div>
+    </div>
+    <div class="cid-sec">
+      <h2>De onde vêm os números</h2>
+      <div class="cid-explica">
+        <div><span class="origem REAL">Dado oficial</span>Número publicado por um órgão público para aquele mês, como a ANEEL (energia solar) e a SPTrans (ônibus de São Paulo).</div>
+        <div><span class="origem DERIVADO">Calculado de dado oficial</span>O órgão publicou o total do ano ou do semestre, e nós dividimos pelos meses. Ex.: água de 2024 (SNIS).</div>
+        <div><span class="origem ESTIMADO">Estimado</span>Ainda não existe número oficial para o mês. A equipe estimou com base no último dado oficial.</div>
+      </div>
+    </div>
+    <p class="cid-pe" id="cidPe"></p>
+  </main>
+</section>
+
+<!-- ============================ ANALISTA ============================ -->
+<section id="v-analista" class="w-ana" hidden>
+  <header class="mundo-top">
+    <div class="wrap">
+      <span class="marca" data-marca="Laboratório de dados"></span>
+      <div class="top-acoes">
+        <span class="modo" data-usuario></span>
+        <button type="button" class="btn" data-sair>Sair</button>
+      </div>
+    </div>
+  </header>
+  <div class="wrap ana-corpo">
+    <nav class="ana-nav" id="anaNav" aria-label="Seções do laboratório">
+      <button type="button" data-aba="explorar" aria-current="true"><span class="k">01</span>Explorar séries</button>
+      <button type="button" data-aba="comparar"><span class="k">02</span>Comparar cidades</button>
+      <button type="button" data-aba="copiloto"><span class="k">03</span>Pergunte ao Copiloto</button>
+      <button type="button" data-aba="relatorios"><span class="k">04</span>Relatórios da IA</button>
+      <button type="button" data-aba="ia"><span class="k">05</span>Análises automáticas</button>
+      <button type="button" data-aba="qualidade"><span class="k">06</span>Origem dos dados</button>
+    </nav>
+    <div id="anaAbas" style="min-width:0"></div>
+  </div>
+</section>
+
+<!-- ============================ GESTOR ============================ -->
+<section id="v-gestor" class="w-ges" hidden>
+  <header class="mundo-top">
+    <div class="wrap">
+      <span class="marca" data-marca="Sala de situação"></span>
+      <div class="top-acoes">
+        <span class="modo" data-usuario></span>
+        <button type="button" class="btn" data-sair>Sair</button>
+        <button type="button" class="iconbtn" data-tema aria-label="Alternar tema claro/escuro"></button>
+      </div>
+    </div>
+  </header>
+  <div class="ges-faixa">
+    <div class="wrap">
+      <div class="linha">
+        <h1 id="gesTitulo">Situação das 8 cidades</h1>
+        <label class="mes-sel" for="gesMes">Mês <input type="range" id="gesMes" min="0" max="23" step="1" value="23"><output id="gesMesOut" for="gesMes"></output></label>
+      </div>
+      <div class="kpis" id="gesKpis"></div>
+    </div>
+  </div>
+  <main class="wrap ges-grade" id="gesGrade"></main>
+</section>
+
+<!-- ============================ ADMIN ============================ -->
+<section id="v-admin" class="w-adm" hidden>
+  <header class="mundo-top">
+    <div class="wrap">
+      <span class="marca" data-marca="central do sistema"></span>
+      <div class="top-acoes">
+        <span class="modo" data-usuario></span>
+        <button type="button" class="btn" data-sair>Sair</button>
+      </div>
+    </div>
+  </header>
+  <main class="wrap" id="admConteudo"></main>
+</section>
+
+<!-- login (só com a API no ar) -->
+<div class="login-fundo" id="loginFundo" hidden>
+  <form class="login" id="loginForm">
+    <h2 id="loginTitulo">Entrar</h2>
+    <label for="loginEmail">E-mail <input id="loginEmail" type="email" autocomplete="username" required></label>
+    <label for="loginSenha" id="loginSenhaBox">Senha <input id="loginSenha" type="password" autocomplete="current-password" required></label>
+    <label for="loginCodigo" id="loginCodigoBox" hidden>Código do aplicativo autenticador (6 dígitos)
+      <input id="loginCodigo" inputmode="numeric" autocomplete="one-time-code" maxlength="6" pattern="[0-9]{6}"></label>
+    <label for="loginChave" id="loginChaveBox" hidden>Chave de administrador (individual)
+      <input id="loginChave" type="password" autocomplete="off"></label>
+    <p class="dica" id="loginDica"></p>
+    <p class="erro" id="loginErro" role="alert"></p>
+    <div style="display:flex;gap:8px;justify-content:flex-end">
+      <button type="button" class="btn" id="loginCancelar">Cancelar</button>
+      <button type="submit" class="btn primario">Entrar</button>
+    </div>
+  </form>
+</div>
+<div class="toast" id="toast" role="status" hidden></div>
