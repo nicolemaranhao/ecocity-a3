@@ -96,6 +96,9 @@ const Painel = (() => {
   const ultOfLinha = (i) => { const t = ultOfTxt(i); return `<p class="ult-of u-${t.cls}">${ico('fonte')}<span>${t.longo || t.curto}</span></p>`; };
   const fonteLinha = (f, attrs) => (f ? `<button class="fonte-linha" ${attrs}>${ico('fonte')}<span><b>Fonte:</b> ${esc([...new Set(f.fontes.map((x) => x.fonte.split(' - ')[0]))].join(' + '))} · <em class="o-${f.origem}">${ORIG[f.origem]}</em></span><u>ver detalhes</u></button>` : '');
   const botaoFonte = fonteLinha;
+  const mesCurto = (p) => `${mesTxt(p).slice(0, 3)}/${p.slice(2, 4)}`;
+  // último dado OFICIAL quando ele não aparece nos meses do gráfico (para nunca mostrar só estimativas)
+  const ofAntes = (i, janela) => { const uo = i.ultimoOficial; if (!uo || janela.some((s) => s.o !== 'ESTIMADO')) return null; return { valor: uo.valor, rotulo: mesCurto(uo.mes) }; };
 
   // ------------------------------------------------------------ visual de cada dado (pictogramas que qualquer pessoa entende)
   const IC = {
@@ -141,8 +144,8 @@ const Painel = (() => {
     const desenhar = async () => {
       const [d, ex] = await Promise.all([API.pegar(urlCidade()), API.pegar('/explorar')]);
       cidadeSel = d.municipio.id_municipio;
-      const pos = (i) => { const ult = ex.serie.filter((s) => s.c === i.codigo && s.p === d.mes).sort((a, b) => (i.sentido === 'MAIOR_MELHOR' ? b.v - a.v : a.v - b.v)); return ult.findIndex((s) => s.m === cidadeSel) + 1; };
-      const mudancas = d.indicadores.map((i) => { const s = i.serie; const a = s[s.length - 2]?.v; const var_ = a ? ((i.valor - a) / a) * 100 : 0; return { i, var_, melhor: i.sentido === 'MAIOR_MELHOR' ? var_ > 0 : var_ < 0 }; }).sort((a, b) => Math.abs(b.var_) - Math.abs(a.var_));
+      const pos = (i) => i.posicao;   // a mesma posição calculada no servidor (sem arredondar)
+      const mudancas = d.indicadores.filter((i) => i.variaMes).map((i) => { const s = i.serie; const a = s[s.length - 2]?.v; const var_ = a ? ((i.valor - a) / a) * 100 : 0; return { i, var_, melhor: i.sentido === 'MAIOR_MELHOR' ? var_ > 0 : var_ < 0 }; }).sort((a, b) => Math.abs(b.var_) - Math.abs(a.var_));
       // destaque do mês: o dado mais longe da meta
       const vm = verMeta();
       const dest = vm ? [...d.indicadores].sort((a, b) => a.score - b.score)[0] : [...d.indicadores].sort((a, b) => (b.situacao.nivel === 'CRITICO') - (a.situacao.nivel === 'CRITICO') || Math.abs(b.comparacao.pct) - Math.abs(a.comparacao.pct))[0];
@@ -153,20 +156,34 @@ const Painel = (() => {
         <dl class="fatos revelar"><div><dt>Moradores</dt><dd class="num">${Number(d.municipio.populacao).toLocaleString('pt-BR')}</dd></div><div><dt>Região</dt><dd>${esc(d.municipio.regiao_metropolitana || 'Estado de SP')}</dd></div>
           <div><dt>Mês dos dados</dt><dd>${esc(d.mesTxt)}</dd></div>${vm ? `<div><dt>Dentro da meta ${UI.info('meta')}</dt><dd><b class="num">${d.indicadores.filter((i) => i.score >= 100).length}</b> de 8 números</dd></div>` : `<div><dt>Melhor que a média</dt><dd><b class="num">${d.indicadores.filter((i) => i.situacao.nivel === 'BOM').length}</b> de 8 números</dd></div>`}</dl>
 
-        ${(() => { const c = { REAL: 0, DERIVADO: 0, ESTIMADO: 0 }; d.indicadores.forEach((i) => { c[i.fonte?.origem || i.origem]++; });
-          return `<section class="origem-resumo revelar"><div><span class="chapeu">De onde vêm os números de ${esc(d.mesTxt)} ${UI.info('origem')}</span>
-            <p><b>${c.REAL}</b> oficiais do mês · <b>${c.DERIVADO}</b> oficiais do ano · <b>${c.ESTIMADO}</b> estimados</p>
-            <small>Oficial do ano = total oficial do ano dividido pelos meses. Estimado = não existe número oficial da cidade; o EcoCity estima a partir de uma série oficial maior.</small></div>
-            <div class="or-barra">${['REAL', 'DERIVADO', 'ESTIMADO'].map((o) => (c[o] ? `<i class="o-${o}" style="flex:${c[o]}" title="${SELO[o]}: ${c[o]}">${c[o]}</i>` : '')).join('')}</div></section>`; })()}
+        ${(() => {
+          // UMA barra: cada número da cidade em setembro, pela origem — e, se é estimado, em que oficial ele se apoia
+          const CAT = { MES: ['oficial do mês', 'publicado pela fonte para este mês'], ANO: ['oficial do ano', 'total oficial do ano dividido pelos meses'],
+            BASE: ['estimado a partir do oficial do ano', 'parte do último total oficial do ano'], SEM: ['estimado sem oficial', 'a cidade não publica este dado'] };
+          const cat = (i) => { const o = i.fonte?.origem || i.origem; return o === 'REAL' ? 'MES' : o === 'DERIVADO' ? 'ANO' : i.ultimoOficial ? 'BASE' : 'SEM'; };
+          const n = { MES: 0, ANO: 0, BASE: 0, SEM: 0 }; d.indicadores.forEach((i) => { n[cat(i)]++; });
+          const ordem = ['MES', 'ANO', 'BASE', 'SEM'].filter((k) => n[k]);
+                    return `<section class="origem-resumo revelar">
+            <div class="or-cab"><div><span class="chapeu">De onde vêm os 8 números de ${esc(d.mesTxt)} ${UI.info('origem')}</span>
+              <p>${[n.MES && `<b>${n.MES}</b> ${n.MES > 1 ? 'oficiais' : 'oficial'} do mês`, n.ANO && `<b>${n.ANO}</b> ${n.ANO > 1 ? 'oficiais' : 'oficial'} do ano`, n.BASE && `<b>${n.BASE}</b> estimado${n.BASE > 1 ? 's' : ''} a partir do último oficial do ano`, n.SEM && `<b>${n.SEM}</b> estimado${n.SEM > 1 ? 's' : ''} sem dado oficial da cidade`].filter(Boolean).join(' · ')}</p></div></div>
+            <div class="or-barra unica">${ordem.map((k) => `<i class="c-${k}" style="flex:${n[k]}"><b>${n[k]}</b><span>${CAT[k][0]}</span></i>`).join('')}</div>
+            <ul class="or-leg">${ordem.map((k) => `<li><i class="c-${k}"></i><b>${CAT[k][0]}</b> ${CAT[k][1]}</li>`).join('')}</ul>
+            <span class="chapeu or-sub">Último dado oficial de cada número</span>
+            <div class="of-grade">${d.indicadores.map((i) => { const uo = i.ultimoOficial; const k = cat(i);
+              return `<article class="of-card c-${k}" style="--c:${SERV[i.servico].cor}">
+                <header>${icoArea(i.servico)}<span>${esc(i.simples)}</span></header>
+                ${uo ? `<b class="num">${num(uo.valor, casasDe(uo.valor))}</b><small>${esc(i.unidadeSimples || i.unidade)}</small>
+                  <footer><span class="selo o-${uo.origem}">${SELO[uo.origem]}</span><em>${esc(mesCurto(uo.mes))} · ${esc(String(uo.fonte).split(' (')[0])}</em></footer>`
+                : `<b class="num">—</b><small>${esc(i.unidadeSimples || i.unidade)}</small><footer><span class="selo o-ESTIMADO">Sem oficial</span><em>a cidade não publica</em></footer>`}</article>`; }).join('')}</div></section>`; })()}
         <section class="destaque revelar" style="--c:${SERV[dest.servico].cor}">
           <div class="ds-txt"><span class="chapeu"><i></i>Destaque do mês · ${esc(dest.simples)}</span><p class="ds-frase">${UI.md(dest.frase)}</p><p>${selo(dest.fonte?.origem || dest.origem)}</p><p class="ds-sub">${UI.md(dest.compara)} ${esc(vm ? dest.metaTxt : dest.mediaTxt)}</p>
             ${fonteLinha(dest.fonte, `data-fonte="${dest.codigo}"`)}<a class="seta-link" href="#/app/${areaDe(dest.servico)}">Ver a história completa</a></div>
           <div class="ds-vis">${visual(dest)}</div></section>
 
-        <section class="meta3d revelar"><div class="m3-txt"><span class="chapeu">${vm ? 'Quão perto da meta' : 'Entre as 8 cidades'}</span><h2>Cada prédio é um dos 8 números</h2>
-            <p>${vm ? `Quanto mais alto, mais perto da meta. O contorno tracejado em cima mostra a meta (nota 100). ${UI.info('notaIndicador')}` : 'Quanto mais alto o prédio, melhor a sua cidade está nesse número em comparação com as outras 7 cidades. O contorno tracejado é o 1º lugar.'} Passe o mouse para girar a cidade.</p>
-            <ul class="m3-lista">${d.indicadores.map((i) => `<li style="--c:${SERV[i.servico].cor}"><i></i>${esc(i.simples)}<b class="sit s-${i.situacao.nivel}">${vm ? (i.score >= 100 ? 'na meta' : `nota ${num(i.score, 0)}`) : `${i.posicao}º de 8`}</b></li>`).join('')}</ul></div>
-          ${UI.cidade3d(d.indicadores.map((i) => ({ nome: i.simples, valor: vm ? i.score : ((9 - i.posicao) / 8) * 100, cor: SERV[i.servico].cor, txt: `${valorTxt(i)} ${i.unidade} · ${i.situacao.rotulo.toLowerCase()}` })), { legenda: vm ? ['altura = quão perto da meta', 'contorno = a meta'] : ['altura = posição entre as 8 cidades', 'contorno = 1º lugar'] })}</section>
+        <section class="meta3d revelar"><div class="m3-txt"><span class="chapeu">Entre as 8 cidades</span><h2>Cada prédio é um dos 8 números</h2>
+            <p>Para cada número, as 8 cidades são colocadas em fila, da melhor para a pior. O prédio mostra o lugar da sua cidade nessa fila: <b>1º lugar = prédio inteiro</b> (até o contorno tracejado), <b>8º lugar = prédio bem baixo</b>.${vm ? ' Ao lado, se o número cumpre a meta.' : ''} Passe o mouse para girar a cidade.</p>
+            <ul class="m3-lista">${d.indicadores.map((i) => `<li style="--c:${SERV[i.servico].cor}"><i></i>${esc(i.simples)}<b class="sit s-${i.situacao.nivel}">${i.posicao}º de 8${vm ? (i.score >= 100 ? ' · na meta' : ' · fora da meta') : ''}</b></li>`).join('')}</ul></div>
+          ${UI.cidade3d(d.indicadores.map((i) => ({ nome: i.simples, valor: ((9 - i.posicao) / 8) * 100, cor: SERV[i.servico].cor, txt: `${valorTxt(i)} ${i.unidade} · ${i.situacao.rotulo.toLowerCase()}` })), { legenda: ['altura = lugar entre as 8 cidades', 'contorno = 1º lugar'] })}</section>
 
         <div class="sec-cab revelar"><h2>Os 8 números da cidade</h2><p>Toque em um número para ver o gráfico, a comparação com as outras cidades e a fonte.</p>
           <div class="modo-num" role="group" aria-label="Quais números mostrar"><button data-modo="recente" class="${modoNum === 'recente' ? 'ativo' : ''}">Mais recentes (${esc(d.mesTxt)})</button><button data-modo="oficial" class="${modoNum === 'oficial' ? 'ativo' : ''}">Últimos oficiais</button></div></div>
@@ -189,9 +206,7 @@ const Painel = (() => {
             ${d.indicadores.map((i) => { const p = pos(i); return `<div class="pos-l"><span>${esc(i.simples)}</span><span class="trilho-pos" style="--c:${SERV[i.servico].cor}">${[...Array(8)].map((_, k) => `<i class="${k + 1 === p ? 'eu' : ''}"></i>`).join('')}</span><b class="num">${p}º</b></div>`; }).join('')}
             <small class="nota-rodape">1º = melhor resultado entre as 8 cidades.</small></section></div>
 
-        ${vm ? `<section class="nota-complemento revelar"><div><span class="chapeu">Complemento · só para gestores e analistas</span><h3>Juntando os 8 números, ${nome} fica com <b class="num">${num(d.ies, 1)}</b> de 100, em ${d.posicao}º lugar. ${UI.info('nota')}</h3>
-          <p>A nota compara cada número com a sua meta: quem cumpre ganha 100 e cada 1% longe da meta tira 1,5 ponto. A nota da cidade é a média dos 8 números. 85+ excelente · 70 a 84 bom · 55 a 69 regular · abaixo de 55 crítico.</p></div>
-          <div class="nc-barra"><div class="termo"><span style="width:${d.ies}%"></span></div><div class="termo-leg"><span>0</span><span>55</span><span>70</span><span>85</span><span>100</span></div></div></section>` : ''}`;
+        `;
       revelar($('#conteudo')); UI.ativarGraficos($('#conteudo')); UI.ativar3d($('#conteudo')); ligarFontes(d); ligarSeletor(desenhar);
       $$('.modo-num button').forEach((b) => (b.onclick = () => { modoNum = b.dataset.modo; desenhar(); }));
     };
@@ -212,16 +227,16 @@ const Painel = (() => {
         ${topo(`${A.titulo} em ${esc(d.municipio.nome)}`, `${A.desc} Dados de <b>${esc(d.mesTxt)}</b>.`, await seletorCidade(), Cenas.cena(chave), 'Os dados')}
         ${its.map((i, k) => {
           const ult = ex.serie.filter((s) => s.c === i.codigo && s.p === d.mes).sort((a, b) => (i.sentido === 'MAIOR_MELHOR' ? b.v - a.v : a.v - b.v));
-          const pos = ult.findIndex((s) => s.m === cidadeSel) + 1;
+          const pos = i.posicao;
           return `<section class="historia revelar" style="--c:${SERV[A.servico].cor}">
             <div class="hs-cab"><span class="hs-ico">${icoArea(i.servico)}</span><div><span class="rotulo">${k + 1} de ${its.length} · ${esc(i.nome)}</span><h2>${esc(i.simples)}</h2></div>${pilula(i.situacao.nivel, i.situacao.rotulo)}</div>
             <div class="hs-corpo">
               <div class="hs-num"><b>${valorTxt(i)}</b><span>${esc(i.unidadeSimples)} ${selo(i.fonte?.origem || i.origem)}</span>
                 <p class="ih-frase">${UI.md(i.frase)}</p><p class="ih-comp">${UI.md(i.compara)}</p>
-                <div class="ih-meta"><span>${esc(verMeta() ? i.metaTxt : i.mediaTxt)}${verMeta() ? ` ${UI.info('meta')}` : ''}</span>${i.tendencia ? `<span class="${i.tendencia.melhor ? 'ok' : i.tendencia.melhor === false ? 'ruim' : ''}">${i.tendencia.melhor ? '↗' : i.tendencia.melhor === false ? '↘' : '→'} ${esc(i.tendencia.texto)}</span>` : ''}<span>${pos}º de 8 cidades</span></div></div>
+                <div class="ih-meta"><span>${esc(verMeta() ? i.metaTxt : i.mediaTxt)}${verMeta() ? ` ${UI.info('meta')}` : ''}</span>${i.tendencia ? `<span class="${i.tendencia.melhor ? 'ok' : i.tendencia.melhor === false ? 'ruim' : ''}">${i.tendencia.melhor ? '↗' : i.tendencia.melhor === false ? '↘' : '→'} ${esc(i.tendencia.texto)}</span>` : ''}<span title="Posição entre as 8 cidades: 1º = melhor resultado, 8º = pior">${pos}º lugar entre as 8 cidades (1º = melhor)</span></div></div>
               <div class="hs-vis">${visual(i)}</div></div>
             <div class="grade g-hero inv" style="margin-top:18px">
-              <div class="cartao"><span class="rotulo">Mês a mês (24 meses)</span>${UI.linha([{ nome: d.municipio.nome, valores: i.serie.map((s) => s.v), cor: SERV[i.servico].cor, area: true }], { altura: 240, largura: 620, rotulos: i.serie.map((s) => mesTxt(s.p)), meta: verMeta() ? i.meta : null, unidade: i.unidade, casas: casasDe(i.valor), origens: i.serie.map((s) => s.o) })}</div>
+              <div class="cartao"><span class="rotulo">Mês a mês (24 meses)</span>${UI.linha([{ nome: d.municipio.nome, valores: i.serie.map((s) => s.v), cor: SERV[i.servico].cor, area: true }], { altura: 240, largura: 620, rotulos: i.serie.map((s) => mesTxt(s.p)), meta: verMeta() ? i.meta : null, unidade: i.unidade, casas: casasDe(i.valor), origens: i.serie.map((s) => s.o), refOficial: ofAntes(i, i.serie) })}${i.ultimoOficial ? '' : `<p class="sem-of">${esc(i.semOficial || 'Sem dado oficial para esta cidade.')}</p>`}</div>
               <div class="cartao"><span class="rotulo">Nas 8 cidades · ${mesTxt(d.mes)}</span>${UI.barrasH(ult.map((s) => ({ rotulo: nomeDe(s.m), valor: s.v, destaque: s.m === cidadeSel })), { meta: refDe(i), refNome: verMeta() ? 'meta' : 'média das 8', unidade: i.unidade, casas: casasDe(i.valor), sentido: i.sentido })}</div></div>
             <div class="hs-pe"><p><b>Por que importa:</b> ${esc(i.importa)}</p>${ultOfLinha(i)}${fonteLinha(i.fonte, `data-fonte="${i.codigo}"`)}</div>
           </section>`; }).join('')}
@@ -261,7 +276,7 @@ const Painel = (() => {
         <div class="cartao revelar"><span class="rotulo">${icoArea(i.servico)} ${esc(i.nome)} · ${esc(i.unidade)} · ${mesTxt(ex.mes)}</span>${UI.barrasH(lista.map((x) => ({ rotulo: x.m.nome, valor: x.s.v, destaque: x.m.id_municipio === minha })), { meta: vm ? i.meta : media8, refNome: vm ? 'meta' : 'média das 8', unidade: i.unidade, casas: casasDe(media8), sentido: i.sentido })}</div>
         <div class="cartao revelar destaque-c" style="--c:${cor}"><span class="rotulo">Em resumo</span><p class="big"><b>${esc(lista[0].m.nome)}</b> tem o melhor resultado.</p><p class="big">${vm ? (naMeta ? `<b>${naMeta}</b> de 8 cidades estão dentro da meta.` : '<b>Nenhuma</b> cidade está dentro da meta.') : `<b>${naMeta}</b> de 8 cidades estão melhores que a média.`}</p>
           <p>${i.sentido === 'MAIOR_MELHOR' ? 'Aqui, quanto <b>maior</b>, melhor.' : 'Aqui, quanto <b>menor</b>, melhor.'} ${vm ? `Meta: <b>${num(i.meta, casasDe(i.meta))} ${esc(i.unidade)}</b> ${UI.info('meta')}` : `Média das 8 cidades: <b>${num(media8, casasDe(media8))} ${esc(i.unidade)}</b>`}.</p>
-          <div class="rolar-x"><table class="tabela"><thead><tr><th>Cidade</th><th>Agora</th><th>Há 1 ano</th></tr></thead><tbody>${lista.map((x) => { const melhor = x.a ? (i.sentido === 'MAIOR_MELHOR' ? x.s.v > x.a.v : x.s.v < x.a.v) : null; return `<tr><td>${esc(x.m.nome)}</td><td class="num"><b>${num(x.s.v, casasDe(x.s.v))}</b></td><td class="num">${x.a ? `${num(x.a.v, casasDe(x.a.v))} <span class="${melhor ? 't-verde' : 't-critico'}">${melhor ? '↗' : '↘'}</span>` : '—'}</td></tr>`; }).join('')}</tbody></table></div></div></div>`;
+          <div class="rolar-x"><table class="tabela"><caption class="cap-tab">Valores em <b>${esc(i.unidadeSimples || i.unidade)}</b></caption><thead><tr><th>Cidade</th><th>${esc(mesTxt(ex.mes))}</th><th>Mesmo mês do ano passado</th></tr></thead><tbody>${lista.map((x) => { const melhor = x.a ? (i.sentido === 'MAIOR_MELHOR' ? x.s.v > x.a.v : x.s.v < x.a.v) : null; return `<tr><td>${esc(x.m.nome)}</td><td class="num"><b>${num(x.s.v, casasDe(x.s.v))}</b></td><td class="num">${x.a ? `${num(x.a.v, casasDe(x.a.v))} <span class="${melhor ? 't-verde' : 't-critico'}">${melhor ? '↗' : '↘'}</span>` : '—'}</td></tr>`; }).join('')}</tbody></table></div></div></div>`;
       revelar($('#cmp8'));
     };
     const vs = () => {
@@ -269,9 +284,10 @@ const Painel = (() => {
       const linhas = ex.indicadores.map((i) => { const a = ult(i.codigo, cmp.a), b = ult(i.codigo, cmp.b); if (!a || !b) return ''; const ganhaA = i.sentido === 'MAIOR_MELHOR' ? a.v > b.v : a.v < b.v; if (ganhaA) pa++; else pb++;
         const mx = Math.max(a.v, b.v) || 1;
         return `<div class="vs-l"><div class="vs-a ${ganhaA ? 'ganha' : ''}"><b>${num(a.v, casasDe(a.v))}</b><span class="bar"><i style="width:${(a.v / mx) * 100}%"></i></span></div>
-          <div class="vs-m">${icoArea(i.servico)}<small>${esc(i.simples)}</small></div>
+          <div class="vs-m">${icoArea(i.servico)}<small>${esc(i.simples)}<em>${esc(i.unidadeSimples || i.unidade)}</em></small></div>
           <div class="vs-b ${!ganhaA ? 'ganha' : ''}"><span class="bar"><i style="width:${(b.v / mx) * 100}%"></i></span><b>${num(b.v, casasDe(b.v))}</b></div></div>`; }).join('');
-      $('#vs').innerHTML = `<div class="placar"><div><b>${esc(nomeDe(cmp.a))}</b><span>${pa}</span></div><small>dados em que cada cidade está melhor</small><div><span>${pb}</span><b>${esc(nomeDe(cmp.b))}</b></div></div>${linhas}`;
+      $('#vs').innerHTML = `<div class="placar"><div><b>${esc(nomeDe(cmp.a))}</b><span>${pa}</span></div><small>dados em que cada cidade está melhor</small><div><span>${pb}</span><b>${esc(nomeDe(cmp.b))}</b></div></div>
+        <p class="vs-ajuda">Cada linha é um dos 8 números, no mês de <b>${esc(mesTxt(ex.mes))}</b>. O número de cada lado é o valor da cidade (a unidade está embaixo do nome do dado). O tamanho da barra mostra o tamanho do número. A barra <b>colorida</b> é de quem está melhor naquele número (às vezes o melhor é o menor, como no lixo); a cinza, de quem está pior. O placar acima conta em quantos números cada cidade ganha.</p>${linhas}`;
     };
     $$('#chipsInd button').forEach((b) => (b.onclick = () => { cmp.cod = b.dataset.c; $$('#chipsInd button').forEach((x) => x.classList.toggle('ativo', x === b)); d8(); }));
     $('#ca').onchange = (e) => { cmp.a = Number(e.target.value); vs(); }; $('#cb').onchange = (e) => { cmp.b = Number(e.target.value); vs(); };
@@ -331,16 +347,22 @@ const Painel = (() => {
       const linhas = d.indicadores.map((i) => { const s = i.serie; const ant = s[s.length - 2]; const ano = s[s.length - 13];
         const vm = ant ? ((i.valor - ant.v) / ant.v) * 100 : 0; const va = ano ? ((i.valor - ano.v) / ano.v) * 100 : 0; const bom = (v) => (i.sentido === 'MAIOR_MELHOR' ? v > 0 : v < 0);
         return { i, ant, ano, vm, va, bomM: bom(vm), bomA: bom(va) }; });
-      const melhorou = linhas.filter((l) => l.bomM && Math.abs(l.vm) >= 0.5).length; const piorou = linhas.filter((l) => !l.bomM && Math.abs(l.vm) >= 0.5).length;
+      const mensais = linhas.filter((l) => l.i.variaMes);
+      const melhorou = mensais.filter((l) => l.bomM && Math.abs(l.vm) >= 0.5).length; const piorou = mensais.filter((l) => !l.bomM && Math.abs(l.vm) >= 0.5).length;
+      const caixaVar = (rot, v, ok, era, mensal = true) => (!mensal ? `<div class="neutro"><small>${rot}</small><b>não muda</b><span>vem de um total anual</span></div>`
+        : Math.abs(v) < 0.05 ? `<div class="neutro"><small>${rot}</small><b>= igual</b><span>era ${era}</span></div>`
+        : `<div class="${ok ? 'ok' : 'ruim'}"><small>${rot}</small><b>${v >= 0 ? '▲' : '▼'} ${num(Math.abs(v), 1)}%</b><span>era ${era}</span></div>`);
       $('#conteudo').innerHTML = `${topo(`O que mudou em ${esc(d.mesTxt)}`, `Cada dado de ${esc(d.municipio.nome)} comparado com o mês anterior e com o mesmo mês do ano passado.`, await seletorCidade())}
         <div class="grade g-3"><div class="cartao kpi-r verde revelar"><b data-contar="${melhorou}">0</b><div><strong>melhoraram</strong><small>em relação ao mês passado</small></div></div>
           <div class="cartao kpi-r critico revelar" style="--atraso:.06s"><b data-contar="${piorou}">0</b><div><strong>pioraram</strong><small>em relação ao mês passado</small></div></div>
-          <div class="cartao kpi-r laranja revelar" style="--atraso:.12s"><b data-contar="${8 - melhorou - piorou}">0</b><div><strong>ficaram iguais</strong><small>variação menor que 0,5%</small></div></div></div>
+          <div class="cartao kpi-r laranja revelar" style="--atraso:.12s"><b data-contar="${linhas.length - melhorou - piorou}">0</b><div><strong>ficaram iguais</strong><small>variação menor que 0,5% ou dado anual</small></div></div></div>
+        <p class="nota-rodape revelar">Água, lixo e poluição só têm número oficial por <b>ano</b>: o total do ano é dividido pelos meses. Por isso eles “não mudam” de um mês para o outro — compare com o ano passado.</p>
         <div class="grade g-2" style="margin-top:20px">${linhas.map((l, k) => { const a = AREAS[areaDe(l.i.servico)]; return `<article class="cartao mes-c borda-${a.cor} revelar" style="--atraso:${(k % 2) * 0.06}s">
           <header><span class="dt-ico">${icoArea(l.i.servico)}</span><div><h3>${esc(l.i.simples)}</h3><small>${esc(l.i.unidade)} ${selo(l.i.fonte?.origem || l.i.origem)}</small></div><b class="mv">${valorTxt(l.i)}</b></header>
-          <div class="mes-cmp"><div class="${l.bomM ? 'ok' : 'ruim'}"><small>vs mês passado</small><b>${l.vm >= 0 ? '▲' : '▼'} ${num(Math.abs(l.vm), 1)}%</b><span>era ${l.ant ? num(l.ant.v, casasDe(l.ant.v)) : '—'}</span></div>
-            <div class="${l.bomA ? 'ok' : 'ruim'}"><small>vs há 1 ano</small><b>${l.va >= 0 ? '▲' : '▼'} ${num(Math.abs(l.va), 1)}%</b><span>era ${l.ano ? num(l.ano.v, casasDe(l.ano.v)) : '—'}</span></div></div>
-          ${UI.colunas(l.i.serie.slice(-12).map((s) => s.v), l.i.serie.slice(-12).map((s) => mesTxt(s.p).slice(0, 3)), SERV[l.i.servico].cor, { meta: verMeta() ? l.i.meta : null, sentido: l.i.sentido, casas: casasDe(l.i.valor), origens: l.i.serie.slice(-12).map((s) => s.o) })}
+          <div class="mes-cmp">${caixaVar('vs mês passado', l.vm, l.bomM, l.ant ? num(l.ant.v, casasDe(l.ant.v)) : '—', l.i.variaMes)}
+            ${caixaVar('vs há 1 ano', l.va, l.bomA, l.ano ? num(l.ano.v, casasDe(l.ano.v)) : '—')}</div>
+          ${UI.colunas(l.i.serie.slice(-12).map((s) => s.v), l.i.serie.slice(-12).map((s) => mesTxt(s.p).slice(0, 3)), SERV[l.i.servico].cor, { meta: verMeta() ? l.i.meta : null, sentido: l.i.sentido, casas: casasDe(l.i.valor), origens: l.i.serie.slice(-12).map((s) => s.o), oficialAntes: ofAntes(l.i, l.i.serie.slice(-12)) })}
+          ${l.i.ultimoOficial ? `<p class="ult-of u-of">${ico('fonte')}<span>Último dado oficial: <b>${num(l.i.ultimoOficial.valor, casasDe(l.i.ultimoOficial.valor))} ${esc(l.i.unidade)}</b> em ${esc(l.i.ultimoOficial.mesTxt)} (${esc(l.i.ultimoOficial.fonte)})</span></p>` : `<p class="sem-of">${esc(l.i.semOficial || 'Sem dado oficial para esta cidade.')}</p>`}
           ${fonteLinha(l.i.fonte, `data-fonte="${l.i.codigo}"`)}</article>`; }).join('')}</div>`;
       revelar($('#conteudo')); ligarFontes(d); ligarSeletor(desenhar);
     };
@@ -479,6 +501,29 @@ const Painel = (() => {
     }
   }
 
+  // contas de cada número, em linguagem simples: [peças da conta], resultado e um exemplo com números redondos
+  const CONTA = {
+    'AGU-01': { pecas: [['Água consumida no mês', 'em litros (m³ × 1.000)'], ['÷', ''], ['Moradores', 'IBGE'], ['÷', ''], ['Dias do mês', '30 ou 31']], res: 'litros por pessoa por dia',
+      ex: 'Cidade com 1 milhão de moradores que consumiu 6 bilhões de litros em 30 dias: 6.000.000.000 ÷ 1.000.000 ÷ 30 = <b>200 litros</b> por pessoa por dia.' },
+    'AGU-02': { pecas: [['Água tratada − água que chegou às casas', 'o que se perdeu'], ['÷', ''], ['Água tratada', ''], ['× 100', '']], res: '% de água perdida',
+      ex: 'A empresa tratou 100 litros e só 75 chegaram aos hidrômetros: (100 − 75) ÷ 100 × 100 = <b>25%</b> perdidos em vazamentos e ligações irregulares.' },
+    'ENE-01': { pecas: [['Energia elétrica consumida no mês', 'em kWh (MWh × 1.000)'], ['÷', ''], ['Moradores', 'IBGE']], res: 'kWh por pessoa por mês',
+      ex: 'Cidade com 1 milhão de moradores que gastou 240 milhões de kWh no mês: 240.000.000 ÷ 1.000.000 = <b>240 kWh</b> por pessoa. Inclui casas, comércio e indústria.' },
+    'ENE-02': { pecas: [['Potência dos painéis solares instalados', 'em watts (kW × 1.000)'], ['÷', ''], ['Moradores', 'IBGE']], res: 'watts de painel solar por pessoa',
+      ex: 'Cidade com 1 milhão de moradores e 120 mil kW de painéis em telhados: 120.000.000 ÷ 1.000.000 = <b>120 watts</b> por pessoa (mais ou menos um quarto de painel por morador).' },
+    'RES-01': { pecas: [['Lixo coletado no mês', 'em kg (t × 1.000)'], ['÷', ''], ['Moradores', 'IBGE'], ['÷', ''], ['Dias do mês', '30 ou 31']], res: 'kg de lixo por pessoa por dia',
+      ex: 'Cidade com 1 milhão de moradores que coletou 30 mil toneladas em 30 dias: 30.000.000 ÷ 1.000.000 ÷ 30 = <b>1 kg</b> por pessoa por dia.' },
+    'RES-02': { pecas: [['Lixo recuperado pela coleta seletiva', 'em toneladas'], ['÷', ''], ['Lixo coletado', 'em toneladas'], ['× 100', '']], res: '% do lixo que foi reciclado',
+      ex: 'De 1.000 toneladas coletadas, 60 foram para a reciclagem: 60 ÷ 1.000 × 100 = <b>6%</b>.' },
+    'MOB-01': { pecas: [['Passageiros de ônibus no mês', 'viagens'], ['÷', ''], ['Moradores', 'IBGE']], res: 'viagens de ônibus por pessoa por mês',
+      ex: 'Cidade com 1 milhão de moradores e 9 milhões de viagens no mês: 9.000.000 ÷ 1.000.000 = <b>9 viagens</b> por pessoa (quem não usa ônibus também entra na divisão).' },
+    'MOB-02': { pecas: [['CO₂ do transporte no mês', 'em kg (t × 1.000)'], ['÷', ''], ['Moradores', 'IBGE']], res: 'kg de CO₂ por pessoa por mês',
+      ex: 'Cidade com 1 milhão de moradores cujo transporte (carros, ônibus, caminhões, aviões) emitiu 100 mil toneladas no mês: 100.000.000 ÷ 1.000.000 = <b>100 kg</b> por pessoa.' },
+  };
+  const contaHtml = (i) => { const c = CONTA[i.codigo]; if (!c) return `<code>${esc(i.formula)}</code>`;
+    return `<div class="conta">${c.pecas.map(([t, sub]) => (['÷', '× 100'].includes(t) ? `<span class="op">${t}</span>` : `<span class="pc"><b>${esc(t)}</b>${sub ? `<small>${esc(sub)}</small>` : ''}</span>`)).join('')}<span class="op">=</span><span class="pc res"><b>${esc(c.res)}</b></span></div>
+      <p class="conta-ex"><span>Exemplo</span>${c.ex}</p>`; };
+
   // ============================================================== ENTENDA OS DADOS (glossário visual)
   async function aprenda(app) {
     casca(app, 'aprenda', esqueleto());
@@ -491,14 +536,14 @@ const Painel = (() => {
       ${Object.keys(AREAS).map((a) => `<h2 class="titulo-sec revelar">${AREAS[a].emoji} ${AREAS[a].titulo}</h2><div class="grade g-2">${ex.indicadores.filter((i) => i.servico === AREAS[a].servico).map((i) => `<article class="cartao aprenda-c t-${AREAS[a].cor} revelar">
         <header><span class="dt-ico">${icoArea(i.servico)}</span><div><h3>${esc(i.simples)}</h3><small>${esc(i.nome)} · ${esc(i.unidade)}</small></div><span class="ods">${esc(i.ods || '')}</span></header>
         <p>${esc(i.descricao || '')}</p>
-        <div class="ap-l"><b>Como é calculado</b><code>${esc(i.formula)}</code></div>
+        <div class="ap-l"><b>Como é calculado</b>${contaHtml(i)}</div>
         ${verMeta() ? `<div class="ap-l"><b>Meta ${UI.info('meta')}</b><span>${i.sentido === 'MAIOR_MELHOR' ? 'pelo menos' : 'no máximo'} <b>${num(i.meta, casasDe(i.meta))} ${esc(i.unidade)}</b> · ${i.sentido === 'MAIOR_MELHOR' ? 'quanto maior, melhor' : 'quanto menor, melhor'}</span></div>` : `<div class="ap-l"><b>Como ler</b><span>${i.sentido === 'MAIOR_MELHOR' ? 'quanto <b>maior</b>, melhor' : 'quanto <b>menor</b>, melhor'}</span></div>`}
         <p class="ih-imp">${esc(i.importa || '')}</p>
         <a class="link-btn" href="#/app/${a === 'agua' || a === 'energia' || a === 'lixo' || a === 'transporte' ? (API.usuario.perfil === 'CIDADAO' ? a : 'comparar') : 'comparar'}">Ver os números →</a></article>`).join('')}</div>`).join('')}
-      ${verMeta() ? `<section class="nota-complemento revelar" style="margin-top:28px"><div><span class="rotulo">E a nota EcoCity? ${UI.info('nota')}</span><h3>É só um resumo dos 8 números</h3><p>Cada número é comparado com a sua meta: quem cumpre ganha 100 e cada 1% longe da meta tira 1,5 ponto. A nota é a média ponderada. <b>85+</b> excelente · <b>70 a 84</b> bom · <b>55 a 69</b> regular · abaixo de 55, crítico. Ela ajuda a comparar, mas o que conta são os dados.</p></div><div class="ods-g"><small>ODS 6 · 7 · 11 · 12 · 13</small></div></section>` : `<section class="nota-complemento revelar" style="margin-top:28px"><div><span class="rotulo">Como comparamos</span><h3>Sua cidade × as outras 7 cidades</h3><p>Cada número da sua cidade é comparado com a <b>média das 8 cidades</b> no mesmo mês: <b>melhor que a média</b>, <b>na média</b> (diferença menor que 5%) ou <b>pior que a média</b>. E também com o mesmo mês do ano passado.</p></div><div class="ods-g"><small>ODS 6 · 7 · 11 · 12 · 13</small></div></section>`}`;
+      ${`<section class="nota-complemento revelar" style="margin-top:28px"><div><span class="rotulo">Como comparamos</span><h3>Sua cidade × as outras 7 cidades</h3><p>Cada número da sua cidade é comparado com a <b>média das 8 cidades</b> no mesmo mês: <b>melhor que a média</b>, <b>na média</b> (diferença menor que 5%) ou <b>pior que a média</b>. E também com o mesmo mês do ano passado.</p></div><div class="ods-g"><small>ODS 6 · 7 · 11 · 12 · 13</small></div></section>`}`;
     revelar($('#conteudo'));
   }
 
   const verCidade = (id) => { cidadeSel = id; };
-  return { icoArea, painel, area, comparar, mapa, mes, alertas, economize, desafios, aprenda, casca, topo, esqueleto, sair, pode, pilula, gavetaFonte, botaoFonte, fonteLinha, INICIO, casasDe, verCidade, AREAS, PALETA };
+  return { icoArea, painel, area, comparar, mapa, mes, alertas, economize, desafios, aprenda, casca, topo, esqueleto, sair, pode, pilula, gavetaFonte, botaoFonte, fonteLinha, INICIO, casasDe, verCidade, AREAS, PALETA, contaHtml };
 })();

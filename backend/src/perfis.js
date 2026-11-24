@@ -31,7 +31,10 @@ async function minhaCidade(idMun) {
       meta: Number(u.meta), sentido: u.sentido, valor: Number(u.v), score: Number(u.s), origem: u.o, valorAnoPassado: ant ? Number(ant.v) : null,
       situacao: L.situacao(Number(u.s)), tendencia: L.tendencia(Number(u.v), ant ? Number(ant.v) : null, u.sentido),
       frase: T.frase?.(Number(u.v)), compara: T.compara?.(Number(u.v)), metaTxt: T.meta?.(Number(u.meta)), importa: T.importa,
-      serie: s.map((x) => ({ p: x.p, v: Number(x.v), o: x.o })), fonte: fts[c] };
+      serie: s.map((x) => ({ p: x.p, v: Number(x.v), o: x.o })), fonte: fts[c],
+      // só estes mudam de verdade de um mês para o outro (série oficial mensal: EPE, ANEEL, SPTrans).
+      // Os outros vêm de um total ANUAL dividido pelos meses: a "variação do mês" seria só efeito do calendário.
+      variaMes: ['ENE-01', 'ENE-02', 'MOB-01'].includes(c) };
   });
   // último número OFICIAL de cada indicador (a fonte pode ter parado num mês/ano anterior ao do painel)
   const ofic = await query(`SELECT i.codigo, DATE_FORMAT(iv.periodo, '%Y-%m') AS p, iv.valor AS v, iv.origem AS o
@@ -49,12 +52,14 @@ async function minhaCidade(idMun) {
   // comparação com as outras 7 cidades no mesmo mês (o cidadão vê isto no lugar de nota e meta)
   const ultimos = await query('SELECT id_municipio AS m, codigo AS c, valor AS v FROM vw_indicador_desempenho WHERE ano_mes = ?', [mes]);
   for (const i of indicadores) {
-    const vals = ultimos.filter((x) => x.c === i.codigo).map((x) => Number(x.v));
+    const doInd = ultimos.filter((x) => x.c === i.codigo);
+    const vals = doInd.map((x) => Number(x.v));
+    const meu = Number(doInd.find((x) => x.m === idMun)?.v ?? i.valor);   // valor sem arredondar (evita erro na posição)
     const media8 = vals.reduce((a, b) => a + b, 0) / (vals.length || 1);
     const ordem = [...vals].sort((a, b) => (i.sentido === 'MAIOR_MELHOR' ? b - a : a - b));
     const pct = media8 ? ((i.valor - media8) / media8) * 100 : 0;
     const melhor = i.sentido === 'MAIOR_MELHOR' ? pct > 0 : pct < 0;
-    i.media8 = Math.round(media8 * 1000) / 1000; i.posicao = ordem.filter((v) => (i.sentido === 'MAIOR_MELHOR' ? v > i.valor + 1e-6 : v < i.valor - 1e-6)).length + 1;
+    i.media8 = Math.round(media8 * 1000) / 1000; i.posicao = doInd.filter((x) => x.m !== idMun && (i.sentido === 'MAIOR_MELHOR' ? Number(x.v) > meu : Number(x.v) < meu)).length + 1;
     i.comparacao = Math.abs(pct) < 5 ? { nivel: 'ATENCAO', rotulo: 'Na média das cidades', pct } : melhor ? { nivel: 'BOM', rotulo: 'Melhor que a média', pct } : { nivel: 'CRITICO', rotulo: 'Pior que a média', pct };
     i.mediaTxt = `A média das 8 cidades é ${L.n(media8, media8 < 20 ? 2 : 0)} ${i.unidade}.`;
   }
@@ -124,12 +129,19 @@ async function salaSituacao(idMunFiltro) {
                                WHERE a.status IN ('NOVA','EM_ANALISE','VALIDADA') AND a.severidade = 'CRITICO' ${idMunFiltro ? 'AND a.id_municipio = ?' : ''}
                                ORDER BY a.gerada_em DESC LIMIT 6`, p);
   const n = atual.length || 1;
+  // último dado OFICIAL de cada número (cidade x indicador): do mês (REAL), do ano (DERIVADO) ou nenhum
+  const ultOf = await query(`SELECT iv.id_municipio, i.codigo, SUBSTRING_INDEX(GROUP_CONCAT(iv.origem ORDER BY iv.periodo DESC), ',', 1) AS o
+                             FROM indicador_valor iv JOIN indicador i USING (id_indicador) WHERE iv.origem <> 'ESTIMADO' ${idMunFiltro ? 'AND iv.id_municipio = ?' : ''}
+                             GROUP BY iv.id_municipio, i.codigo`, p);
+  const pct = (k) => Math.round((k / n) * 100);
   return { mes, mesTxt: L.mesLongo(mes), kpis: {
     ies_medio: Math.round((ranking.filter((r) => !idMunFiltro || r.id_municipio === idMunFiltro).reduce((a, b) => a + Number(b.ies), 0) / (idMunFiltro ? 1 : ranking.length)) * 10) / 10,
     pct_metas: Math.round((atual.filter((a) => a.atingiu_meta).length / n) * 100),
     criticos: (await query(`SELECT COUNT(*) AS n FROM analise_ia WHERE severidade='CRITICO' AND status IN ('NOVA','EM_ANALISE') ${idMunFiltro ? 'AND id_municipio = ?' : ''}`, p))[0].n,
     acoes_andamento: acoes.filter((a) => a.status === 'EM_EXECUCAO' || a.status === 'PLANEJADA').length,
-    pct_oficial: Math.round((atual.filter((a) => a.origem !== 'ESTIMADO').length / n) * 100),
+    pct_oficial: pct(atual.filter((a) => a.origem !== 'ESTIMADO').length),
+    pct_mes: pct(atual.filter((a) => a.origem === 'REAL').length), pct_ano: pct(atual.filter((a) => a.origem === 'DERIVADO').length),
+    ult_mes: pct(ultOf.filter((x) => x.o === 'REAL').length), ult_ano: pct(ultOf.filter((x) => x.o === 'DERIVADO').length),
   }, prioridades, tendencia, ranking, metasInd, acoes, alertas };
 }
 

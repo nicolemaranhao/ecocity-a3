@@ -206,7 +206,7 @@
       const x = dados.ies[c];
       if (x) {
         const cl = x.media >= 85 ? 'excelente' : x.media >= 70 ? 'boa' : x.media >= 55 ? 'regular' : 'que precisa melhorar';
-        L.push(`No período (${periodoTxt}), a nota de sustentabilidade de ${c} foi **${num(x.media, 0)} de 100**, uma situação **${cl}**.`);
+        L.push(`Veja abaixo como ${c} foi no período (${periodoTxt}).`);
       }
       const bons = [], ruins = [];
       for (const cod of codigos) {

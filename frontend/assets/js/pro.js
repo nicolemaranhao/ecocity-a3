@@ -2,11 +2,11 @@
    conselheiro, ações), radar de riscos das 8 cidades e administração */
 const Pro = (() => {
   const { $, $$, esc, num, ico, toast, revelar, SERV, mesTxt, iniciais } = UI;
-  const { casca, topo, esqueleto, pode, pilula, gavetaFonte, casasDe } = Painel;
+  const { casca, topo, esqueleto, pode, pilula, gavetaFonte, casasDe, contaHtml } = Painel;
   const COR_CID = ['#1D5FA8', '#2F8F3F', '#E8892B', '#4FB3E3', '#163E6E', '#C2410C', '#7C3AED', '#0F766E'];
 
   // ============================================================== LABORATÓRIO DE DADOS (analista)
-  const lab = { cod: 'AGU-01', cids: null, meses: 12, ver: 'valor' };
+  const lab = { cod: 'AGU-01', cids: null, meses: 12 };
   async function laboratorio(app) {
     casca(app, 'laboratorio', esqueleto());
     const d = await API.pegar('/laboratorio');
@@ -14,11 +14,13 @@ const Pro = (() => {
     const grupos = [...new Set(d.indicadores.map((i) => i.servico))];
     $('#conteudo').innerHTML = `
       ${topo('Laboratório de dados ', 'Escolha o indicador, as cidades e o período. Clique em qualquer valor da tabela para ver a fonte.',
-        '<button class="btn fantasma sm" id="csv">Baixar CSV</button><button class="btn verde sm" id="pedir">Pedir relatório</button>')}
+        '<button class="btn fantasma sm" id="csv" title="Planilha com uma linha por cidade e mês">Baixar planilha (CSV)</button><button class="btn verde sm" id="pedir">Pedir relatório</button>')}
+      <div class="lab-ajuda revelar"><div><b>O que tem aqui</b><p>Os valores mensais do indicador escolhido para cada cidade, com a meta e a origem de cada número (oficial do mês, oficial do ano ou estimado).</p></div>
+        <div><b>Baixar planilha (CSV)</b><p>Abre no Excel. Cada linha é <b>uma cidade em um mês</b>, com as colunas: mês, cidade, código e nome do indicador, valor, unidade, meta e origem.</p></div>
+        <div><b>Pedir relatório</b><p>O assistente escreve um relatório em texto sobre o indicador, as cidades e o período escolhidos.</p></div></div>
       <div class="cartao lab-filtros revelar">
         <label class="lf"><span>Indicador</span><select class="seletor" id="fInd">${grupos.map((g) => `<optgroup label="${esc(g)}">${d.indicadores.filter((i) => i.servico === g).map((i) => `<option value="${i.codigo}" ${i.codigo === lab.cod ? 'selected' : ''}>${esc(i.nome)}</option>`).join('')}</optgroup>`).join('')}</select></label>
         <label class="lf"><span>Período</span><select class="seletor" id="fPer">${[[6, '6 meses'], [12, '12 meses'], [24, '24 meses']].map(([v, t]) => `<option value="${v}" ${v === lab.meses ? 'selected' : ''}>Últimos ${t}</option>`).join('')}</select></label>
-        <div class="lf"><span>Mostrar</span><div class="seg" id="fVer"><button data-v="valor" class="${lab.ver === 'valor' ? 'ativo' : ''}">Valor</button><button data-v="nota" class="${lab.ver === 'nota' ? 'ativo' : ''}">Nota 0–100</button></div> ${UI.info('notaIndicador')}</div>
         <div class="lf largo"><span>Cidades <button class="link-btn" id="todas">todas</button> · <button class="link-btn" id="nenhuma">nenhuma</button></span><div class="chips-cid" id="fCid">${d.municipios.map((m, i) => `<button data-id="${m.id_municipio}" style="--c:${COR_CID[i % 8]}" class="${lab.cids.includes(m.id_municipio) ? 'ativo' : ''}"><i></i>${esc(m.nome)}</button>`).join('')}</div></div>
       </div>
       <div id="labRes"></div>`;
@@ -29,12 +31,14 @@ const Pro = (() => {
       const meses = d.meses.slice(-lab.meses);
       const linhas = d.serie.filter((s) => s.c === lab.cod && lab.cids.includes(s.m) && meses.includes(s.p));
       if (!lab.cids.length) { $('#labRes').innerHTML = '<div class="cartao" style="margin-top:20px">Escolha pelo menos uma cidade.</div>'; return; }
-      const campo = lab.ver === 'nota' ? 's' : 'v';
+      const campo = 'v';
       const ult = linhas.filter((l) => l.p === meses[meses.length - 1]);
-      const ordem = [...ult].sort((a, b) => (lab.ver === 'nota' || ind.sentido === 'MAIOR_MELHOR' ? b[campo] - a[campo] : a[campo] - b[campo]));
+      const ordem = [...ult].sort((a, b) => (ind.sentido === 'MAIOR_MELHOR' ? b.v - a.v : a.v - b.v));
+      const naMeta = (v) => (ind.sentido === 'MAIOR_MELHOR' ? v >= Number(ind.meta) : v <= Number(ind.meta));
       const media = ult.reduce((a, b) => a + b.v, 0) / (ult.length || 1);
-      const pctMeta = Math.round((ult.filter((l) => l.s >= 100).length / (ult.length || 1)) * 100);
+      const pctMeta = Math.round((ult.filter((l) => naMeta(l.v)).length / (ult.length || 1)) * 100);
       const pctOf = Math.round((linhas.filter((l) => l.o !== 'ESTIMADO').length / (linhas.length || 1)) * 100);
+      const pctM = Math.round((linhas.filter((l) => l.o === 'REAL').length / (linhas.length || 1)) * 100); const pctA = pctOf - pctM;
       const ini = linhas.filter((l) => l.p === meses[0]); const mediaIni = ini.reduce((a, b) => a + b.v, 0) / (ini.length || 1);
       const varP = mediaIni ? ((media - mediaIni) / mediaIni) * 100 : 0; const melhorou = ind.sentido === 'MAIOR_MELHOR' ? varP > 0 : varP < 0;
       const cs = casasDe(media);
@@ -42,33 +46,33 @@ const Pro = (() => {
         <div class="grade g-4" style="margin-top:20px">
           <div class="cartao kpi revelar"><small>Média no último mês</small><b>${num(media, cs)}</b><span>${esc(ind.unidade)} · meta ${num(ind.meta, casasDe(ind.meta))}</span></div>
           <div class="cartao kpi revelar" style="--atraso:.05s"><small>Variação no período</small><b class="${melhorou ? 'ok' : 'ruim'}">${varP >= 0 ? '+' : ''}${num(varP, 1)}%</b><span>${melhorou ? 'melhorou' : 'piorou'} (média das cidades)</span></div>
-          <div class="cartao kpi revelar" style="--atraso:.1s"><small>Cidades na meta</small><b>${pctMeta}%</b><span>${ult.filter((l) => l.s >= 100).length} de ${ult.length} no último mês</span></div>
-          <div class="cartao kpi revelar" style="--atraso:.15s"><small>Base oficial</small><b>${pctOf}%</b><span>dos valores da seleção</span></div></div>
+          <div class="cartao kpi revelar" style="--atraso:.1s"><small>Cidades na meta</small><b>${pctMeta}%</b><span>${ult.filter((l) => naMeta(l.v)).length} de ${ult.length} no último mês</span></div>
+          <div class="cartao kpi revelar" style="--atraso:.15s"><small>Dados oficiais</small><b>${pctOf}%</b><span>dos valores da seleção: ${pctM}% oficial do mês · ${pctA}% oficial do ano</span></div></div>
         <div class="grade g-hero inv" style="margin-top:20px">
-          <div class="cartao revelar"><span class="rotulo">${esc(ind.nome)} · ${lab.ver === 'nota' ? `nota 0–100 ${UI.info('notaIndicador')}` : esc(ind.unidade)}</span>
-            ${UI.linha(lab.cids.map((id) => ({ nome: nomeDe(id), cor: corDe(id), valores: meses.map((m) => linhas.find((l) => l.m === id && l.p === m)?.[campo] ?? null) })), { altura: 300, rotulos: meses.map(mesTxt), meta: lab.ver === 'nota' ? 100 : Number(ind.meta), unidade: lab.ver === 'nota' ? 'pontos' : ind.unidade, casas: lab.ver === 'nota' ? 0 : cs })}
-            <p class="def"><b>Como é calculado:</b> <code>${esc(ind.formula)}</code> · ${ind.sentido === 'MAIOR_MELHOR' ? 'quanto maior, melhor' : 'quanto menor, melhor'} · peso ${num(ind.peso_ies, 1)} na nota EcoCity ${UI.info('nota')} · meta ${num(ind.meta, casasDe(ind.meta))} ${esc(ind.unidade)} ${UI.info('meta')}</p></div>
+          <div class="cartao revelar"><span class="rotulo">${esc(ind.nome)} · ${esc(ind.unidade)} · mês a mês</span>
+            ${UI.linha(lab.cids.map((id) => ({ nome: nomeDe(id), cor: corDe(id), valores: meses.map((m) => linhas.find((l) => l.m === id && l.p === m)?.[campo] ?? null) })), { altura: 300, rotulos: meses.map(mesTxt), meta: Number(ind.meta), unidade: ind.unidade, casas: cs })}
+            <div class="def"><b>Como é calculado</b>${contaHtml(ind)}<p>${ind.sentido === 'MAIOR_MELHOR' ? 'Quanto <b>maior</b>, melhor' : 'Quanto <b>menor</b>, melhor'} · meta ${num(ind.meta, casasDe(ind.meta))} ${esc(ind.unidade)} ${UI.info('meta')}</p></div></div>
           <div class="cartao revelar" style="--atraso:.1s"><span class="rotulo">Ranking em ${mesTxt(meses[meses.length - 1])}</span>
-            ${UI.barrasH(ordem.map((l) => ({ rotulo: nomeDe(l.m), valor: l[campo], cor: lab.ver === 'nota' ? undefined : undefined })), { meta: lab.ver === 'nota' ? 100 : Number(ind.meta), unidade: lab.ver === 'nota' ? '' : ind.unidade, casas: lab.ver === 'nota' ? 0 : cs, sentido: lab.ver === 'nota' ? 'MAIOR_MELHOR' : ind.sentido })}</div></div>
-        <div class="cartao revelar" style="margin-top:20px"><div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;align-items:center"><span class="rotulo" style="margin:0">Tabela mês a mês</span>
+            ${UI.barrasH(ordem.map((l) => ({ rotulo: nomeDe(l.m), valor: l.v })), { meta: Number(ind.meta), unidade: ind.unidade, casas: cs, sentido: ind.sentido })}</div></div>
+        <div class="cartao revelar" style="margin-top:20px"><div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;align-items:center"><span class="rotulo" style="margin:0">Tabela mês a mês · ${esc(ind.nome)} em ${esc(ind.unidade)}</span>
           <span class="leg-orig"><i class="o-REAL"></i>oficial do mês <i class="o-DERIVADO"></i>oficial do ano <i class="o-ESTIMADO"></i>estimado · clique no valor para ver a fonte</span></div>
           <div class="rolar-x"><table class="tabela lab-tab"><thead><tr><th>Mês</th>${lab.cids.map((id) => `<th>${esc(nomeDe(id))}</th>`).join('')}</tr></thead><tbody>
-          ${[...meses].reverse().map((m) => `<tr><td><b>${mesTxt(m)}</b></td>${lab.cids.map((id) => { const l = linhas.find((x) => x.m === id && x.p === m); return l ? `<td><button class="cel-v o-${l.o} ${l.s >= 100 ? 'ok' : ''}" data-m="${id}" data-p="${m}" title="${l.o === 'ESTIMADO' ? 'estimado' : l.o === 'DERIVADO' ? 'calculado de oficial' : 'oficial'} · nota ${num(l.s, 0)}">${num(l[campo], lab.ver === 'nota' ? 0 : cs)}</button></td>` : '<td>—</td>'; }).join('')}</tr>`).join('')}
+          ${[...meses].reverse().map((m) => `<tr><td><b>${mesTxt(m)}</b></td>${lab.cids.map((id) => { const l = linhas.find((x) => x.m === id && x.p === m); return l ? `<td><button class="cel-v o-${l.o} ${naMeta(l.v) ? 'ok' : ''}" data-m="${id}" data-p="${m}" title="${l.o === 'ESTIMADO' ? 'estimado' : l.o === 'DERIVADO' ? 'oficial do ano' : 'oficial do mês'} · ${naMeta(l.v) ? 'dentro da meta' : 'fora da meta'}">${num(l.v, cs)}</button></td>` : '<td>—</td>'; }).join('')}</tr>`).join('')}
           </tbody></table></div></div>`;
       revelar($('#labRes')); UI.ativarGraficos($('#labRes'));
       $$('.cel-v').forEach((b) => (b.onclick = async () => {
         try { const f = await API.get(`/fontes/valor?municipio=${b.dataset.m}&codigo=${lab.cod}&mes=${b.dataset.p}`); gavetaFonte(`${ind.nome} em ${nomeDe(Number(b.dataset.m))}`, f, b.dataset.p); } catch (e) { toast(e.message, 'erro'); }
       }));
       $('#csv').onclick = () => {
-        const cab = ['mes', 'cidade', 'codigo', 'valor', 'unidade', 'nota', 'meta', 'origem'];
-        const csv = [cab.join(';'), ...linhas.map((l) => [l.p, nomeDe(l.m), lab.cod, String(l.v).replace('.', ','), ind.unidade, String(l.s).replace('.', ','), String(ind.meta).replace('.', ','), l.o].join(';'))].join('\n');
+        const ORIG = { REAL: 'oficial do mês', DERIVADO: 'oficial do ano', ESTIMADO: 'estimado' };
+        const cab = ['mes', 'cidade', 'codigo', 'indicador', 'valor', 'unidade', 'meta', 'dentro_da_meta', 'origem'];
+        const csv = [cab.join(';'), ...linhas.map((l) => [l.p, nomeDe(l.m), lab.cod, ind.nome, String(l.v).replace('.', ','), ind.unidade, String(ind.meta).replace('.', ','), naMeta(l.v) ? 'sim' : 'não', ORIG[l.o]].join(';'))].join('\n');
         const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([`﻿${csv}`], { type: 'text/csv' })); a.download = `ecocity_${lab.cod}_${meses[0]}_${meses[meses.length - 1]}.csv`; a.click();
       };
       $('#pedir').onclick = () => { sessionStorage.setItem('eco.pergunta', `Relatório de ${ind.nome.toLowerCase()} ${lab.cids.length === d.municipios.length ? 'nas 8 cidades' : `em ${lab.cids.map(nomeDe).join(', ')}`} nos últimos ${lab.meses} meses`); location.hash = '#/app/assistente'; };
     };
     $('#fInd').onchange = (e) => { lab.cod = e.target.value; desenhar(); };
     $('#fPer').onchange = (e) => { lab.meses = Number(e.target.value); desenhar(); };
-    $$('#fVer button').forEach((b) => (b.onclick = () => { lab.ver = b.dataset.v; $$('#fVer button').forEach((x) => x.classList.toggle('ativo', x === b)); desenhar(); }));
     $$('#fCid button').forEach((b) => (b.onclick = () => { const id = Number(b.dataset.id); lab.cids = lab.cids.includes(id) ? lab.cids.filter((x) => x !== id) : [...lab.cids, id]; b.classList.toggle('ativo'); desenhar(); }));
     $('#todas').onclick = () => { lab.cids = d.municipios.map((m) => m.id_municipio); $$('#fCid button').forEach((b) => b.classList.add('ativo')); desenhar(); };
     $('#nenhuma').onclick = () => { lab.cids = []; $$('#fCid button').forEach((b) => b.classList.remove('ativo')); desenhar(); };
@@ -96,7 +100,6 @@ const Pro = (() => {
     casca(app, 'riscos', esqueleto());
     const [r, alertas] = await Promise.all([API.pegar('/riscos'), API.pegar('/alertas')]);
     const ordemAreas = Object.keys(SERV);
-    const NIV = (s) => (s >= 85 ? 'BOM' : s >= 55 ? 'ATENCAO' : 'CRITICO');
     const RG = { ALTO: ['critico', 'Risco alto'], MEDIO: ['laranja', 'Risco médio'], BAIXO: ['verde', 'Risco baixo'] };
     const conta = (n) => r.cidades.filter((c) => c.nivel === n).length;
     let filtro = 'TODOS'; let cidadeF = '';
@@ -104,15 +107,15 @@ const Pro = (() => {
       ${topo('Radar de riscos ', `A IA confere todo mês os 8 indicadores das 8 cidades. Dados de ${mesTxt(r.mes)}.`)}
       <div class="grade g-3">${[['ALTO', 'Risco alto', 'cidades precisam de ação'], ['MEDIO', 'Risco médio', 'cidades pedem atenção'], ['BAIXO', 'Risco baixo', 'cidades no caminho certo']].map(([n, t, s], i) => `<div class="cartao kpi-r ${RG[n][0]} revelar" style="--atraso:${i * 0.08}s"><b data-contar="${conta(n)}">0</b><div><strong>${t}</strong><small>${s}</small></div></div>`).join('')}</div>
       <div class="cartao revelar" style="margin-top:20px">
-        <div class="matriz-cab"><div><span class="rotulo" style="margin:0">Situação de cada cidade por área ${UI.info('notaArea')}</span><p>Cada quadro diz em palavras como está a área. Passe o mouse para ver a nota e as metas. Clique na cidade para ver os alertas.</p></div>
-          <div class="legenda-m">${pilula('BOM', 'Bom · nota 85+')}${pilula('ATENCAO', 'Atenção · 55 a 84')}${pilula('CRITICO', 'Crítico · abaixo de 55')}</div></div>
+        <div class="matriz-cab"><div><span class="rotulo" style="margin:0">Situação de cada cidade por área</span><p>Cada área tem 2 números e cada número tem uma meta. O quadro mostra quantas metas a cidade cumpre na área. Clique na cidade para ver os alertas.</p></div>
+          <div class="legenda-m">${pilula('BOM', 'Bom · cumpre as 2 metas')}${pilula('ATENCAO', 'Atenção · cumpre 1')}${pilula('CRITICO', 'Crítico · não cumpre nenhuma')}</div></div>
         <div class="matriz" role="table">
           <div class="mz-l cab" role="row"><span role="columnheader">Cidade</span>${ordemAreas.map((a) => `<span role="columnheader">${ico(SERV[a].ico)} ${a}</span>`).join('')}<span role="columnheader">Situação geral</span></div>
-          ${r.cidades.map((c, i) => `<button class="mz-l revelar" role="row" style="--atraso:${i * 0.04}s" data-cid="${esc(c.municipio)}"><span class="mz-cid" role="cell"><b>${esc(c.municipio)}</b><small>nota ${num(c.ies, 1)}</small></span>
-            ${ordemAreas.map((a) => { const x = c.areas.find((y) => y.servico === a) || { score: 0, metas: '0/2' }; return `<span role="cell" class="mz-c" data-area="${a}" title="${a}: nota ${num(x.score, 0)} · ${x.metas.replace('/', ' de ')} metas cumpridas">${pilula(NIV(Math.round(x.score)))}<small>${x.metas.replace('/', ' de ')} metas</small></span>`; }).join('')}
+          ${r.cidades.map((c, i) => `<button class="mz-l revelar" role="row" style="--atraso:${i * 0.04}s" data-cid="${esc(c.municipio)}"><span class="mz-cid" role="cell"><b>${esc(c.municipio)}</b><small>${c.metas_cumpridas} de ${c.metas_total} metas cumpridas</small></span>
+            ${ordemAreas.map((a) => { const x = c.areas.find((y) => y.servico === a) || { nivel: 'CRITICO', metas: '0/2' }; return `<span role="cell" class="mz-c" data-area="${a}" title="${a}: ${x.metas.replace('/', ' de ')} metas cumpridas">${pilula(x.nivel)}<small>${x.metas.replace('/', ' de ')} metas</small></span>`; }).join('')}
             <span role="cell" class="mz-g"><span class="chip ${RG[c.nivel][0]}"><i></i>${RG[c.nivel][1]}</span><small>${c.criticos} crítico${c.criticos === 1 ? '' : 's'} · ${c.atencao} atenção</small></span></button>`).join('')}
         </div>
-        <p class="nota-rodape">${UI.info('risco')} Risco geral = quanto a nota está longe de 100 + peso dos alertas abertos (crítico pesa 6, atenção 2). Alto a partir de 50, médio a partir de 30.</p></div>
+        <p class="nota-rodape">${UI.info('risco')} Risco geral = cada meta não cumprida soma 7 pontos + alertas abertos da IA (crítico soma 6, atenção soma 2). Alto a partir de 50, médio a partir de 30.</p></div>
       <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:34px 0 16px"><h2 style="font-size:22px;color:var(--navy)">Alertas da IA</h2>
         <div class="filtros" id="filtros">${[['TODOS', 'Todos'], ['CRITICO', 'Críticos'], ['ATENCAO', 'Atenção']].map(([k, t]) => `<button class="filtro ${k === filtro ? 'ativo' : ''}" data-f="${k}">${t}</button>`).join('')}
           <select class="seletor" id="fcid" style="padding:7px 14px"><option value="">Todas as cidades</option>${r.cidades.map((c) => `<option>${esc(c.municipio)}</option>`).join('')}</select></div></div>
@@ -149,23 +152,24 @@ const Pro = (() => {
       $('#conteudo').innerHTML = `
         ${topo(`Sala de situação `, `${salaCid ? esc(lst.municipios.find((m) => String(m.id_municipio) === salaCid)?.nome) : 'As 8 cidades'} · ${esc(d.mesTxt)}. O que está acontecendo, onde agir e o que já funcionou.`,
           `<select class="seletor" id="sCid"><option value="">Todas as cidades</option>${lst.municipios.map((m) => `<option value="${m.id_municipio}" ${String(m.id_municipio) === salaCid ? 'selected' : ''}>${esc(m.nome)}</option>`).join('')}</select>`)}
-        <div class="grade g-5">
-          <div class="cartao kpi revelar"><small>Nota EcoCity ${salaCid ? '' : 'média'} ${UI.info('nota')}</small><b data-contar="${k.ies_medio}" data-dec="1">0</b><span>de 100</span></div>
-          <div class="cartao kpi revelar" style="--atraso:.05s"><small>Metas cumpridas ${UI.info('meta')}</small><b>${k.pct_metas}%</b><span>dos indicadores no mês</span></div>
+        <div class="grade g-4">
+          <div class="cartao kpi revelar" style="--atraso:.05s"><small>Metas cumpridas ${UI.info('meta')}</small><b>${k.pct_metas}%</b><span>dos números ${salaCid ? 'da cidade' : 'das 8 cidades'} no mês</span></div>
           <div class="cartao kpi revelar" style="--atraso:.1s"><small>Alertas críticos</small><b class="${k.criticos ? 'ruim' : 'ok'}" data-contar="${k.criticos}">0</b><span>abertos</span></div>
           <div class="cartao kpi revelar" style="--atraso:.15s"><small>Ações em andamento</small><b data-contar="${k.acoes_andamento}">0</b><span>planejadas ou em execução</span></div>
-          <div class="cartao kpi revelar" style="--atraso:.2s"><small>Base oficial</small><b>${k.pct_oficial}%</b><span>valores do mês</span></div></div>
+          <div class="cartao kpi revelar" style="--atraso:.2s"><small>Dados oficiais</small><b>${k.pct_mes + k.pct_ano}%</b><span>no mês: ${k.pct_mes}% do mês · ${k.pct_ano}% do ano<br>último oficial: ${k.ult_mes}% do mês · ${k.ult_ano}% do ano</span></div></div>
         <div class="grade g-hero inv" style="margin-top:20px">
-          <div class="cartao revelar"><div class="cab-c"><span class="rotulo" style="margin:0">Onde agir primeiro</span><small>ordem: distância da meta × peso na nota × população ${UI.info('meta')}</small></div>
+          <div class="cartao revelar"><div class="cab-c"><span class="rotulo" style="margin:0">Onde agir primeiro</span><small>ordem: quanto falta para a meta × importância do número × população ${UI.info('meta')}</small></div>
             <ol class="prio">${d.prioridades.map((p, i) => `<li class="revelar" style="--atraso:${i * 0.05}s"><span class="n">${i + 1}</span><div class="pd"><b>${esc(p.indicador)}</b> <span class="chip cinza">${esc(p.municipio)}</span>
               <p>${UI.md(p.frase || '')}</p><div class="dist"><i style="width:${Math.min(100, p.distancia_pct)}%"></i></div><small>${num(p.distancia_pct, 0)}% longe da meta · hoje ${num(p.valor, casasDe(p.valor))} ${esc(p.unidade)} · meta ${num(p.meta, casasDe(p.meta))} · ${p.origem === 'ESTIMADO' ? 'estimado' : 'oficial'}</small></div>
               <div class="pa"><button class="btn sm" data-sim="${esc(`E se ${String(p.simples || p.indicador).toLowerCase()} de ${p.municipio} melhorar 10%?`)}">Simular</button><button class="btn fantasma sm" data-sim="${esc(`Que ações melhoram ${p.indicador.toLowerCase()} em ${p.municipio}?`)}">Opções</button></div></li>`).join('') || '<li>Todos os indicadores estão na meta. </li>'}</ol></div>
           <div class="cartao revelar" style="--atraso:.1s"><span class="rotulo">Metas cumpridas por indicador</span>
             ${UI.barrasH(d.metasInd.map((m) => ({ rotulo: m.simples, valor: (m.atingiram / m.total) * 100, cor: SERV[m.servico]?.cor })), { unidade: '%', casas: 0 })}</div></div>
         <div class="grade g-2" style="margin-top:20px">
-          <div class="cartao revelar"><span class="rotulo">Nota média por área (8 cidades) ${UI.info('notaArea')}</span>
-            ${UI.linha(Object.keys(SERV).map((sv) => ({ nome: sv, cor: SERV[sv].cor, valores: meses.map((m) => d.tendencia.find((t) => t.ano_mes === m && t.servico === sv)?.score_medio ?? null) })), { altura: 300, largura: 560, rotulos: meses.map(mesTxt), unidade: 'pontos' })}</div>
-          <div class="cartao revelar" style="--atraso:.1s"><span class="rotulo">Ranking das cidades pela nota EcoCity ${UI.info('nota')}</span>${UI.barrasH(d.ranking.map((r) => ({ rotulo: `${r.posicao}º ${r.municipio}`, valor: Number(r.ies), destaque: String(r.id_municipio) === salaCid, cor: UI.classeCor[r.classificacao] })), { casas: 1 })}</div></div>
+          <div class="cartao revelar"><span class="rotulo">Metas cumpridas por área, mês a mês (8 cidades)</span>
+            ${UI.linha(Object.keys(SERV).map((sv) => ({ nome: sv, cor: SERV[sv].cor, valores: meses.map((m) => { const t = d.tendencia.find((x) => x.ano_mes === m && x.servico === sv); return t ? Number(t.pct_metas_atingidas) : null; }) })), { altura: 300, largura: 560, rotulos: meses.map(mesTxt), unidade: '% das metas', casas: 0, min: 0, max: 100 })}
+            <p class="def">De todas as metas de cada área nas 8 cidades, quantas % estavam cumpridas em cada mês.</p></div>
+          <div class="cartao revelar" style="--atraso:.1s"><span class="rotulo">Metas cumpridas por cidade (de 8)</span>${UI.barrasH([...d.ranking].sort((a, b) => Number(b.metas_atingidas) - Number(a.metas_atingidas)).map((r) => ({ rotulo: r.municipio, valor: Number(r.metas_atingidas), destaque: String(r.id_municipio) === salaCid })), { casas: 0, unidade: 'de 8' })}
+            <p class="def">Cada cidade tem 8 números e cada número tem uma meta aprovada. A barra mostra quantas dessas 8 metas a cidade cumpre hoje.</p></div></div>
         <div class="grade g-2" style="margin-top:20px">
           <div class="cartao revelar"><div class="cab-c"><span class="rotulo" style="margin:0">Ações e resultados</span><a class="link-btn" href="#/app/acoes">ver todas →</a></div>
             <div class="lista-acoes">${d.acoes.slice(0, 5).map((a) => `<div class="la"><span class="chip ${a.efeito === 'MELHOROU' ? 'verde' : a.efeito === 'PIOROU' ? 'critico' : 'cinza'}">${a.efeito === 'MELHOROU' ? `melhorou ${num(Math.abs(a.variacao_pct), 0)}%` : a.efeito === 'PIOROU' ? 'não melhorou' : a.status === 'PLANEJADA' ? 'planejada' : 'em execução'}</span><b>${esc(a.titulo)}</b><small>${esc(a.municipio)} · ${esc(a.indicador_nome)} · R$ ${num(a.orcamento / 1e6, 1)} mi</small></div>`).join('') || '<p>Nenhuma ação registrada.</p>'}</div></div>
@@ -190,7 +194,7 @@ const Pro = (() => {
         <label class="lf"><span>Tema</span><select class="seletor" id="cTema"><option value="">Qualquer</option>${TEMAS.map(([c, n]) => `<option value="${c}">${esc(n)}</option>`).join('')}</select></label>
         <span class="rotulo" style="margin-top:14px">Perguntas que ajudam a decidir</span>
         ${[['', 'Onde devo agir primeiro?'], ['', 'E se melhorar 10%?'], ['', 'Que ações melhoram isso?'], ['', 'O que funcionou nas ações já feitas?'], ['', 'Quais os riscos dessa cidade?'], ['', 'Qual meta realista para essa cidade?']].map(([e, q]) => `<button class="modelo curto" data-q="${esc(q)}"><span>${e}</span><b>${esc(q)}</b></button>`).join('')}
-        <p class="dica-lado">As simulações usam a mesma regra da nota do banco. Os efeitos das ações são faixas de referência: confirme com a equipe técnica.</p></aside>
+        <p class="dica-lado">As simulações comparam os valores com as metas aprovadas. Os efeitos das ações são faixas de referência: confirme com a equipe técnica.</p></aside>
         <div class="cartao chat-area" id="chatArea"></div></div>`;
     const q = sessionStorage.getItem('eco.pergunta'); sessionStorage.removeItem('eco.pergunta');
     const sincronizar = (c) => { if ($('#cCid')) $('#cCid').value = c.cidade || ''; if ($('#cTema')) $('#cTema').value = c.codigo || ''; };
@@ -212,10 +216,12 @@ const Pro = (() => {
     casca(app, 'simulador', esqueleto());
     const ex = await API.pegar('/explorar');
     simCid ||= API.usuario.municipio || ex.municipios[0].id_municipio;
-    const score = (v, meta, sentido) => { const d = sentido === 'MAIOR_MELHOR' ? ((meta - v) / meta) * 100 : ((v - meta) / meta) * 100; return Math.min(100, Math.max(0, 100 - 1.5 * Math.max(d, 0))); };
+    const naMeta = (v, meta, sentido) => (sentido === 'MAIOR_MELHOR' ? v >= meta : v <= meta);
+    const falta = (v, meta, sentido) => Math.max(0, sentido === 'MAIOR_MELHOR' ? ((meta - v) / meta) * 100 : ((v - meta) / meta) * 100);
+    const lugar = (cod, v, sentido) => ex.serie.filter((s) => s.c === cod && s.p === ex.mes && s.m !== Number(simCid)).filter((s) => (sentido === 'MAIOR_MELHOR' ? s.v > v : s.v < v)).length + 1;
     const desenhar = () => {
       const atual = Object.fromEntries(ex.indicadores.map((i) => [i.codigo, ex.serie.find((s) => s.c === i.codigo && s.m === Number(simCid) && s.p === ex.mes)?.v]));
-      $('#conteudo').innerHTML = `${topo('Simulador de metas', 'Mexa nos controles e veja, na hora, o que acontece com os dados, as metas, a nota e o ranking da cidade. Usa a mesma regra de cálculo do banco.',
+      $('#conteudo').innerHTML = `${topo('Simulador de metas', 'Mexa nos controles e veja, na hora, quantas metas a cidade passaria a cumprir e em que lugar ficaria entre as 8 cidades em cada número.',
         `<select class="seletor claro" id="sCid">${ex.municipios.map((m) => `<option value="${m.id_municipio}" ${m.id_municipio === Number(simCid) ? 'selected' : ''}>${esc(m.nome)}</option>`).join('')}</select>`)}
         <div class="grade g-hero inv"><div class="cartao revelar"><span class="rotulo">Valores do cenário (${mesTxt(ex.mes)} → meta)</span><div class="sim-ctl">${ex.indicadores.map((i) => {
           const v = atual[i.codigo]; const lo = Math.min(v, i.meta) * 0.5; const hi = Math.max(v, i.meta) * 1.3; const passo = (hi - lo) / 200;
@@ -225,15 +231,14 @@ const Pro = (() => {
           <div class="cartao sim-res revelar" id="simRes"></div></div>`;
       const calc = () => {
         const val = {}; $$('.sim-l input').forEach((i) => { val[i.dataset.c] = Number(i.value); });
-        let sp = 0, sa = 0, sw = 0, metas = 0, metasHoje = 0;
-        ex.indicadores.forEach((i) => { const s = score(val[i.codigo], i.meta, i.sentido); const s0 = score(atual[i.codigo], i.meta, i.sentido); sp += s * i.peso_ies; sa += s0 * i.peso_ies; sw += i.peso_ies; if (s >= 100) metas++; if (s0 >= 100) metasHoje++;
-          $(`#sv-${i.codigo}`).textContent = num(val[i.codigo], casasDe(val[i.codigo])); const e = $(`#ss-${i.codigo}`); e.textContent = s >= 100 ? '✓ meta' : `nota ${num(s, 0)}`; e.className = s >= 100 ? 'ok' : s >= 55 ? 'med' : 'ruim'; });
-        const novo = sp / sw, hoje = sa / sw;
-        const outros = ex.ies.filter((r) => r.id_municipio !== Number(simCid)).map((r) => Number(r.ies));
-        const posN = outros.filter((x) => x > novo).length + 1, posH = outros.filter((x) => x > hoje).length + 1;
+        let metas = 0, metasHoje = 0, subiu = 0; const mud = [];
+        ex.indicadores.forEach((i) => { const v = val[i.codigo], v0 = atual[i.codigo]; const ok = naMeta(v, i.meta, i.sentido); if (ok) metas++; if (naMeta(v0, i.meta, i.sentido)) metasHoje++;
+          const l = lugar(i.codigo, v, i.sentido), l0 = lugar(i.codigo, v0, i.sentido); if (l < l0) subiu++;
+          if (Math.abs(v - v0) / (v0 || 1) > 0.005) mud.push(`<li><b>${esc(i.simples)}</b>: ${num(v0, casasDe(v0))} → ${num(v, casasDe(v))} ${esc(i.unidade)} · ${l0}º → ${l}º lugar</li>`);
+          $(`#sv-${i.codigo}`).textContent = num(v, casasDe(v)); const e = $(`#ss-${i.codigo}`); e.textContent = ok ? '✓ na meta' : `falta ${num(falta(v, i.meta, i.sentido), 0)}%`; e.className = ok ? 'ok' : falta(v, i.meta, i.sentido) <= 15 ? 'med' : 'ruim'; });
         $('#simRes').innerHTML = `<span class="rotulo">Resultado do cenário</span>
-          <div class="sim-grande"><div><small>Metas cumpridas</small><b>${metasHoje} → <span>${metas}</span></b><small>de 8</small></div><div><small>Nota EcoCity ${UI.info('nota')}</small><b>${num(hoje, 1)} → <span>${num(novo, 1)}</span></b><small>${novo - hoje >= 0 ? '+' : ''}${num(novo - hoje, 1)}</small></div><div><small>Ranking</small><b>${posH}º → <span>${posN}º</span></b><small>de 8 cidades</small></div></div>
-          <div class="termo"><span style="width:${novo}%"></span><em style="left:${hoje}%" title="hoje"></em></div><div class="termo-leg"><span>0</span><span>55 regular</span><span>70 bom</span><span>85 excelente</span><span>100</span></div>
+          <div class="sim-grande"><div><small>Metas cumpridas</small><b>${metasHoje} → <span>${metas}</span></b><small>de 8</small></div><div><small>Números em que sobe no ranking</small><b><span>${subiu}</span></b><small>de 8</small></div></div>
+          ${mud.length ? `<ul class="sim-mud">${mud.join('')}</ul>` : '<p class="def">Mexa em um controle para ver o efeito.</p>'}
           <button class="btn verde" id="perg" style="width:100%;margin-top:14px">Perguntar ao conselheiro como chegar lá →</button>`;
         $('#perg').onclick = () => { const mud = ex.indicadores.filter((i) => Math.abs(val[i.codigo] - atual[i.codigo]) / atual[i.codigo] > 0.02); const nomeC = ex.municipios.find((m) => m.id_municipio === Number(simCid)).nome;
           sessionStorage.setItem('eco.pergunta', mud.length ? `Que ações melhoram ${mud[0].nome.toLowerCase()} em ${nomeC}?` : `Onde devo agir primeiro em ${nomeC}?`); location.hash = '#/app/conselheiro'; };
@@ -393,33 +398,76 @@ const Pro = (() => {
     casca(app, 'metas', esqueleto());
     const [m, base] = await Promise.all([API.pegar('/metas'), API.pegar('/cidadao')]);
     const COR = { PROPOSTA: 'ceu', PARECER_EMITIDO: 'laranja', APROVADA: 'verde', REJEITADA: 'critico', SUBSTITUIDA: 'cinza' };
+    const NOME = { PROPOSTA: 'aguardando parecer', PARECER_EMITIDO: 'aguardando aprovação', APROVADA: 'aprovada', REJEITADA: 'rejeitada', SUBSTITUIDA: 'substituída' };
+    const cs = (v) => (Number(v) < 20 ? 2 : 0);
+    const mesAno = (d) => (d ? mesTxt(String(d).slice(0, 7)) : '—');
+    const variacao = (x) => (x.linha_base ? ((Number(x.valor) - Number(x.linha_base)) / Number(x.linha_base)) * 100 : null);
     $('#conteudo').innerHTML = `
-      ${topo('Metas ', 'Fluxo com 3 pessoas: o gestor propõe → um analista dá o parecer técnico → <b>outro</b> gestor aprova. O banco impede atalhos.', pode('GESTOR') ? '<button class="btn laranja" id="nova">+ Propor meta</button>' : '')}
-      <div class="grade g-4" style="margin-bottom:20px">${['PROPOSTA', 'PARECER_EMITIDO', 'APROVADA', 'REJEITADA'].map((s, i) => `<div class="cartao hover revelar" style="--atraso:${i * 0.06}s"><span class="chip ${COR[s]}"><i></i>${s.replace('_', ' ').toLowerCase()}</span><b style="display:block;font:800 34px var(--f-titulo);color:var(--navy);margin-top:10px" data-contar="${m.filter((x) => x.status === s).length}">0</b></div>`).join('')}</div>
-      <div class="cartao revelar rolar-x"><table class="tabela"><thead><tr><th>Indicador</th><th>Onde</th><th>Meta</th><th>Status</th><th>Quem</th><th></th></tr></thead><tbody>
-      ${m.map((x) => `<tr><td><b>${esc(x.indicador)}</b><div style="font-size:12px;color:var(--tinta-3)">${esc(x.codigo)} · desde ${mesTxt(String(x.vigencia_inicio).slice(0, 7))}</div></td><td>${esc(x.abrangencia)}</td><td class="num"><b>${num(x.valor, x.valor < 20 ? 2 : 0)}</b> ${esc(x.unidade)}</td>
-        <td><span class="chip ${COR[x.status]}">${x.status.replace('_', ' ').toLowerCase()}</span></td><td style="font-size:13px">${esc(x.proposta_por || '')}${x.parecer_por ? `<br>parecer: ${esc(x.parecer_por)}` : ''}${x.aprovada_por ? `<br>aprovou: ${esc(x.aprovada_por)}` : ''}</td>
-        <td>${x.status === 'PROPOSTA' && pode('ANALISTA') ? `<button class="btn sm" data-par="${x.id_meta}">Dar parecer</button>` : ''}${x.status === 'PARECER_EMITIDO' && pode('GESTOR') ? `<button class="btn verde sm" data-dec="${x.id_meta}" data-ok="1">Aprovar</button> <button class="btn fantasma sm" data-dec="${x.id_meta}" data-ok="0">Rejeitar</button>` : ''}</td></tr>`).join('')}
-      </tbody></table></div>`;
+      ${topo('Metas ', 'Cada meta diz <b>o que</b> queremos alcançar, <b>até quando</b> e <b>como</b> (os projetos). Fluxo com 3 pessoas: o gestor propõe → um analista dá o parecer técnico → <b>outro</b> gestor aprova. O banco impede atalhos.', pode('GESTOR') ? '<button class="btn laranja" id="nova">+ Propor meta</button>' : '')}
+      <div class="grade g-4" style="margin-bottom:20px">${['PROPOSTA', 'PARECER_EMITIDO', 'APROVADA', 'REJEITADA'].map((st, i) => `<div class="cartao hover revelar" style="--atraso:${i * 0.06}s"><span class="chip ${COR[st]}"><i></i>${NOME[st]}</span><b style="display:block;font:800 34px var(--f-titulo);color:var(--navy);margin-top:10px" data-contar="${m.filter((x) => x.status === st).length}">0</b></div>`).join('')}</div>
+      <div class="metas-lista">${m.map((x, k) => `<button class="meta-c cartao revelar" style="--atraso:${Math.min(k, 8) * 0.04}s" data-ver="${x.id_meta}">
+          <div class="mc-topo"><span class="chip ${COR[x.status]}"><i></i>${NOME[x.status]}</span><small>${esc(x.indicador)} · ${esc(x.abrangencia)}</small></div>
+          <b class="mc-frase">${esc(x.descricao || `${x.indicador}: ${x.sentido === 'MAIOR_MELHOR' ? 'pelo menos' : 'no máximo'} ${num(x.valor, cs(x.valor))} ${x.unidade}`)}</b>
+          <div class="mc-nums"><span>hoje <b>${x.valor_atual != null ? num(x.valor_atual, cs(x.valor_atual)) : '—'}</b></span><span>meta <b>${num(x.valor, cs(x.valor))}</b> ${esc(x.unidade)}</span><span>prazo <b>${mesAno(x.prazo)}</b></span>
+            ${x.cidades_cumprem != null ? `<span>${x.cidades_cumprem} de 8 cidades já cumprem</span>` : x.cumpre_hoje != null ? `<span class="${x.cumpre_hoje ? 't-verde' : 't-critico'}">${x.cumpre_hoje ? 'já cumpre' : 'ainda não cumpre'}</span>` : ''}</div>
+          <span class="mc-ver">Ver detalhes${x.status === 'PROPOSTA' && pode('ANALISTA') ? ' e dar parecer' : x.status === 'PARECER_EMITIDO' && pode('GESTOR') ? ' e decidir' : ''} →</span></button>`).join('')}</div>`;
     revelar($('#conteudo'));
     const recarregar = () => { API.limpar('/metas'); metas(app); };
-    $$('[data-par]').forEach((b) => (b.onclick = () => {
-      const g = UI.gaveta(`<h2>Parecer técnico</h2><form id="fp" class="cartao"><div class="campo"><label>Seu parecer</label><textarea id="tp" placeholder="A meta é realista? Está de acordo com a série histórica e com a referência?"></textarea></div>
-        <div style="display:flex;gap:10px"><button class="btn verde" data-f="1">Favorável</button><button class="btn laranja" data-f="0">Desfavorável</button></div></form>`);
-      $$('#fp [data-f]', g.el).forEach((x) => (x.onclick = async (e) => { e.preventDefault(); try { await API.post(`/metas/${b.dataset.par}/parecer`, { favoravel: x.dataset.f === '1', parecer: $('#tp', g.el).value }); toast('Parecer registrado', 'ok'); g.fechar(); recarregar(); } catch (err) { toast(err.message, 'erro'); } }));
-    }));
-    $$('[data-dec]').forEach((b) => (b.onclick = async () => { try { await API.post(`/metas/${b.dataset.dec}/decisao`, { aprovar: b.dataset.ok === '1' }); toast(b.dataset.ok === '1' ? 'Meta aprovada' : 'Meta rejeitada', 'ok'); recarregar(); } catch (err) { toast(err.message, 'erro'); } }));
+
+    const detalhe = (x) => {
+      const v = variacao(x); const passos = String(x.como_atingir || '').split('\n').map((t) => t.trim()).filter(Boolean);
+      const vals = [x.linha_base, x.valor_atual, x.valor].filter((y) => y != null).map(Number); const lo = Math.min(...vals) * 0.9, hi = Math.max(...vals) * 1.05;
+      const pos = (y) => `${((Number(y) - lo) / (hi - lo || 1)) * 100}%`;
+      const g = UI.gaveta(`<span class="chip ${COR[x.status]}"><i></i>${NOME[x.status]}</span>
+        <h2 style="margin-top:10px">${esc(x.descricao || x.indicador)}</h2>
+        <p class="md-sub">${esc(x.indicador)} (${esc(x.codigo)}) · ${esc(x.abrangencia)} · ${x.sentido === 'MAIOR_MELHOR' ? 'quanto maior, melhor' : 'quanto menor, melhor'}</p>
+        <div class="md-nums"><div><small>Ponto de partida</small><b>${x.linha_base != null ? num(x.linha_base, cs(x.linha_base)) : '—'}</b><span>${esc(x.unidade)} · ${String(x.vigencia_inicio) > String(x.criada_em) ? `quando foi proposta (${mesAno(x.criada_em)})` : mesAno(x.vigencia_inicio)}</span></div>
+          <div><small>Hoje</small><b>${x.valor_atual != null ? num(x.valor_atual, cs(x.valor_atual)) : '—'}</b><span>${esc(x.unidade)}${x.id_municipio ? '' : ' · média das 8 cidades'}</span></div>
+          <div class="alvo"><small>Meta</small><b>${num(x.valor, cs(x.valor))}</b><span>${esc(x.unidade)}${v != null ? ` · ${v >= 0 ? '+' : ''}${num(v, 0)}% em relação ao ponto de partida` : ''}</span></div>
+          <div><small>Prazo</small><b>${mesAno(x.prazo)}</b><span>começa a valer em ${mesAno(x.vigencia_inicio)}</span></div></div>
+        ${x.linha_base != null && x.valor_atual != null ? `<div class="md-regua"><i class="trilho"></i>${Math.abs(Number(x.linha_base) - Number(x.valor_atual)) / (hi - lo || 1) < 0.08 ? `<em class="hoje" style="left:${pos(x.valor_atual)}"><span>partida e hoje</span></em>` : `<em style="left:${pos(x.linha_base)}" title="ponto de partida"><span>partida</span></em><em class="hoje" style="left:${pos(x.valor_atual)}"><span>hoje</span></em>`}<em class="meta" style="left:${pos(x.valor)}"><span>meta</span></em></div>` : ''}
+        ${x.cidades_cumprem != null ? `<p class="md-info"><b>${x.cidades_cumprem} de 8 cidades</b> já cumprem esta meta hoje.</p>` : ''}
+        <h3 class="md-t">Como vamos atingir (projetos)</h3>
+        ${passos.length ? `<ol class="md-passos">${passos.map((t) => `<li>${esc(t)}</li>`).join('')}</ol>` : '<p class="md-info">O gestor não descreveu os projetos desta meta.</p>'}
+        <h3 class="md-t">Por que este valor</h3><p>${esc(x.justificativa)}</p>
+        <p class="md-info"><b>Referência técnica:</b> ${esc(x.referencia)}</p>
+        <h3 class="md-t">Quem participou</h3>
+        <ul class="md-hist"><li><b>Proposta:</b> ${esc(x.proposta_por)} · ${mesAno(x.criada_em)}</li>
+          ${x.parecer_por ? `<li><b>Parecer ${x.parecer_favoravel ? 'favorável' : 'desfavorável'}:</b> ${esc(x.parecer_por)} — “${esc(x.parecer || '')}”</li>` : '<li><b>Parecer:</b> aguardando um analista da área</li>'}
+          ${x.aprovada_por ? `<li><b>${x.status === 'REJEITADA' ? 'Rejeitada' : 'Aprovada'} por:</b> ${esc(x.aprovada_por)} · ${mesAno(x.decidida_em)}</li>` : ''}</ul>
+        ${x.status === 'PROPOSTA' && pode('ANALISTA') ? `<form id="fp" class="cartao md-form"><h3 class="md-t" style="margin-top:0">Seu parecer técnico</h3>
+            <p class="md-info">Antes de opinar, confira: o valor é realista para a cidade? O prazo é suficiente? Os projetos atacam a causa do problema? A referência técnica faz sentido?</p>
+            <div class="campo"><label>Parecer (mín. 30 caracteres)</label><textarea id="tp" placeholder="Ex.: A série oficial mostra queda de 2 pontos por ano; com os projetos listados, 22% até 2028 é alcançável."></textarea></div>
+            <div style="display:flex;gap:10px"><button class="btn verde" data-f="1">Favorável</button><button class="btn laranja" data-f="0">Desfavorável</button></div></form>` : ''}
+        ${x.status === 'PARECER_EMITIDO' && pode('GESTOR') ? `<div class="md-acoes"><button class="btn verde" data-dec="1">Aprovar meta</button><button class="btn fantasma" data-dec="0">Rejeitar</button></div>` : ''}`);
+      $$('#fp [data-f]', g.el).forEach((b) => (b.onclick = async (e) => { e.preventDefault(); try { await API.post(`/metas/${x.id_meta}/parecer`, { favoravel: b.dataset.f === '1', parecer: $('#tp', g.el).value }); toast('Parecer registrado', 'ok'); g.fechar(); recarregar(); } catch (err) { toast(err.message, 'erro'); } }));
+      $$('[data-dec]', g.el).forEach((b) => (b.onclick = async () => { try { await API.post(`/metas/${x.id_meta}/decisao`, { aprovar: b.dataset.dec === '1' }); toast(b.dataset.dec === '1' ? 'Meta aprovada' : 'Meta rejeitada', 'ok'); g.fechar(); recarregar(); } catch (err) { toast(err.message, 'erro'); } }));
+    };
+    $$('[data-ver]').forEach((b) => (b.onclick = () => detalhe(m.find((x) => String(x.id_meta) === b.dataset.ver))));
+
     $('#nova')?.addEventListener('click', () => {
-      const g = UI.gaveta(`<span class="chip laranja"><i></i>Nova meta</span><h2>Propor meta</h2><form id="fm" novalidate><div id="erro"></div>
-        <div class="campo"><label>Indicador</label><select id="mi">${base.indicadores.map((i) => `<option value="${i.codigo}">${esc(i.codigo)} · ${esc(i.nome)} (${esc(i.unidade)})</option>`).join('')}</select></div>
+      const g = UI.gaveta(`<span class="chip laranja"><i></i>Nova meta</span><h2>Propor meta</h2>
+        <p class="md-info">Uma boa meta é <b>específica</b> (um número e uma cidade), <b>realista</b> (veja quanto as outras cidades já conseguem), tem <b>prazo</b> e diz <b>quais projetos</b> vão levar até ela.</p>
+        <form id="fm" novalidate><div id="erro"></div>
+        <div class="campo"><label>Indicador</label><select id="mi">${base.indicadores.map((i) => `<option value="${i.codigo}">${esc(i.nome)} (${esc(i.unidade)})</option>`).join('')}</select></div>
         <div class="linha2"><div class="campo"><label>Cidade</label><select id="mc"><option value="">Todas as cidades</option>${base.municipios.map((c) => `<option value="${c.id_municipio}">${esc(c.nome)}</option>`).join('')}</select></div>
           <div class="campo"><label>Valor da meta</label><input id="mv" type="number" step="0.01"></div></div>
-        <div class="campo"><label>Vale a partir de</label><input id="md" type="month" value="${base.ultimoMes}"></div>
-        <div class="campo"><label>Justificativa</label><textarea id="mj"></textarea></div><div class="campo"><label>Referência técnica</label><input id="mr" placeholder="Ex.: SNIS IN049, ODS 6.4"></div>
+        <p class="md-info" id="hoje"></p>
+        <div class="linha2"><div class="campo"><label>Começa a valer em</label><input id="md" type="month" value="${base.ultimoMes}"></div>
+          <div class="campo"><label>Prazo para atingir</label><input id="mp" type="month"></div></div>
+        <div class="campo"><label>A meta em uma frase</label><input id="mf" placeholder="Ex.: Reduzir de 192 para 182 litros por pessoa por dia até dez/2027"></div>
+        <div class="campo"><label>Como atingir: projetos e ações (um por linha)</label><textarea id="mca" rows="5" placeholder="Ex.:&#10;Trocar hidrômetros antigos&#10;Caça-vazamento nos bairros com mais perdas"></textarea></div>
+        <div class="campo"><label>Por que este valor (justificativa)</label><textarea id="mj"></textarea></div><div class="campo"><label>Referência técnica</label><input id="mr" placeholder="Ex.: SNIS, Portaria MDR 490/2021, ODS 6.4"></div>
         <button class="btn laranja">Enviar proposta</button></form>`);
+      const mostrarHoje = () => { const cod = $('#mi', g.el).value; const cid = Number($('#mc', g.el).value) || null; const ind = base.indicadores.find((i) => i.codigo === cod);
+        const vs = (base.serie12 || []).filter((x) => x.c === cod && x.p === base.ultimoMes && (!cid || x.m === cid)).map((x) => Number(x.v));
+        $('#hoje', g.el).innerHTML = vs.length ? `Hoje (${esc(mesTxt(base.ultimoMes))}): <b>${num(vs.reduce((a, b) => a + b, 0) / vs.length, 1)} ${esc(ind?.unidade || '')}</b>${cid ? '' : ' (média das 8 cidades)'}. Use como ponto de partida.` : ''; };
+      $('#mi', g.el).onchange = mostrarHoje; $('#mc', g.el).onchange = mostrarHoje; mostrarHoje();
       $('#fm', g.el).onsubmit = async (e) => {
         e.preventDefault();
-        try { await API.post('/metas', { codigo_indicador: $('#mi', g.el).value, id_municipio: $('#mc', g.el).value || null, valor: $('#mv', g.el).value, vigencia_inicio: `${$('#md', g.el).value}-01`, justificativa: $('#mj', g.el).value, referencia: $('#mr', g.el).value }); toast('Meta proposta! Agora um analista dá o parecer.', 'ok'); g.fechar(); recarregar(); }
+        try { await API.post('/metas', { codigo_indicador: $('#mi', g.el).value, id_municipio: $('#mc', g.el).value || null, valor: $('#mv', g.el).value, vigencia_inicio: `${$('#md', g.el).value}-01`,
+          prazo: $('#mp', g.el).value ? `${$('#mp', g.el).value}-01` : null, descricao: $('#mf', g.el).value, como_atingir: $('#mca', g.el).value, justificativa: $('#mj', g.el).value, referencia: $('#mr', g.el).value });
+        toast('Meta proposta! Agora um analista dá o parecer.', 'ok'); g.fechar(); recarregar(); }
         catch (err) { $('#erro', g.el).innerHTML = `<div class="aviso">${esc(err.message)}</div>`; }
       };
     });
@@ -452,8 +500,8 @@ const Pro = (() => {
       </div>
       <div class="cartao revelar" style="margin-top:20px"><div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px"><span class="rotulo">Cadastros de analistas e gestores</span><span class="chip ${pend.length ? 'laranja' : 'verde'}">${pend.length} aguardando</span></div>
         <div class="rolar-x"><table class="tabela"><thead><tr><th>Pessoa</th><th>Perfil</th><th>Órgão e cargo</th><th>Documentos</th><th>Status</th><th></th></tr></thead><tbody>
-        ${cad.map((c) => `<tr><td><b>${esc(c.nome)}</b><div style="font-size:12px;color:var(--tinta-3)">${esc(c.email_institucional)} · CPF ${esc(c.cpf)}</div></td><td><span class="chip ${c.perfil_pedido === 'ANALISTA' ? 'ceu' : 'laranja'}">${esc(c.perfil_pedido.toLowerCase())}</span></td>
-          <td style="font-size:13px">${esc(c.orgao)}<br>${esc(c.cargo)}</td><td style="font-size:13px">${esc(c.registro_conselho || c.portaria_nomeacao || '')}<br><a href="${esc(c.documento_url)}" target="_blank" rel="noopener">declaração ↗</a></td>
+        ${cad.map((c) => `<tr><td><b>${esc(c.nome)}</b><div style="font-size:12px;color:var(--tinta-3)">${esc(c.email_institucional)}${c.cidade_atuacao ? ` · ${esc(c.cidade_atuacao)}` : ''}</div></td><td><span class="chip ${c.perfil_pedido === 'ANALISTA' ? 'ceu' : 'laranja'}">${esc(c.perfil_pedido.toLowerCase())}</span></td>
+          <td style="font-size:13px">${esc(c.orgao)}<br>${esc(c.cargo)}</td><td style="font-size:13px">${esc(c.registro_conselho || c.portaria_nomeacao || '—')}${c.documento_url ? `<br><a href="${esc(c.documento_url)}" target="_blank" rel="noopener">documento ↗</a>` : ''}</td>
           <td><span class="chip ${{ APROVADO: 'verde', EM_ANALISE: 'laranja', RECUSADO: 'critico', SUSPENSO: 'cinza' }[c.status]}">${esc(c.status.replace('_', ' ').toLowerCase())}</span>${c.status === 'EM_ANALISE' ? `<div style="font-size:12px;color:var(--tinta-3)">há ${c.dias_aguardando} dias</div>` : ''}</td>
           <td>${c.status === 'EM_ANALISE' ? `<button class="btn verde sm" data-ap="${c.id_usuario}">Aprovar</button> <button class="btn fantasma sm" data-rc="${c.id_usuario}">Recusar</button>` : ''}</td></tr>`).join('')}</tbody></table></div></div>
       <div class="grade g-2" style="margin-top:20px"><div class="cartao revelar"><span class="rotulo">Tentativas de login</span><div style="display:flex;gap:8px;flex-wrap:wrap">${ac.resumo.map((r) => `<span class="chip ${r.resultado === 'SUCESSO' ? 'verde' : 'laranja'}">${esc(r.resultado.toLowerCase().replace(/_/g, ' '))}: <b>${r.tentativas}</b></span>`).join('')}</div>

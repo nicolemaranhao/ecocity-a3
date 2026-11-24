@@ -38,10 +38,15 @@ async function simular(cidade, cod, cen, mes) {
   const novo = cen.tipo === 'ALVO' ? cen.valor : l.valor * (1 + rel / 100);
   const novoScore = E.score(novo, Number(l.meta), l.sentido);
   const iesAntes = iesDe(est); const iesDepois = iesDe(est.map((x) => (x.codigo === cod ? { ...x, score: novoScore } : x)));
-  const rk = await query('SELECT municipio, ies FROM vw_ies_ranking ORDER BY ies DESC');
-  const posAntes = rk.findIndex((r) => r.municipio === cidade.nome) + 1;
-  const posDepois = rk.filter((r) => r.municipio !== cidade.nome && r.ies > iesDepois).length + 1;
-  return { l, novo, novoScore, iesAntes, iesDepois, posAntes, posDepois };
+  // posição da cidade entre as 8 NESTE número (1º = melhor) e metas cumpridas, antes e depois
+  const outros = (await query('SELECT id_municipio, valor FROM vw_indicador_desempenho WHERE codigo = ? AND ano_mes = ? AND id_municipio <> ?', [cod, mes, cidade.id_municipio])).map((r) => Number(r.valor));
+  const lugar = (v) => outros.filter((o) => (l.sentido === 'MAIOR_MELHOR' ? o > v : o < v)).length + 1;
+  const ok = (v) => (l.sentido === 'MAIOR_MELHOR' ? v >= Number(l.meta) : v <= Number(l.meta));
+  const falta = (v) => Math.max(0, l.sentido === 'MAIOR_MELHOR' ? ((Number(l.meta) - v) / Number(l.meta)) * 100 : ((v - Number(l.meta)) / Number(l.meta)) * 100);
+  const metasAntes = est.filter((x) => x.atingiu_meta).length;
+  const metasDepois = metasAntes - (ok(Number(l.valor)) ? 1 : 0) + (ok(novo) ? 1 : 0);
+  return { l, novo, novoScore, iesAntes, iesDepois, posAntes: lugar(Number(l.valor)), posDepois: lugar(novo), metasAntes, metasDepois,
+    faltaAntes: falta(Number(l.valor)), faltaDepois: falta(novo), naMeta: ok(novo) };
 }
 
 function textoSimulacao(cidade, s) {
@@ -50,13 +55,13 @@ function textoSimulacao(cidade, s) {
 | | Hoje | No cenário |
 |---|---|---|
 | ${s.l.indicador} | ${n(s.l.valor, casas(s.l.valor))} ${s.l.unidade} | **${n(s.novo, casas(s.novo))} ${s.l.unidade}** |
-| Nota do indicador | ${n(s.l.score, 0)} | **${n(s.novoScore, 0)}** |
-| Nota EcoCity da cidade | ${n(s.iesAntes, 1)} | **${n(s.iesDepois, 1)}** (${s.iesDepois - s.iesAntes >= 0 ? '+' : ''}${n(s.iesDepois - s.iesAntes, 1)}) |
-| Posição no ranking | ${s.posAntes}º | **${s.posDepois}º** |
+| Quanto falta para a meta | ${s.faltaAntes > 0 ? `${n(s.faltaAntes, 0)}%` : 'já cumpre'} | **${s.faltaDepois > 0 ? `${n(s.faltaDepois, 0)}%` : 'cumpre a meta'}** |
+| Lugar entre as 8 cidades neste número | ${s.posAntes}º | **${s.posDepois}º** |
+| Metas cumpridas pela cidade | ${s.metasAntes} de 8 | **${s.metasDepois} de 8** |
 
-${s.novoScore >= 100 ? '✅ Com esse valor a cidade **atinge a meta** deste indicador.' : `⚠️ Ainda fica **fora da meta** (${n(s.l.meta, casas(s.l.meta))} ${s.l.unidade}).`} ${T ? `Para o cidadão: ${T.frase(s.novo).replace(/\*\*/g, '')}` : ''}
+${s.naMeta ? '✅ Com esse valor a cidade **atinge a meta** deste número.' : `⚠️ Ainda fica **fora da meta** (${n(s.l.meta, casas(s.l.meta))} ${s.l.unidade}).`} ${T ? `Para o cidadão: ${T.frase(s.novo).replace(/\*\*/g, '')}` : ''}
 
-_Como ler: a **nota do indicador** mostra quão perto da meta ele está (100 = na meta; cada 1% longe tira 1,5 ponto). A **nota EcoCity** é a média das 8 notas da cidade (0 a 100). Simulação com a mesma regra do banco, mantendo os outros 7 indicadores como estão hoje._`;
+_Como ler: "lugar" é a posição da cidade na fila das 8 cidades neste número (1º = melhor). Os outros 7 números ficam como estão hoje._`;
 }
 
 async function diagnostico(cidade) {
@@ -67,17 +72,17 @@ async function diagnostico(cidade) {
   const p0 = top[0]; const op = ACOES[p0.codigo]?.[0];
   return {
     texto: `## Diagnóstico ${cidade ? `de ${cidade.nome}` : 'das 8 cidades'} — ${sala.mesTxt}
-Nota EcoCity média **${n(sala.kpis.ies_medio, 1)}** de 100 (média de quão perto da meta estão os 8 números) · **${sala.kpis.pct_metas}%** das metas cumpridas · **${sala.kpis.criticos}** alertas críticos abertos · ${sala.kpis.pct_oficial}% dos valores com base oficial.
+**${sala.kpis.pct_metas}%** das metas cumpridas · **${sala.kpis.criticos}** alertas críticos abertos · ${sala.kpis.pct_oficial}% dos valores com base oficial.
 
 ### Onde agir primeiro
-Ordem por: distância da meta × peso do indicador na nota × população afetada.
+Ordem por: quanto falta para a meta × importância do número × população afetada.
 
 ${linhas.join('\n\n')}
 
 ### Minha recomendação
 Começar por **${p0.indicador} em ${p0.municipio}**. ${op ? `A opção com melhor relação custo/prazo costuma ser **${op[0]}** (efeito típico ${op[1] > 0 ? '+' : ''}${op[1]}% em ${op[3]}, custo ${op[2]}).` : ''}
 
-**Próximo passo:** pergunte "e se ${p0.simples ? p0.simples.toLowerCase() : p0.indicador.toLowerCase()} de ${p0.municipio} melhorar 10%?" para ver o efeito na nota.`,
+**Próximo passo:** pergunte "e se ${p0.simples ? p0.simples.toLowerCase() : p0.indicador.toLowerCase()} de ${p0.municipio} melhorar 10%?" para ver o efeito.`,
     contexto: { cidade: cidade?.nome || p0.municipio, codigo: p0.codigo },
   };
 }
@@ -89,12 +94,12 @@ async function opcoes(cidade, cod, mes) {
   let sims = [];
   if (cidade) {
     const est = await estadoCidade(cidade.id_municipio, mes); const l = est.find((x) => x.codigo === cod);
-    base = `Hoje em **${cidade.nome}**: ${n(l.valor, casas(l.valor))} ${l.unidade} (meta ${n(l.meta, casas(l.meta))}, nota ${n(l.score, 0)}).${l.score >= 100 ? ' ✅ **Já está dentro da meta**: as ações abaixo servem para manter o resultado ou ir além (não mudam a nota).' : ''}\n\n`;
+    base = `Hoje em **${cidade.nome}**: ${n(l.valor, casas(l.valor))} ${l.unidade} (meta ${n(l.meta, casas(l.meta))}).${l.atingiu_meta ? ' ✅ **Já está dentro da meta**: as ações abaixo servem para manter o resultado ou ir além.' : ''}\n\n`;
     sims = await Promise.all(lista.map((a) => simular(cidade, cod, { tipo: 'REL', valor: a[1] }, mes)));
   }
   const feitas = await query('SELECT titulo, municipio, efeito, variacao_pct, orcamento FROM vw_acoes_resultados WHERE indicador_alvo = ?', [cod]);
-  const tab = `| Ação | Efeito típico | Custo | Prazo |${cidade ? ' Nota da cidade depois |' : ''}\n|---|---|---|---|${cidade ? '---|' : ''}\n${lista.map((a, i) => `| ${a[0]} | ${a[1] > 0 ? '+' : ''}${a[1]}% | ${a[2]} | ${a[3]} |${cidade ? ` ${n(sims[i].iesAntes, 1)} → **${n(sims[i].iesDepois, 1)}** |` : ''}`).join('\n')}`;
-  const melhor = cidade && sims.length ? lista[sims.reduce((bi, s, i) => (s.iesDepois - s.iesAntes > sims[bi].iesDepois - sims[bi].iesAntes ? i : bi), 0)] : null;
+  const tab = `| Ação | Efeito típico | Custo | Prazo |${cidade ? ' Falta para a meta depois |' : ''}\n|---|---|---|---|${cidade ? '---|' : ''}\n${lista.map((a, i) => `| ${a[0]} | ${a[1] > 0 ? '+' : ''}${a[1]}% | ${a[2]} | ${a[3]} |${cidade ? ` ${sims[i].faltaAntes > 0 ? `${n(sims[i].faltaAntes, 0)}%` : 'cumpre'} → **${sims[i].faltaDepois > 0 ? `${n(sims[i].faltaDepois, 0)}%` : 'cumpre'}** |` : ''}`).join('\n')}`;
+  const melhor = cidade && sims.length ? lista[sims.reduce((bi, s, i) => (s.faltaDepois < sims[bi].faltaDepois ? i : bi), 0)] : null;
   return {
     texto: `## Opções para melhorar: ${ind.nome}
 ${base}${tab}
@@ -118,7 +123,7 @@ async function riscosCidade(cidade, mes) {
   const al = await query(`SELECT a.severidade, a.tipo, a.titulo, a.descricao FROM analise_ia a WHERE a.id_municipio = ? AND a.status IN ('NOVA','EM_ANALISE','VALIDADA')
                           ORDER BY FIELD(a.severidade,'CRITICO','ATENCAO','INFO'), a.gerada_em DESC LIMIT 6`, [cidade.id_municipio]);
   const prev = al.filter((a) => a.tipo === 'PREVISAO');
-  return { texto: `## Riscos de ${cidade.nome} — ${L.mesLongo(mes)}\nRisco geral **${x.nivel.toLowerCase()}** (${x.risco}/100).\n\n| Área | Situação | Metas |\n|---|---|---|\n${x.areas.map((a) => `| ${a.servico} | ${L.situacaoArea(Math.round(a.score)).rotulo} (nota ${n(a.score, 0)}) | ${a.metas} |`).join('\n')}\n\n${al.length ? `### Alertas abertos\n${al.map((a) => `- ${a.severidade === 'CRITICO' ? '🔴' : '🟠'} **${a.titulo}** — ${a.descricao}`).join('\n')}` : 'Sem alertas abertos.'}\n\n${prev.length ? `**Atenção:** ${prev.length} previsão(ões) indicam que a situação deve piorar nos próximos 3 meses se nada mudar.` : ''}`,
+  return { texto: `## Riscos de ${cidade.nome} — ${L.mesLongo(mes)}\nRisco geral **${x.nivel.toLowerCase()}** (${x.risco}/100).\n\n| Área | Situação | Metas |\n|---|---|---|\n${x.areas.map((a) => `| ${a.servico} | ${{ BOM: 'Cumpre as 2 metas', ATENCAO: 'Cumpre 1 meta', CRITICO: 'Não cumpre nenhuma' }[a.nivel]} | ${a.metas} |`).join('\n')}\n\n${al.length ? `### Alertas abertos\n${al.map((a) => `- ${a.severidade === 'CRITICO' ? '🔴' : '🟠'} **${a.titulo}** — ${a.descricao}`).join('\n')}` : 'Sem alertas abertos.'}\n\n${prev.length ? `**Atenção:** ${prev.length} previsão(ões) indicam que a situação deve piorar nos próximos 3 meses se nada mudar.` : ''}`,
     contexto: { cidade: cidade.nome } };
 }
 
@@ -164,7 +169,7 @@ async function responder(pergunta, usuario, historico = [], contexto = {}) {
   let r;
 
   if (!t || /^(oi|ola|bom dia|boa tarde|boa noite|ajuda|o que voce faz)/.test(t)) {
-    r = { texto: `Olá! Sou o **Conselheiro EcoCity** 🧭. Posso:\n- fazer o **diagnóstico** e dizer **onde agir primeiro**;\n- **simular cenários** ("e se as perdas caírem para 25%?") e mostrar o efeito na nota e no ranking;\n- sugerir **ações com impacto, custo e prazo**;\n- mostrar **o que já funcionou** e o custo-efetividade;\n- apontar **riscos** e sugerir **metas realistas**.\n\nEu lembro da cidade e do tema da conversa — pode perguntar em sequência.` };
+    r = { texto: `Olá! Sou o **Conselheiro EcoCity** 🧭. Posso:\n- fazer o **diagnóstico** e dizer **onde agir primeiro**;\n- **simular cenários** ("e se as perdas caírem para 25%?") e mostrar o efeito nas metas e no lugar da cidade;\n- sugerir **ações com impacto, custo e prazo**;\n- mostrar **o que já funcionou** e o custo-efetividade;\n- apontar **riscos** e sugerir **metas realistas**.\n\nEu lembro da cidade e do tema da conversa — pode perguntar em sequência.` };
   } else if (/(e se|simul|cenario|se (a|o|as|os) .* (cair|caire|reduz|aument|subir|chegar)|para \d)/.test(t) && E.cenario(t)) {
     if (!ctxCidade || !ctxCod) r = { texto: 'Para simular preciso da **cidade** e do **indicador**. Ex.: "e se a reciclagem de Santos subir para 8%?"' };
     else { const s = await simular(ctxCidade, ctxCod, E.cenario(t), mes); r = { texto: textoSimulacao(ctxCidade, s), contexto: { cidade: ctxCidade.nome, codigo: ctxCod } }; }

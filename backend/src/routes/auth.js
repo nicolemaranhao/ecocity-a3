@@ -6,7 +6,7 @@
 //
 //  Cadastro:
 //   POST /auth/cadastro/cidadao      simples (nome, e-mail, telefone opcional, cidade, senha) -> entra na hora
-//   POST /auth/cadastro/profissional analista ou gestor: dados completos -> fica EM_ANALISE até o ADMIN aprovar
+//   POST /auth/cadastro/profissional analista ou gestor: nome, e-mail do órgão, órgão, cargo (e cidade, se gestor) -> fica EM_ANALISE até o ADMIN aprovar
 //   (não existe cadastro de ADMIN pelo site)
 const express = require('express');
 const bcrypt = require('bcryptjs');
@@ -109,15 +109,14 @@ r.post('/cadastro/cidadao', wrap(async (req, res) => {
 
 r.post('/cadastro/profissional', wrap(async (req, res) => {
   const b = req.body || {};
-  exigir(b, ['perfil', 'nome', 'cpf', 'email_institucional', 'telefone', 'senha', 'orgao', 'cargo', 'matricula', 'formacao',
-             'documento_url', 'justificativa', 'aceite_termo']);
+  exigir(b, ['perfil', 'nome', 'email_institucional', 'senha', 'orgao', 'cargo', 'aceite_termo']);   // só o necessário
   senhaForte(String(b.senha), true);
   const hash = await bcrypt.hash(String(b.senha), 10);
   const [sets] = await pool.query('CALL sp_solicitar_acesso(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', [
-    String(b.perfil).toUpperCase(), b.nome, b.cpf, b.email_institucional, b.telefone, hash, b.orgao, b.cargo, b.matricula, b.formacao,
+    String(b.perfil).toUpperCase(), b.nome, b.cpf || null, b.email_institucional, b.telefone || null, hash, b.orgao, b.cargo, b.matricula || null, b.formacao || null,
     b.registro_conselho || null, b.portaria_nomeacao || null, b.id_municipio ? Number(b.id_municipio) : null,
-    b.documento_url, b.justificativa, b.aceite_termo === true, req.ip]);
-  res.status(201).json({ ...sets[0][0], mensagem: 'Pedido enviado. O administrador vai conferir seus documentos antes de liberar o acesso.' });
+    b.documento_url || null, b.justificativa || null, b.aceite_termo === true, req.ip]);
+  res.status(201).json({ ...sets[0][0], mensagem: 'Pedido enviado. O administrador vai confirmar seu vínculo com o órgão antes de liberar o acesso.' });
 }));
 
 module.exports = r;

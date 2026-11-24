@@ -258,7 +258,7 @@ SELECT m.id_meta, i.codigo, i.nome AS indicador, s.nome AS servico, u.sigla AS u
        m.valor, m.vigencia_inicio, m.vigencia_fim, m.status,
        CASE WHEN m.status = 'APROVADA' AND m.vigencia_inicio <= CURRENT_DATE
                  AND (m.vigencia_fim IS NULL OR m.vigencia_fim >= CURRENT_DATE) THEN 1 ELSE 0 END AS em_vigor,
-       m.justificativa, m.referencia,
+       m.justificativa, m.referencia, m.descricao, m.linha_base, m.prazo, m.como_atingir, m.id_municipio,
        up.nome AS proposta_por, ua.nome AS parecer_por, m.parecer_favoravel, m.parecer,
        ud.nome AS aprovada_por, m.criada_em, m.decidida_em
 FROM meta m

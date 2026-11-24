@@ -233,84 +233,60 @@ const Publico = (() => {
   const sucesso = (t, d, extra = '') => `<div class="sucesso passo-conteudo"><svg class="check" viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" fill="none" stroke="#2F8F3F" stroke-width="6"/><path d="M30 52 45 66 72 36" fill="none" stroke="#2F8F3F" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg>
     <h1>${t}</h1><p class="sub">${d}</p>${extra}</div>`;
 
-  const cpfValido = (c) => {
-    c = c.replace(/\D/g, ''); if (c.length !== 11 || /^(\d)\1{10}$/.test(c)) return false;
-    const dv = (n) => { let s = 0; for (let i = 0; i < n; i++) s += Number(c[i]) * (n + 1 - i); const r = (s * 10) % 11; return r === 10 ? 0 : r; };
-    return dv(9) === Number(c[9]) && dv(10) === Number(c[10]);
-  };
   const PESSOAIS = /@(gmail|hotmail|outlook|live|yahoo|icloud|bol|uol|terra|ig|msn|proton(mail)?)\./i;
 
   function cadastroProfissional(app, perfil, cidades) {
     const analista = perfil === 'analista';
     const cor = analista ? 'var(--ceu)' : 'var(--laranja)';
     const v = { perfil: perfil.toUpperCase(), aceite_termo: false };
-    const PASSOS = ['Quem é você', analista ? 'Formação e registro' : 'Cargo e nomeação', 'Comprovação', 'Segurança'];
+    const PASSOS = ['Seus dados', 'Senha'];
     let passo = 0;
     moldura(app, analista ? 'Analistas publicam com responsabilidade' : 'Gestores decidem pela cidade',
-      analista ? 'Por isso conferimos seu vínculo e seu registro no conselho. Depois de aprovado, suas análises passam por revisão de outro especialista.'
-               : 'Por isso conferimos sua portaria de nomeação e o órgão em que você trabalha. Metas que você propõe são aprovadas por outro gestor.',
+      analista ? 'Pedimos só o necessário. O administrador confirma seu vínculo com o órgão pelo e-mail institucional antes de liberar o acesso.'
+               : 'Pedimos só o necessário. O administrador confirma seu vínculo com a prefeitura pelo e-mail institucional. Metas que você propõe são aprovadas por outro gestor.',
       `<a href="#/cadastro" class="link-btn">← Trocar perfil</a><h1 style="margin-top:10px">Cadastro de ${analista ? 'analista' : 'gestor público'}</h1>
-       <p class="sub">4 passos rápidos. Um administrador confere os dados antes de liberar o acesso.</p>
+       <p class="sub">2 passos rápidos. Um administrador confirma seu vínculo antes de liberar o acesso.</p>
        <div class="passos" style="--c:${cor}">${PASSOS.map((p) => `<div class="p"><i></i><span>${p}</span></div>`).join('')}</div>
        <form id="fp" novalidate><div id="erro"></div><div id="corpo"></div>
        <div class="navegar"><button type="button" class="btn fantasma" id="voltar">← Voltar</button><button class="btn" id="avancar" style="--c:${analista ? 'var(--azul)' : 'var(--laranja)'}">Continuar →</button></div></form>`, true);
 
     const corpos = [
-      () => `<div class="campo"><label for="nome">Nome completo</label><input id="nome" value="${esc(v.nome || '')}"><span class="ajuda"></span></div>
-        <div class="linha2"><div class="campo"><label for="cpf">CPF <small>guardado protegido</small></label><input id="cpf" inputmode="numeric" placeholder="000.000.000-00" value="${esc(v.cpf || '')}"><span class="ajuda"></span></div>
-        <div class="campo"><label for="tel">Telefone do trabalho</label><input id="tel" inputmode="tel" placeholder="(11) 3215-0000" value="${esc(v.telefone || '')}"><span class="ajuda"></span></div></div>
-        <div class="campo"><label for="emi">E-mail institucional <small>do órgão (não vale Gmail etc.)</small></label><input id="emi" type="email" placeholder="nome@prefeitura.sp.gov.br" value="${esc(v.email_institucional || '')}"><span class="ajuda"></span></div>`,
-      () => `<div class="linha2"><div class="campo"><label for="orgao">Órgão / instituição</label><input id="orgao" value="${esc(v.orgao || '')}"><span class="ajuda"></span></div>
+      () => `<div class="campo"><label for="nome">Nome completo</label><input id="nome" autocomplete="name" value="${esc(v.nome || '')}"><span class="ajuda"></span></div>
+        <div class="campo"><label for="emi">E-mail institucional <small>do órgão (não vale Gmail etc.)</small></label><input id="emi" type="email" placeholder="nome@prefeitura.sp.gov.br" value="${esc(v.email_institucional || '')}"><span class="ajuda">É por ele que confirmamos que você trabalha no órgão.</span></div>
+        <div class="linha2"><div class="campo"><label for="orgao">Órgão onde trabalha</label><input id="orgao" placeholder="${analista ? 'Ex.: CETESB, universidade, consórcio' : 'Ex.: Prefeitura de Campinas'}" value="${esc(v.orgao || '')}"><span class="ajuda"></span></div>
         <div class="campo"><label for="cargo">Cargo</label><input id="cargo" value="${esc(v.cargo || '')}"><span class="ajuda"></span></div></div>
-        <div class="linha2"><div class="campo"><label for="mat">Matrícula</label><input id="mat" value="${esc(v.matricula || '')}"><span class="ajuda"></span></div>
-        <div class="campo"><label for="form">Formação</label><input id="form" placeholder="Ex.: Engenharia Ambiental (USP, 2018)" value="${esc(v.formacao || '')}"><span class="ajuda"></span></div></div>
         ${analista
-          ? `<div class="campo"><label for="reg">Registro no conselho profissional</label><input id="reg" placeholder="Ex.: CREA-SP 5069990001" value="${esc(v.registro_conselho || '')}"><span class="ajuda">CREA, CRQ, CRBio, CORECON…</span></div>
-             <div class="campo"><label for="cid">Cidade em que atua <small>opcional</small></label><select id="cid">${opcoesCidades(cidades, 'Todas / não se aplica')}</select></div>`
-          : `<div class="campo"><label for="port">Portaria de nomeação</label><input id="port" placeholder="Ex.: Portaria nº 18/2025 (Diário Oficial)" value="${esc(v.portaria_nomeacao || '')}"><span class="ajuda">Número e data da publicação no Diário Oficial.</span></div>
-             <div class="campo"><label for="cid">Cidade em que atua</label><select id="cid">${opcoesCidades(cidades)}</select><span class="ajuda"></span></div>`}`,
-      () => `<div class="campo"><label for="doc">Link da declaração de vínculo <small>PDF assinado pelo órgão</small></label><input id="doc" type="url" placeholder="https://..." value="${esc(v.documento_url || '')}"><span class="ajuda">Use um link https (Drive, OneDrive, site do órgão).</span></div>
-        <div class="campo"><label for="just">Por que você precisa do acesso? <small id="cont">0/50</small></label><textarea id="just" placeholder="${analista ? 'Ex.: Acompanho a reciclagem da cidade e quero publicar análises com a minha equipe…' : 'Ex.: Coordeno o plano municipal de saneamento e preciso definir metas de perdas…'}">${esc(v.justificativa || '')}</textarea><span class="ajuda"></span></div>
+          ? `<div class="linha2"><div class="campo"><label for="reg">Registro no conselho <small>opcional</small></label><input id="reg" placeholder="Ex.: CREA-SP 5069990001" value="${esc(v.registro_conselho || '')}"><span class="ajuda">Ajuda a liberar sua credencial de analista mais rápido.</span></div>
+             <div class="campo"><label for="cid">Cidade em que atua <small>opcional</small></label><select id="cid">${opcoesCidades(cidades, 'Todas / não se aplica')}</select></div></div>`
+          : `<div class="campo"><label for="cid">Cidade em que atua</label><select id="cid">${opcoesCidades(cidades)}</select><span class="ajuda"></span></div>`}`,
+      () => `${campoSenha('forte')}
         <label class="marcar"><input type="checkbox" id="termo" ${v.aceite_termo ? 'checked' : ''}> Declaro que as informações são verdadeiras e aceito o termo de responsabilidade pelo uso dos dados${analista ? ' e pelas análises que publicar' : ' e pelas metas e ações que registrar'}.</label>`,
-      () => `${campoSenha('forte')}`,
     ];
     let senhaOk = () => false;
     const desenhar = () => {
       $$('.passos .p').forEach((p, i) => { p.classList.toggle('feito', i < passo); p.classList.toggle('atual', i === passo); });
       $('#corpo').innerHTML = `<div class="passo-conteudo">${corpos[passo]()}</div>`; $('#erro').innerHTML = '';
       $('#voltar').style.visibility = passo ? 'visible' : 'hidden';
-      $('#avancar').textContent = passo === 3 ? 'Enviar pedido ✓' : 'Continuar →';
+      $('#avancar').textContent = passo === 1 ? 'Enviar pedido ✓' : 'Continuar →';
       if ($('#cid') && v.id_municipio) $('#cid').value = v.id_municipio;
-      if ($('#cpf')) $('#cpf').oninput = (e) => { const d = e.target.value.replace(/\D/g, '').slice(0, 11); e.target.value = d.replace(/(\d{3})(\d)/, '$1.$2').replace(/(\d{3})(\d)/, '$1.$2').replace(/(\d{3})(\d{1,2})$/, '$1-$2'); };
-      if ($('#just')) { const at = () => { const n = $('#just').value.trim().length; $('#cont').textContent = `${n}/50`; $('#cont').style.color = n >= 50 ? 'var(--verde)' : ''; }; $('#just').oninput = at; at(); }
-      if (passo === 3) senhaOk = ligarSenha('forte');
+      if (passo === 1) senhaOk = ligarSenha('forte');
       $('#corpo input, #corpo select, #corpo textarea')?.focus();
     };
     const validar = () => {
       $$('.campo.erro').forEach((c) => c.classList.remove('erro'));
       if (passo === 0) {
-        Object.assign(v, { nome: $('#nome').value.trim(), cpf: $('#cpf').value, telefone: $('#tel').value, email_institucional: $('#emi').value.trim() });
+        Object.assign(v, { nome: $('#nome').value.trim(), email_institucional: $('#emi').value.trim(), orgao: $('#orgao').value.trim(), cargo: $('#cargo').value.trim(), id_municipio: $('#cid').value || null });
         marcarErro('nome', v.nome.split(' ').length < 2 ? 'Nome completo, por favor.' : '');
-        marcarErro('cpf', !cpfValido(v.cpf) ? 'CPF inválido.' : '');
-        marcarErro('tel', !/^\d{10,11}$/.test(v.telefone.replace(/\D/g, '')) ? 'DDD + número.' : '');
         marcarErro('emi', !/^\S+@\S+\.\S+$/.test(v.email_institucional) ? 'E-mail inválido.' : PESSOAIS.test(v.email_institucional) ? 'Use o e-mail do órgão, não o pessoal.' : '');
+        ['orgao', 'cargo'].forEach((id) => marcarErro(id, $(`#${id}`).value.trim().length < 3 ? 'Obrigatório.' : ''));
+        if (analista) v.registro_conselho = $('#reg').value.trim();
+        else marcarErro('cid', !v.id_municipio ? 'Escolha a cidade.' : '');
       }
       if (passo === 1) {
-        Object.assign(v, { orgao: $('#orgao').value.trim(), cargo: $('#cargo').value.trim(), matricula: $('#mat').value.trim(), formacao: $('#form').value.trim(), id_municipio: $('#cid').value || null });
-        ['orgao', 'cargo', 'mat', 'form'].forEach((id) => marcarErro(id, !$(`#${id}`).value.trim() ? 'Obrigatório.' : ''));
-        if (analista) { v.registro_conselho = $('#reg').value.trim(); marcarErro('reg', v.registro_conselho.length < 4 ? 'Informe o registro.' : ''); }
-        else { v.portaria_nomeacao = $('#port').value.trim(); marcarErro('port', v.portaria_nomeacao.length < 6 ? 'Informe a portaria.' : ''); marcarErro('cid', !v.id_municipio ? 'Escolha a cidade.' : ''); }
-      }
-      if (passo === 2) {
-        Object.assign(v, { documento_url: $('#doc').value.trim(), justificativa: $('#just').value.trim(), aceite_termo: $('#termo').checked });
-        marcarErro('doc', !/^https:\/\/\S+\.\S+/.test(v.documento_url) ? 'O link precisa começar com https://' : '');
-        marcarErro('just', v.justificativa.length < 50 ? 'Escreva pelo menos 50 caracteres.' : '');
-        if (!v.aceite_termo && !$$('.campo.erro').length) { erroEm($('#erro'), 'É preciso aceitar o termo de responsabilidade.'); return false; }
-      }
-      if (passo === 3) {
-        v.senha = $('#senha').value;
+        v.senha = $('#senha').value; v.aceite_termo = $('#termo').checked;
         marcarErro('senha2', $('#senha2').value !== v.senha ? 'As senhas não são iguais.' : '');
         if (!senhaOk()) { erroEm($('#erro'), 'A senha precisa cumprir todas as regras.'); return false; }
+        if (!v.aceite_termo && !$$('.campo.erro').length) { erroEm($('#erro'), 'É preciso aceitar o termo de responsabilidade.'); return false; }
       }
       if ($$('.campo.erro').length) { erroEm($('#erro'), 'Confira os campos marcados.'); return false; }
       return true;
@@ -318,18 +294,18 @@ const Publico = (() => {
     $('#voltar').onclick = () => { if (passo) { passo--; desenhar(); } };
     $('#fp').onsubmit = async (e) => {
       e.preventDefault(); if (!validar()) return;
-      if (passo < 3) { passo++; return desenhar(); }
+      if (passo < 1) { passo++; return desenhar(); }
       const b = $('#avancar'); carregandoBtn(b, true);
       try {
-        await API.post('/auth/cadastro/profissional', { ...v, cpf: v.cpf.replace(/\D/g, ''), telefone: v.telefone.replace(/\D/g, '') });
-        $('#caixa').innerHTML = sucesso('Pedido enviado! 📨', 'Um administrador vai conferir seus documentos. A resposta chega no seu e-mail institucional.', `
+        await API.post('/auth/cadastro/profissional', v);
+        $('#caixa').innerHTML = sucesso('Pedido enviado! 📨', 'Um administrador vai confirmar seu vínculo com o órgão. A resposta chega no seu e-mail institucional.', `
           <div class="linha-tempo"><div class="feito"><b class="bola">✓</b><span><strong>Pedido enviado</strong><small>agora</small></span></div>
-          <div class="agora"><b class="bola">2</b><span><strong>Conferência pelo administrador</strong><small>vínculo, ${analista ? 'registro no conselho' : 'portaria de nomeação'} e documento</small></span></div>
+          <div class="agora"><b class="bola">2</b><span><strong>Conferência pelo administrador</strong><small>e-mail institucional, órgão e cargo</small></span></div>
           <div><b class="bola">3</b><span><strong>Acesso liberado</strong><small>você entra com seu e-mail e senha</small></span></div></div>
           <a class="btn fantasma" href="#/">Voltar ao início</a>`);
       } catch (err) {
         erroEm($('#erro'), err.message); carregandoBtn(b, false, 'Enviar pedido ✓');
-        if (/CPF|e-mail|Telefone|nome/i.test(err.message)) { passo = 0; desenhar(); erroEm($('#erro'), err.message); }
+        if (/e-mail|nome|órgão|cargo|cidade/i.test(err.message)) { passo = 0; desenhar(); erroEm($('#erro'), err.message); }
       }
     };
     desenhar();

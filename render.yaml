@@ -1,0 +1,44 @@
+# Render (https://render.com) — publica o SITE + API do EcoCity a partir do GitHub.
+# O banco fica na Aiven (MySQL). Preencha as variáveis marcadas com sync: false no painel do Render.
+services:
+  - type: web
+    name: ecocity
+    runtime: node
+    plan: free
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: node src/server.js
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: "20"
+      - key: DB_HOST            # Aiven: Host do serviço (ex.: mysql-ecocity-xxxx.aivencloud.com)
+        sync: false
+      - key: DB_PORT            # Aiven: Port (não é 3306)
+        sync: false
+      - key: DB_NAME
+        value: ecocity
+      - key: DB_SSL
+        value: "true"
+      - key: DB_SSL_CA          # Aiven: conteúdo do arquivo ca.pem (Download CA certificate)
+        sync: false
+      - key: DB_USER
+        value: ecocity_api
+      - key: DB_PASS
+        sync: false
+      - key: DB_IA_USER
+        value: ecocity_ia
+      - key: DB_IA_PASS
+        sync: false
+      - key: DB_ETL_USER
+        value: ecocity_etl
+      - key: DB_ETL_PASS
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRES
+        value: 8h
+      - key: COLETA_AUTOMATICA
+        value: "false"
+      - key: COLETA_MODO
+        value: mensal

@@ -154,3 +154,16 @@ SELECT * FROM vw_origem_dados;   -- mostra quanto ainda é estimado
 Observação: Guarulhos e Campinas têm emissões de transporte por habitante altas porque o SEEG contabiliza o combustível de aviação dos aeroportos (Guarulhos e Viracopos) no município.
 
 As regras de quem pode fazer o quê ficam no **banco** (procedures e triggers). A API repassa os pedidos e devolve a mensagem do banco quando uma regra bloqueia (HTTP 422).
+
+## O que mudou na versão 21 (24/11/2026)
+
+- **Posição entre as 8 cidades corrigida**: antes, por erro de arredondamento, uma cidade podia aparecer em "9º de 8". Agora a posição é calculada pelo valor exato e sempre fica entre 1º e 8º, igual em todas as telas.
+- **Estimativas sem variação aleatória**: a estimativa só muda quando a série oficial usada muda. Números que vêm de um total **anual** (água, lixo, emissões) não mostram mais "melhorou/piorou" de um mês para o outro.
+- **Dados oficiais sempre visíveis**: a Visão geral tem duas barras (os números do mês e o último dado oficial de cada número, com oficiais do mês e do ano); cada número mostra o último dado oficial publicado (valor, mês e fonte), e os gráficos trazem esse oficial mesmo quando ele é mais antigo que os meses exibidos.
+- **Sem "nota 0–100"**: as telas de analista e gestor usam metas cumpridas, quanto falta para a meta e a posição entre as cidades.
+- **Metas escritas e realistas**: cada meta tem a frase da meta, ponto de partida, prazo e os projetos para chegar lá (tabela `meta`: colunas novas `descricao`, `linha_base`, `prazo`, `como_atingir`). O analista abre os detalhes antes de dar o parecer.
+- **Cadastro de gestor e analista mais curto**: nome, e-mail institucional, órgão, cargo e cidade (gestor). CPF, telefone, matrícula, formação e documentos passaram a ser opcionais.
+
+## Publicar na Aiven (banco) + Render (site)
+
+Passo a passo em [`PUBLICAR_NA_AIVEN.md`](PUBLICAR_NA_AIVEN.md). Use o script `sql/ecocity_banco_aiven.sql` (versão para banco gerenciado: as permissões dos papéis também vão direto para cada usuário) e o `render.yaml` da raiz.

@@ -154,9 +154,10 @@ const UI = (() => {
     return { min: Math.floor(mn / k) * k, max: Math.ceil(mx / k) * k, passo: k };
   }
   // gráfico de linha com eixo, linha da meta, legenda e dica ao passar o mouse
-  function linha(series, { altura = 260, largura = 680, rotulos = [], meta = null, unidade = '', casas = 1, min, max, origens = null } = {}) {
+  function linha(series, { altura = 260, largura = 680, rotulos = [], meta = null, unidade = '', casas = 1, min, max, origens = null, refOficial = null } = {}) {
+    // refOficial = { valor, rotulo }: linha tracejada com o último dado OFICIAL (quando ele é mais antigo que o gráfico)
     const W = largura, H = altura, P = { l: 46, r: 16, t: 16, b: 30 };
-    const todos = series.flatMap((s) => s.valores);
+    const todos = [...series.flatMap((s) => s.valores), ...(refOficial ? [refOficial.valor] : [])];
     const e = min != null && max != null ? { min, max, passo: (max - min) / 4 } : escalaY(todos, meta);
     const n = Math.max(...series.map((s) => s.valores.length));
     const x = (i) => P.l + (i * (W - P.l - P.r)) / Math.max(1, n - 1);
@@ -165,6 +166,7 @@ const UI = (() => {
     for (let v = e.min; v <= e.max + 1e-9; v += e.passo) g += `<line class="grade-l" x1="${P.l}" x2="${W - P.r}" y1="${y(v)}" y2="${y(v)}"/><text x="${P.l - 8}" y="${y(v) + 4}" text-anchor="end">${num(v, e.passo < 1 ? 1 : 0)}</text>`;
     const passoR = Math.ceil(n / 7);
     rotulos.forEach((r, i) => { if (i % passoR === 0 || i === n - 1) g += `<text x="${x(i)}" y="${H - 8}" text-anchor="middle">${esc(r)}</text>`; });
+    if (refOficial) g += `<line class="of-l" x1="${P.l}" x2="${W - P.r}" y1="${y(refOficial.valor)}" y2="${y(refOficial.valor)}"/><text class="of-t" x="${P.l + 6}" y="${y(refOficial.valor) - 6}">último oficial (${esc(refOficial.rotulo)}): ${num(refOficial.valor, casas)}</text>`;
     if (meta != null) g += `<line class="meta-l" x1="${P.l}" x2="${W - P.r}" y1="${y(meta)}" y2="${y(meta)}"/><text class="meta-t" x="${W - P.r - 4}" y="${y(meta) - 6}" text-anchor="end">meta ${num(meta, casas)}</text>`;
     const caminhos = series.map((s, k) => {
       const pts = s.valores.map((v, i) => (v == null ? null : [x(i), y(v)])).filter(Boolean);
@@ -210,7 +212,7 @@ const UI = (() => {
     notaIndicador: ['O que é a nota de um número?', 'Mostra quão perto da meta o número está: <b>100</b> = cumpriu a meta; a cada 1% longe da meta, perde 1,5 ponto (mínimo 0). Ex.: 20% acima do limite de água → nota 70.'],
     notaArea: ['O que é a nota de uma área?', 'É a média das notas dos 2 números da área (ex.: Água = consumo por pessoa + perdas). <b>Bom</b>: 85 ou mais · <b>Atenção</b>: 55 a 84 · <b>Crítico</b>: abaixo de 55.'],
     meta: ['O que é a meta?', 'É o valor-alvo de cada número. Um gestor propõe, um analista dá o parecer técnico e <b>outro</b> gestor aprova. Só gestores e analistas veem as metas.'],
-    risco: ['Como o risco é calculado?', 'Junta duas coisas: quanto a nota da cidade está longe de 100 (peso 70%) e os alertas abertos da IA (cada crítico soma 6, cada atenção soma 2). <b>Alto</b> a partir de 50 · <b>médio</b> de 30 a 49 · <b>baixo</b> abaixo de 30.'],
+    risco: ['Como o risco é calculado?', 'Junta duas coisas: as metas que a cidade <b>não</b> cumpre (cada uma soma 7) e os alertas abertos da IA (cada crítico soma 6, cada atenção soma 2). <b>Alto</b> a partir de 50 · <b>médio</b> de 30 a 49 · <b>baixo</b> abaixo de 30.'],
     origem: ['Oficial ou estimado?', '<b>Oficial do mês</b>: número publicado pela fonte (ANEEL, SPTrans) para aquele mês. <b>Oficial do ano</b>: a fonte (SNIS, SINISA, SEEG) publica o total do ano e o EcoCity divide pelos meses. <b>Estimado</b>: não existe número oficial da cidade; o EcoCity estima a partir de uma série oficial maior (ex.: energia do Estado).'],
   };
   const info = (k) => `<button type="button" class="info-btn" data-info="${k}" aria-label="${esc(EXPLICA[k]?.[0] || 'Ajuda')}">?</button>`;
@@ -234,9 +236,11 @@ const UI = (() => {
     return `<div class="waffle">${[...Array(100)].map((_, i) => `<i style="--atraso:${(i % 10) * 0.02 + Math.floor(i / 10) * 0.03}s;background:${i < k ? cor : corResto}"></i>`).join('')}</div>`;
   }
   // colunas (meses) — pequenas e coloridas
-  function colunas(vals, rotulos, cor = COR.azul, { meta = null, sentido = 'MENOR_MELHOR', casas = 1, origens = null } = {}) {
-    const v = vals.filter((x) => x != null); const mx = Math.max(...v, meta || 0) * 1.1 || 1;
-    return `<div class="colunas">${vals.map((x, i) => { const ok = meta == null ? true : sentido === 'MAIOR_MELHOR' ? x >= meta : x <= meta;
+  function colunas(vals, rotulos, cor = COR.azul, { meta = null, sentido = 'MENOR_MELHOR', casas = 1, origens = null, oficialAntes = null } = {}) {
+    // oficialAntes = { valor, rotulo }: o último dado OFICIAL, quando ele é mais antigo que os meses do gráfico
+    const v = vals.filter((x) => x != null); const mx = Math.max(...v, meta || 0, oficialAntes?.valor || 0) * 1.1 || 1;
+    const antes = oficialAntes ? `<div class="col-of" title="Último dado oficial (${esc(oficialAntes.rotulo)}): ${num(oficialAntes.valor, casas)}"><i style="--h:${((oficialAntes.valor / mx) * 120).toFixed(1)}px;background:${cor}"></i><small>${esc(oficialAntes.rotulo)}</small><span>último oficial</span></div><div class="col-sep" aria-hidden="true"></div>` : '';
+    return `<div class="colunas${oficialAntes ? ' com-of' : ''}">${antes}${vals.map((x, i) => { const ok = meta == null ? true : sentido === 'MAIOR_MELHOR' ? x >= meta : x <= meta;
       const est = origens?.[i] === 'ESTIMADO';
       return `<div title="${esc(rotulos[i])}: ${num(x, casas)}${origens ? ` · ${est ? 'estimativa' : 'oficial'}` : ''}"><i class="${est ? 'est' : ''}" style="--h:${((x / mx) * 120).toFixed(1)}px;--atraso:${i * 0.04}s;background:${ok ? cor : '#E2B07E'}"></i><small>${esc(rotulos[i])}</small></div>`; }).join('')}${meta != null ? `<em style="bottom:calc(22px + ${((meta / mx) * 120).toFixed(1)}px)"><b>meta</b></em>` : ''}</div>${origens ? `<div class="col-leg"><span><i style="background:${cor}"></i>oficial</span><span><i class="est" style="background:${cor}"></i>estimado</span></div>` : ''}`;
   }

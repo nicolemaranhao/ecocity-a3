@@ -558,9 +558,11 @@ BEGIN
   IF p_perfil NOT IN ('ANALISTA','GESTOR') THEN
     SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Cadastro profissional só para ANALISTA ou GESTOR.';
   END IF;
+  -- Só o NECESSÁRIO é obrigatório: nome, e-mail institucional, órgão, cargo, aceite do termo e (gestor) a cidade.
+  -- CPF, telefone, matrícula, formação, registro, portaria, documento e justificativa são opcionais.
   IF CHAR_LENGTH(TRIM(COALESCE(p_nome, ''))) < 5 THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Informe o nome completo.'; END IF;
-  IF NOT fn_cpf_valido(v_cpf) THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'CPF inválido.'; END IF;
-  IF EXISTS (SELECT 1 FROM cadastro_profissional WHERE cpf_hash = SHA2(v_cpf, 256)) THEN
+  IF v_cpf <> '' AND NOT fn_cpf_valido(v_cpf) THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'CPF inválido.'; END IF;
+  IF v_cpf <> '' AND EXISTS (SELECT 1 FROM cadastro_profissional WHERE cpf_hash = SHA2(v_cpf, 256)) THEN
     SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Já existe um cadastro com este CPF.';
   END IF;
   IF v_email NOT LIKE '%_@_%._%'
@@ -569,36 +571,31 @@ BEGIN
     SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Use o e-mail institucional do órgão (e-mail pessoal não é aceito).';
   END IF;
   IF EXISTS (SELECT 1 FROM usuario WHERE email = v_email) THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Este e-mail já tem cadastro.'; END IF;
-  IF v_tel NOT REGEXP '^[0-9]{10,11}$' THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Telefone inválido (DDD + número).'; END IF;
-  IF CHAR_LENGTH(TRIM(COALESCE(p_orgao,''))) < 3 OR CHAR_LENGTH(TRIM(COALESCE(p_cargo,''))) < 3
-     OR CHAR_LENGTH(TRIM(COALESCE(p_matricula,''))) < 3 OR CHAR_LENGTH(TRIM(COALESCE(p_formacao,''))) < 5 THEN
-    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Informe órgão, cargo, matrícula e formação.';
+  IF v_tel <> '' AND v_tel NOT REGEXP '^[0-9]{10,11}$' THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Telefone inválido (DDD + número).'; END IF;
+  IF CHAR_LENGTH(TRIM(COALESCE(p_orgao,''))) < 3 OR CHAR_LENGTH(TRIM(COALESCE(p_cargo,''))) < 3 THEN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Informe o órgão onde trabalha e o seu cargo.';
   END IF;
-  IF COALESCE(p_documento_url, '') NOT LIKE 'https://%' THEN
-    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Envie o link (https) da declaração de vínculo assinada pelo órgão.';
-  END IF;
-  IF CHAR_LENGTH(TRIM(COALESCE(p_justificativa, ''))) < 50 THEN
-    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Explique por que precisa do acesso (mínimo 50 caracteres).';
+  IF COALESCE(p_documento_url, '') <> '' AND p_documento_url NOT LIKE 'https://%' THEN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'O link do documento precisa começar com https://';
   END IF;
   IF NOT COALESCE(p_aceite_termo, FALSE) THEN
     SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'É preciso aceitar o termo de responsabilidade.';
   END IF;
-  IF p_perfil = 'ANALISTA' AND CHAR_LENGTH(TRIM(COALESCE(p_registro, ''))) < 5 THEN
-    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Analista: informe o registro no conselho profissional (CREA, CRQ, CRBio, CORECON...).';
-  END IF;
-  IF p_perfil = 'GESTOR' AND (CHAR_LENGTH(TRIM(COALESCE(p_portaria, ''))) < 5 OR p_municipio IS NULL) THEN
-    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Gestor: informe a portaria de nomeação (Diário Oficial) e a cidade em que atua.';
+  IF p_perfil = 'GESTOR' AND p_municipio IS NULL THEN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Gestor: informe a cidade em que atua.';
   END IF;
 
   START TRANSACTION;
   INSERT INTO usuario (nome, email, telefone, senha_hash, id_perfil, id_municipio, status_cadastro)
-  VALUES (TRIM(p_nome), v_email, v_tel, p_senha_hash, (SELECT id_perfil FROM perfil WHERE nome = p_perfil), p_municipio, 'EM_ANALISE');
+  VALUES (TRIM(p_nome), v_email, NULLIF(v_tel, ''), p_senha_hash, (SELECT id_perfil FROM perfil WHERE nome = p_perfil), p_municipio, 'EM_ANALISE');
   SET v_id = LAST_INSERT_ID();
   INSERT INTO cadastro_profissional (id_usuario, cpf_hash, cpf_final, email_institucional, telefone_institucional, orgao, cargo,
          matricula, formacao, registro_conselho, portaria_nomeacao, id_municipio_atuacao, documento_url, justificativa,
          aceite_termo_em, ip_aceite)
-  VALUES (v_id, SHA2(v_cpf, 256), RIGHT(v_cpf, 2), v_email, v_tel, TRIM(p_orgao), TRIM(p_cargo), TRIM(p_matricula), TRIM(p_formacao),
-          NULLIF(TRIM(p_registro), ''), NULLIF(TRIM(p_portaria), ''), p_municipio, p_documento_url, TRIM(p_justificativa), NOW(), p_ip);
+  VALUES (v_id, IF(v_cpf = '', NULL, SHA2(v_cpf, 256)), NULLIF(RIGHT(v_cpf, 2), ''), v_email, NULLIF(v_tel, ''), TRIM(p_orgao), TRIM(p_cargo),
+          NULLIF(TRIM(COALESCE(p_matricula, '')), ''), NULLIF(TRIM(COALESCE(p_formacao, '')), ''),
+          NULLIF(TRIM(COALESCE(p_registro, '')), ''), NULLIF(TRIM(COALESCE(p_portaria, '')), ''), p_municipio,
+          NULLIF(TRIM(COALESCE(p_documento_url, '')), ''), NULLIF(TRIM(COALESCE(p_justificativa, '')), ''), NOW(), p_ip);
   COMMIT;
   SELECT v_id AS id_usuario, 'EM_ANALISE' AS status_cadastro;
 END $$
@@ -852,10 +849,12 @@ END $$
 -- ---------------------------------------------------------------------
 DROP PROCEDURE IF EXISTS sp_propor_meta $$
 CREATE PROCEDURE sp_propor_meta(IN p_gestor INT UNSIGNED, IN p_codigo VARCHAR(10), IN p_municipio SMALLINT UNSIGNED,
-                                IN p_valor DECIMAL(12,4), IN p_inicio DATE, IN p_justificativa VARCHAR(600), IN p_referencia VARCHAR(200))
+                                IN p_valor DECIMAL(12,4), IN p_inicio DATE, IN p_justificativa VARCHAR(600), IN p_referencia VARCHAR(200),
+                                IN p_descricao VARCHAR(300), IN p_prazo DATE, IN p_como VARCHAR(2000))
 BEGIN
   DECLARE v_ind SMALLINT UNSIGNED;
   DECLARE v_ref DECIMAL(12,4);
+  DECLARE v_base DECIMAL(12,4);
   DECLARE v_ini DATE DEFAULT DATE_FORMAT(p_inicio, '%Y-%m-01');
 
   IF fn_perfil(p_gestor) IS NULL OR fn_perfil(p_gestor) <> 'GESTOR' THEN
@@ -872,8 +871,21 @@ BEGIN
   IF CHAR_LENGTH(TRIM(COALESCE(p_justificativa,''))) < 30 OR CHAR_LENGTH(TRIM(COALESCE(p_referencia,''))) < 3 THEN
     SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Informe a justificativa (mín. 30 caracteres) e a referência técnica.';
   END IF;
-  INSERT INTO meta (id_indicador, id_municipio, valor, vigencia_inicio, justificativa, referencia, proposta_por)
-  VALUES (v_ind, p_municipio, p_valor, v_ini, p_justificativa, p_referencia, p_gestor);
+  IF CHAR_LENGTH(TRIM(COALESCE(p_descricao,''))) < 20 THEN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Escreva a meta em uma frase (mín. 20 caracteres). Ex.: Reduzir de 192 para 182 L por pessoa por dia até dez/2027.';
+  END IF;
+  IF CHAR_LENGTH(TRIM(COALESCE(p_como,''))) < 30 THEN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Diga como a meta será atingida: os projetos e ações (mín. 30 caracteres).';
+  END IF;
+  IF p_prazo IS NULL OR p_prazo < v_ini THEN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Informe o prazo (depois do início da meta).';
+  END IF;
+  -- linha de base: último valor da cidade (ou média das 8 cidades, se a meta vale para todas)
+  SELECT AVG(iv.valor) INTO v_base FROM indicador_valor iv
+  WHERE iv.id_indicador = v_ind AND (p_municipio IS NULL OR iv.id_municipio = p_municipio)
+    AND iv.periodo = (SELECT MAX(periodo) FROM indicador_valor WHERE id_indicador = v_ind);
+  INSERT INTO meta (id_indicador, id_municipio, valor, vigencia_inicio, justificativa, referencia, descricao, linha_base, prazo, como_atingir, proposta_por)
+  VALUES (v_ind, p_municipio, p_valor, v_ini, p_justificativa, p_referencia, p_descricao, v_base, DATE_FORMAT(p_prazo, '%Y-%m-01'), p_como, p_gestor);
   SELECT LAST_INSERT_ID() AS id_meta, 'PROPOSTA' AS status;
 END $$
 

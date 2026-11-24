@@ -41,4 +41,57 @@ for a in ARQS:
     partes.append((P / a).read_text(encoding='utf-8'))
 partes.append(ROD)
 (P / 'ecocity_banco_completo.sql').write_text(''.join(partes), encoding='utf-8')
+
+# ---------------------------------------------------------------------------------------------
+# Versão para bancos GERENCIADOS na nuvem (Aiven, e parecidos): o usuário administrador
+# (avnadmin) não tem o privilégio ROLE_ADMIN, então não consegue "dar um papel" a um usuário
+# (GRANT r_gestor TO ecocity_api). Os papéis continuam sendo criados com as permissões, e as
+# MESMAS permissões são dadas também direto a cada usuário. O resultado de acesso é o mesmo.
+import re
+USUARIOS_DO_PAPEL = {   # inclui a herança: r_bi -> r_analista -> r_gestor -> ecocity_api
+    'r_cidadao': ["'ecocity_api'@'%'"], 'r_gestor': ["'ecocity_api'@'%'"], 'r_analista': ["'ecocity_api'@'%'"],
+    'r_bi': ["'ecocity_bi'@'%'", "'ecocity_api'@'%'"], 'r_etl': ["'ecocity_etl'@'%'"], 'r_dba': ["'ecocity_dba'@'%'"], 'r_ia': ["'ecocity_ia'@'%'"],
+}
+seg = (P / '06_seguranca.sql').read_text(encoding='utf-8')
+# separa em comandos (terminam com ';' no fim da linha)
+cmds, atual = [], []
+for linha in seg.splitlines(keepends=True):
+    atual.append(linha)
+    if re.search(r";\s*(--.*)?$", linha.rstrip('\n')):
+        cmds.append(''.join(atual)); atual = []
+cmds.append(''.join(atual))
+grants_de_papel, saida = [], []
+for c in cmds:
+    corpo = re.sub(r'--[^\n]*', '', c).strip()
+    if re.match(r'(?is)^GRANT\s+r_\w+(\s*,\s*r_\w+)*\s+TO\b', corpo) or re.match(r'(?is)^SET\s+DEFAULT\s+ROLE', corpo):
+        saida.append('-- (Aiven) ' + c.strip().replace('\n', '\n-- ') + '\n'); continue
+    saida.append(c)
+    m = re.match(r'(?is)^(GRANT\s+.+?\s+TO\s+)(r_\w+)\s*;$', corpo)
+    if m and m.group(2) in USUARIOS_DO_PAPEL:
+        for u in USUARIOS_DO_PAPEL[m.group(2)]:
+            grants_de_papel.append(f"{m.group(1)}{u};")
+seg_aiven = ''.join(saida).replace("SHOW GRANTS FOR 'ecocity_api'@'%' USING r_gestor, r_cidadao;", "SHOW GRANTS FOR 'ecocity_api'@'%';").replace("SHOW GRANTS FOR 'ecocity_ia'@'%' USING r_ia;", "SHOW GRANTS FOR 'ecocity_ia'@'%';")
+# as permissões dos papéis vão direto para os usuários logo depois que eles são criados
+marca = "GRANT EXECUTE ON PROCEDURE ecocity.sp_registrar_login TO 'ecocity_api'@'%';"
+assert marca in seg_aiven
+seg_aiven = seg_aiven.replace(marca, "-- (Aiven) mesmas permissões dos papéis, dadas direto a cada usuário\n" + "\n".join(grants_de_papel) + "\n" + marca, 1)
+CAB_AIVEN = CAB.replace("BANCO COMPLETO EM UM ÚNICO ARQUIVO (para o MySQL Workbench)", "BANCO COMPLETO PARA A NUVEM (Aiven for MySQL)") \
+    .replace("--  Como usar: File > Open SQL Script... > escolha este arquivo > clique no raio",
+             "--  Como usar: conecte no Workbench com o usuário avnadmin (SSL obrigatório) > abra este arquivo > raio.\n"
+             "--  Diferença para a versão local: os papéis (roles) são criados, mas as permissões também vão\n"
+             "--  direto para cada usuário, porque o avnadmin não pode conceder papéis (falta ROLE_ADMIN).")
+MODO = "SET SESSION sql_mode = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';   -- mesmo modo do MySQL local (o da nuvem pode ser diferente)\n"
+partes_a = [CAB_AIVEN + MODO]
+for a in ARQS:
+    partes_a.append(f"\n-- >>>>>>>>>>>>>>>>>>>> {a} <<<<<<<<<<<<<<<<<<<<\n")
+    txt = (P / a).read_text(encoding='utf-8')
+    if a == '06_seguranca.sql':
+        txt = seg_aiven
+    else:   # nos outros scripts os usuários já existem: repete cada GRANT de papel logo em seguida para os usuários
+        def repete(m):
+            return m.group(0) + ''.join(f"\n{m.group(1)}{u};   -- (Aiven) direto ao usuário" for u in USUARIOS_DO_PAPEL.get(m.group(2), []))
+        txt = re.sub(r'(?m)^(GRANT\s+[^;]+?\s+TO\s+)(r_\w+)\s*;', repete, txt)
+    partes_a.append(txt)
+partes_a.append(ROD)
+(P / 'ecocity_banco_aiven.sql').write_text(''.join(partes_a), encoding='utf-8')
 print('ok')

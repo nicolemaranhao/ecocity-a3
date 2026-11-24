@@ -21,15 +21,26 @@ r.get('/metas', exigirPerfil('ANALISTA'), wrap(async (req, res) => {
   const rows = st
     ? await query('SELECT * FROM vw_metas WHERE status = ? ORDER BY codigo, vigencia_inicio', [String(st)])
     : await query("SELECT * FROM vw_metas ORDER BY FIELD(status,'PROPOSTA','PARECER_EMITIDO','APROVADA','REJEITADA','SUBSTITUIDA'), codigo, vigencia_inicio");
+  // valor de HOJE (último mês) para cada meta: da cidade, ou média das 8 cidades (e quantas já cumprem)
+  const atual = await query(`SELECT i.codigo, iv.id_municipio, iv.valor FROM indicador_valor iv JOIN indicador i USING (id_indicador)
+                             WHERE iv.periodo = (SELECT MAX(periodo) FROM indicador_valor)`);
+  for (const m of rows) {
+    const vs = atual.filter((a) => a.codigo === m.codigo && (!m.id_municipio || a.id_municipio === m.id_municipio)).map((a) => Number(a.valor));
+    m.valor_atual = vs.length ? vs.reduce((a, b) => a + b, 0) / vs.length : null;
+    const ok = (v) => (m.sentido === 'MAIOR_MELHOR' ? v >= Number(m.valor) : v <= Number(m.valor));
+    m.cidades_cumprem = m.id_municipio ? null : vs.filter(ok).length;
+    m.cumpre_hoje = m.valor_atual == null ? null : (m.id_municipio ? ok(m.valor_atual) : m.cidades_cumprem === vs.length);
+  }
   res.json(rows);
 }));
 
 // Formulário "Nova meta"
 r.post('/metas', exigirPerfil('GESTOR'), wrap(async (req, res) => {
   const b = req.body || {};
-  obrigatorios(b, ['codigo_indicador', 'valor', 'vigencia_inicio', 'justificativa', 'referencia']);
-  res.status(201).json(await chamar('CALL sp_propor_meta(?,?,?,?,?,?,?)',
-    [req.usuario.id, b.codigo_indicador, b.id_municipio || null, b.valor, b.vigencia_inicio, b.justificativa, b.referencia]));
+  obrigatorios(b, ['codigo_indicador', 'valor', 'vigencia_inicio', 'justificativa', 'referencia', 'descricao', 'prazo', 'como_atingir']);
+  res.status(201).json(await chamar('CALL sp_propor_meta(?,?,?,?,?,?,?,?,?,?)',
+    [req.usuario.id, b.codigo_indicador, b.id_municipio || null, b.valor, b.vigencia_inicio, b.justificativa, b.referencia,
+      b.descricao, b.prazo, String(b.como_atingir).slice(0, 2000)]));
 }));
 
 r.post('/metas/:id/parecer', exigirPerfil('ANALISTA'), wrap(async (req, res) => {

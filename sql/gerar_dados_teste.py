@@ -83,7 +83,9 @@ def rot(a, m):
 
 
 def ruido(x, pct=0.01):
-    return x * (1 + random.uniform(-pct, pct))
+    # Antes somava uma pequena variação aleatória às estimativas. Tiramos: estimativa não pode
+    # "inventar" subida ou descida. Agora a estimativa só muda quando a série oficial usada muda.
+    return x
 
 
 def q(s):
@@ -248,21 +250,21 @@ w(",\n".join(f"  ({q(c)},{q(n)},{s},{u})" for c, n, s, u, _ in METRICAS) + ";\n"
 
 INDICADORES = [
     ("AGU-01", "Consumo de água per capita", "Litros consumidos por habitante por dia",
-     "AGUA_CONSUMIDA*1000 / populacao / dias_do_mes", 1, 6, 150, "MENOR_MELHOR", "ODS 6.4", 1.0),
+     "AGUA_CONSUMIDA*1000 / populacao / dias_do_mes", 1, 6, 180, "MENOR_MELHOR", "ODS 6.4", 1.0),
     ("AGU-02", "Perdas na distribuição de água", "Percentual da água produzida que se perde antes de chegar às casas",
      "(AGUA_PRODUZIDA - AGUA_CONSUMIDA) / AGUA_PRODUZIDA * 100", 1, 7, 25, "MENOR_MELHOR", "ODS 6.4", 1.2),
     ("ENE-01", "Consumo de energia per capita", "kWh consumidos por habitante no mês (todas as classes)",
-     "ENERGIA_CONSUMIDA*1000 / populacao", 2, 8, 220, "MENOR_MELHOR", "ODS 7.3", 1.0),
+     "ENERGIA_CONSUMIDA*1000 / populacao", 2, 8, 245, "MENOR_MELHOR", "ODS 7.3", 1.0),
     ("ENE-02", "Geração distribuída por habitante", "Potência de micro e minigeração distribuída (em geral painéis solares) instalada por habitante",
      "GD_POTENCIA*1000 / populacao", 2, 13, 100, "MAIOR_MELHOR", "ODS 7.2", 1.2),
     ("RES-01", "Geração de resíduos per capita", "kg de resíduos domiciliares coletados por habitante por dia",
      "RESIDUOS_COLETADOS*1000 / populacao / dias_do_mes", 3, 9, 0.95, "MENOR_MELHOR", "ODS 12.5", 1.0),
     ("RES-02", "Taxa de reciclagem", "Percentual dos resíduos coletados recuperado pela coleta seletiva",
-     "RESIDUOS_RECICLADOS / RESIDUOS_COLETADOS * 100", 3, 7, 10, "MAIOR_MELHOR", "ODS 11.6", 1.3),
+     "RESIDUOS_RECICLADOS / RESIDUOS_COLETADOS * 100", 3, 7, 5, "MAIOR_MELHOR", "ODS 11.6", 1.3),
     ("MOB-01", "Uso do transporte público", "Viagens de ônibus por habitante no mês",
-     "TP_PASSAGEIROS / populacao", 4, 10, 15, "MAIOR_MELHOR", "ODS 11.2", 1.0),
+     "TP_PASSAGEIROS / populacao", 4, 10, 8, "MAIOR_MELHOR", "ODS 11.2", 1.0),
     ("MOB-02", "Emissões do transporte per capita", "kg de CO2e emitidos pelo transporte por habitante no mês",
-     "CO2_TRANSPORTE*1000 / populacao", 4, 11, 65, "MENOR_MELHOR", "ODS 13.2", 1.3),
+     "CO2_TRANSPORTE*1000 / populacao", 4, 11, 90, "MENOR_MELHOR", "ODS 13.2", 1.3),
 ]
 w("-- Metas definidas pela equipe a partir de referências do setor (podem ser ajustadas)")
 w("INSERT INTO indicador (codigo, nome, descricao, formula, id_servico, id_unidade, meta, sentido, ods, peso_ies) VALUES")
@@ -326,21 +328,50 @@ w("CALL sp_analisar_cadastro((SELECT id_usuario FROM usuario WHERE email = 'dieg
 w("     'Declaração sem assinatura do órgão e registro no conselho não confere com a área de atuação.', NULL);\n")
 
 
-METAS = [  # codigo, valor, justificativa, referência
-    ("AGU-01", 150, "Consumo acima de 150 L por pessoa por dia indica desperdício em cidades de grande porte; valor usado como referência pela equipe a partir das médias do SNIS.", "SNIS (IN022) e ODS 6.4"),
-    ("AGU-02", 25, "Perdas acima de 25% mostram vazamentos e ligações irregulares em excesso; é o patamar usado nas metas federais de redução de perdas.", "Portaria MDR nº 490/2021 e ODS 6.4"),
-    ("ENE-01", 220, "Consumo total por habitante compatível com uso eficiente de energia em cidades paulistas, definido pela equipe a partir da série da EPE.", "EPE e ODS 7.3"),
-    ("ENE-02", 100, "100 W de geração própria por habitante equivale a uma parcela relevante da demanda residencial atendida por fonte renovável.", "ANEEL e ODS 7.2"),
-    ("RES-01", 0.95, "Valor próximo da média nacional de resíduos coletados por habitante; acima disso indica desperdício ou falta de reaproveitamento.", "SINISA e ODS 12.5"),
-    ("RES-02", 10, "Recuperar 10% do que é coletado é um patamar alcançável com coleta seletiva ampla e cooperativas.", "Lei 12.305/2010 (PNRS) e ODS 11.6"),
-    ("MOB-01", 15, "Média de uma viagem de ônibus a cada dois dias por habitante, típica de cidades com transporte público bem usado.", "SPTrans e ODS 11.2"),
-    ("MOB-02", 65, "Teto de emissões do transporte por habitante compatível com a redução gradual prevista nos compromissos climáticos.", "SEEG e ODS 13.2"),
+# Metas de referência para as 8 cidades (realistas: parte das cidades JÁ cumpre, as outras chegam lá com projetos conhecidos)
+# codigo, valor, meta escrita, justificativa, referência, como atingir (um projeto por linha)
+METAS = [
+    ("AGU-01", 180, "Todas as cidades: no máximo 180 litros de água por pessoa por dia até dez/2027.",
+     "A média das 8 cidades é de cerca de 192 L por pessoa por dia e 4 delas já estão abaixo de 180 L. Reduzir uns 6% é possível com programas de uso racional, sem racionamento. A média do Brasil fica perto de 150 L.",
+     "SNIS/SINISA (consumo médio per capita) e ODS 6.4",
+     "Trocar torneiras e descargas de escolas, postos de saúde e prédios públicos por modelos econômicos (arejador e descarga de 6 litros)\nDar bônus na conta para a família que reduzir o consumo em relação ao mesmo mês do ano anterior\nMostrar na conta de água a média de consumo das casas do bairro, para cada família se comparar\nUsar água de reúso para lavar ruas, regar praças e lavar a frota da prefeitura"),
+    ("AGU-02", 25, "Todas as cidades: no máximo 25% de perdas de água na distribuição até dez/2027.",
+     "Perdas acima de 25% mostram vazamentos e ligações irregulares em excesso. Três cidades já estão abaixo disso; as demais estão entre 27% e 37% e precisam de programa contínuo de combate a perdas.",
+     "Portaria MDR nº 490/2021 (metas de redução de perdas) e ODS 6.4",
+     "Dividir a rede em setores e instalar válvulas que reduzem a pressão à noite (menos pressão = menos vazamento)\nEquipes de caça-vazamento com aparelho de escuta (geofone) nas ruas com mais perdas\nTrocar hidrômetros com mais de 5 anos, que medem menos do que passa\nRegularizar ligações clandestinas com tarifa social para famílias de baixa renda"),
+    ("ENE-01", 245, "Todas as cidades: no máximo 245 kWh de energia elétrica por pessoa por mês até dez/2027.",
+     "A média das 8 cidades está em cerca de 253 kWh por pessoa por mês. A meta pede uma redução pequena (cerca de 3%), alcançável com eficiência energética em prédios públicos e nas casas.",
+     "EPE (consumo por UF), Anuário de Energéticos SEMIL-SP e ODS 7.3",
+     "Trocar toda a iluminação pública e dos prédios municipais por LED\nUsar o Programa de Eficiência Energética da distribuidora (ANEEL) para trocar geladeiras antigas de famílias de baixa renda\nComprar só equipamentos com selo Procel A nas compras públicas\nFazer diagnóstico de consumo em escolas e hospitais e corrigir os desperdícios encontrados"),
+    ("ENE-02", 100, "Todas as cidades: pelo menos 100 watts de painel solar por pessoa até dez/2027.",
+     "Quatro das 8 cidades já passam de 100 W por pessoa e os dados mensais da ANEEL mostram crescimento de cerca de 1% ao mês. As cidades abaixo precisam de incentivo para acelerar.",
+     "ANEEL (geração distribuída) e ODS 7.2",
+     "Desconto no IPTU para quem instalar painéis solares (IPTU Verde)\nInstalar painéis nos telhados de escolas e postos de saúde\nLinha de crédito com juros baixos pela agência de fomento do Estado\nMutirões de orientação para condomínios e pequenos comércios"),
+    ("RES-01", 0.95, "Todas as cidades: no máximo 0,95 kg de lixo por pessoa por dia até dez/2027.",
+     "A média das 8 cidades está em cerca de 0,94 kg por pessoa por dia: a meta é não deixar crescer e reduzir onde está acima (Campinas e Santos). Valor próximo da média nacional do SINISA.",
+     "SINISA (massa coletada per capita) e ODS 12.5",
+     "Compostagem dos restos de comida de feiras livres, escolas e restaurantes populares\nCampanha contra o desperdício de alimentos com supermercados e bancos de alimentos\nCobrar a coleta dos grandes geradores (shoppings, indústrias) separadamente\nAbrir ecopontos para entulho e móveis velhos, que hoje vão para o lixo comum"),
+    ("RES-02", 5, "Todas as cidades: reciclar pelo menos 5% do lixo coletado até dez/2027.",
+     "Hoje as cidades reciclam entre 0,4% e 8,5% do que coletam (média de 3%). Chegar a 5% é um primeiro passo realista; Santos já passou e tem meta própria mais alta (12%).",
+     "Lei 12.305/2010 (PNRS), Planares (Decreto 11.043/2022) e ODS 11.6",
+     "Levar a coleta seletiva porta a porta para todos os bairros, uma vez por semana\nContratar e equipar cooperativas de catadores (galpão, prensa e caminhão)\nInstalar pontos de entrega voluntária de recicláveis em praças e supermercados\nEducação ambiental nas escolas e campanhas explicando como separar o lixo"),
+    ("MOB-01", 8, "Todas as cidades: pelo menos 8 viagens de ônibus por pessoa por mês até dez/2027.",
+     "A média das 8 cidades é de cerca de 7,7 viagens por pessoa por mês e 3 cidades já passam de 8. A meta é recuperar passageiros perdidos desde a pandemia.",
+     "SPTrans (passageiros) e ODS 11.2",
+     "Criar faixas exclusivas de ônibus nas avenidas mais lentas\nBilhete com integração por tempo (pagar uma vez e trocar de ônibus em 2 horas)\nInformação em tempo real nos pontos e no celular\nRenovar a frota com ônibus com ar-condicionado e acessíveis"),
+    ("MOB-02", 90, "Todas as cidades: no máximo 90 kg de CO₂ do transporte por pessoa por mês até dez/2027.",
+     "Quatro cidades já estão abaixo de 90 kg; as que estão acima (Guarulhos, por causa do aeroporto, Campinas e Santos) precisam reduzir o uso de carro e trocar a frota de ônibus.",
+     "SEEG Municípios (emissões de transportes) e ODS 13.2",
+     "Comprar ônibus elétricos ou a gás na renovação da frota\nCiclovias ligando bairros aos terminais de ônibus\nFiscalizar fumaça preta de caminhões e ônibus\nIncentivar entregas com veículos pequenos e elétricos no centro"),
 ]
-w("-- Metas em vigor desde jan/2023 (proposta: gestora Marina; parecer: analista Rafael; aprovação: gestor Carlos)")
-w("INSERT INTO meta (id_indicador, id_municipio, valor, vigencia_inicio, justificativa, referencia, status, proposta_por, parecer_por, parecer_favoravel, parecer, aprovada_por, criada_em, decidida_em) VALUES")
-linhas_meta = [f"  ({k},NULL,{v},'2023-01-01',{q(j)},{q(r)},'APROVADA',2,4,TRUE,'Valor coerente com a série histórica e com a referência técnica citada.',3,'2022-12-05 09:00:00','2022-12-15 16:00:00')"
-               for k, (c, v, j, r) in enumerate(METAS, start=1)]
-linhas_meta.append("  (6,8,12,'2024-07-01','Santos já recicla perto de 9% do que coleta; a meta local mais ambiciosa estimula a ampliação da coleta seletiva.','Plano Municipal de Gestão Integrada de Resíduos (ilustrativo)','APROVADA',3,4,TRUE,'Santos tem a maior taxa de recuperação entre as 8 cidades; 12% é desafiador, mas possível.',2,'2024-05-13 10:00:00','2024-06-03 11:00:00')")
+w("-- Metas de referência em vigor desde jan/2023 (proposta: gestora Marina; parecer: analista Rafael; aprovação: gestor Carlos)")
+w("INSERT INTO meta (id_indicador, id_municipio, valor, vigencia_inicio, justificativa, referencia, descricao, prazo, como_atingir, status, proposta_por, parecer_por, parecer_favoravel, parecer, aprovada_por, criada_em, decidida_em) VALUES")
+linhas_meta = [f"  ({k},NULL,{v},'2023-01-01',{q(j)},{q(r)},{q(dsc)},'2027-12-01',{q(como.replace(chr(92) + 'n', chr(10)))},'APROVADA',2,4,TRUE,'Valor realista: parte das cidades já cumpre e os projetos propostos são conhecidos e usados em outras cidades.',3,'2022-12-05 09:00:00','2022-12-15 16:00:00')"
+               for k, (c, v, dsc, j, r, como) in enumerate(METAS, start=1)]
+linhas_meta.append("  (6,8,12,'2024-07-01','Santos já recicla perto de 9% do que coleta; a meta local mais ambiciosa estimula a ampliação da coleta seletiva.','Plano Municipal de Gestão Integrada de Resíduos (ilustrativo)',"
+                   "'Santos: reciclar 12% do lixo coletado até dez/2027.','2027-12-01',"
+                   + q("Ampliar a coleta seletiva para os morros e a zona noroeste\nNovo galpão de triagem para as cooperativas\nCobrar a separação do lixo dos condomínios da orla").replace("\\n", "\n")
+                   + ",'APROVADA',3,4,TRUE,'Santos tem a maior taxa de recuperação entre as 8 cidades; 12% é desafiador, mas possível.',2,'2024-05-13 10:00:00','2024-06-03 11:00:00')")
 w(",\n".join(linhas_meta) + ";\n")
 
 w("-- Lotes de carga (um por fonte)")
@@ -586,7 +617,7 @@ ANALISES = [
     (4, 4, "2024-01-01", "2024-12-01", "Viagens de ônibus por habitante em São Paulo em 2024",
      "Os dados diários da SPTrans mostram como as viagens de ônibus por habitante variam ao longo do ano.",
      "Somando os dados diários oficiais da SPTrans por mês, as viagens de ônibus por habitante em São Paulo caem nas férias (janeiro e julho) "
-     "e sobem nos meses de aula. A cidade segue abaixo da meta de 15 viagens por habitante por mês. Sugere-se cruzar com dados do metrô "
+     "e sobem nos meses de aula. A cidade fica acima da meta de referência de 8 viagens por habitante por mês, mas perde passageiros nas férias. Sugere-se cruzar com dados do metrô "
      "antes de concluir que houve migração para o transporte individual.",
      [1], [("INDICADOR", 7, 1, None, None, "MOB-01 de São Paulo"),
            ("FONTE_EXTERNA", None, None, None, "https://www.sptrans.com.br", "Relatório diário 'Situação dos ônibus' da SPTrans")],
@@ -600,7 +631,7 @@ ANALISES = [
      ("REVISAR", 2, "DEVOLVIDA", "O consumo municipal é ESTIMADO a partir da série estadual da EPE; a variação reflete o Estado, não Campinas. Reescreva deixando essa limitação clara.")),
     (6, 3, "2023-01-01", "2024-12-01", "Reciclagem em Sorocaba segue abaixo de 2%",
      "Rascunho: a taxa de reciclagem de Sorocaba continua muito abaixo da meta.",
-     "Rascunho em elaboração. A taxa de recuperação de recicláveis de Sorocaba ficou abaixo de 2% em 2023 e 2024 (SINISA, oficial), muito abaixo da meta de 10%. "
+     "Rascunho em elaboração. A taxa de recuperação de recicláveis de Sorocaba ficou abaixo de 2% em 2023 e 2024 (SINISA, oficial), abaixo da meta de 5%. "
      "Falta incluir a comparação com Santos e as evidências. Esta análise ainda não pode ser enviada porque a credencial da autora está pendente "
      "de verificação pelo administrador do sistema.",
      [6], [("INDICADOR", 6, 6, None, None, "RES-02 de Sorocaba")], None),
@@ -620,13 +651,22 @@ w("  (1, 3, 'Vamos usar esta análise na revisão do programa de perdas. Obrigad
 w("  (2, 4, 'Concordo. Guarulhos poderia replicar o programa de painéis em escolas de Ribeirão Preto.'),")
 w("  (2, 6, 'Seria interessante cruzar com o número de sistemas instalados por bairro.');\n")
 
+w("-- Linha de base das metas de referência: média das cidades no mês em que a meta começou a valer")
+w("UPDATE meta m SET linha_base = (SELECT ROUND(AVG(iv.valor), 4) FROM indicador_valor iv WHERE iv.id_indicador = m.id_indicador")
+w("  AND (m.id_municipio IS NULL OR iv.id_municipio = m.id_municipio) AND iv.periodo = m.vigencia_inicio) WHERE m.linha_base IS NULL;\n")
 w("-- =================== METAS NOVAS (fluxo completo pelas procedures) ===================")
-w("CALL sp_propor_meta(2, 'AGU-01', 7, 220, '2027-01-01', 'Ribeirão Preto consome perto de 280 L por habitante por dia; uma meta intermediária de 220 L é mais realista para 2027.', 'Plano Municipal de Saneamento (ilustrativo) e ODS 6.4');")
-w("CALL sp_propor_meta(3, 'AGU-02', 3, 22, '2027-01-01', 'Guarulhos está perto de 25% de perdas; o programa de setorização permite mirar 22% a partir de 2027.', 'Portaria MDR nº 490/2021');")
-w("CALL sp_parecer_meta(LAST_INSERT_ID(), 4, TRUE, 'A série oficial de 2023 e 2024 mostra queda; 22% em 2027 é alcançável.');")
-w("CALL sp_propor_meta(2, 'ENE-02', 5, 300, '2027-01-01', 'São José dos Campos tem ótima irradiação solar e já passa de 150 W por habitante; queremos triplicar a meta.', 'ODS 7.2');")
+w("CALL sp_propor_meta(2, 'AGU-01', 7, 250, '2027-01-01', 'Ribeirão Preto consome perto de 284 L por pessoa por dia, o maior valor das 8 cidades. Cair direto para 180 L não é realista; 250 L até o fim de 2028 (cerca de 12% a menos) é um passo possível.', 'Plano Municipal de Saneamento (ilustrativo) e ODS 6.4',")
+w("     'Ribeirão Preto: reduzir de 284 para 250 litros de água por pessoa por dia até dez/2028.', '2028-12-01',")
+w("     " + q("Instalar hidrômetros individuais nos prédios antigos (hoje a conta é dividida e ninguém sente o gasto)\nTarifa por faixas que pese mais para quem gasta acima de 20 mil litros por mês\nCampanha de uso consciente nos meses secos (junho a setembro)\nTrocar a rede antiga do centro, onde há mais vazamentos").replace("\\n", "\n") + ");")
+w("CALL sp_propor_meta(3, 'AGU-02', 3, 22, '2027-01-01', 'Guarulhos está perto de 28% de perdas; com o programa de setorização da rede dá para chegar a 22% até o fim de 2028.', 'Portaria MDR nº 490/2021',")
+w("     'Guarulhos: reduzir as perdas de água de 28% para 22% até dez/2028.', '2028-12-01',")
+w("     " + q("Concluir a divisão da rede em 40 setores com válvulas redutoras de pressão\nTrocar 60 mil hidrômetros antigos em 2 anos\nEquipe de caça-vazamento noturna nos bairros com mais perdas\nRegularizar ligações irregulares com tarifa social").replace("\\n", "\n") + ");")
+w("CALL sp_parecer_meta(LAST_INSERT_ID(), 4, TRUE, 'A série oficial mostra queda das perdas e os 4 projetos atacam as causas certas (pressão, hidrômetros e ligações irregulares). 22% até 2028 é alcançável.');")
+w("CALL sp_propor_meta(2, 'ENE-02', 5, 300, '2027-01-01', 'São José dos Campos tem ótima irradiação solar e já passa de 150 W por habitante; queremos dobrar até o fim de 2027.', 'ODS 7.2',")
+w("     'São José dos Campos: chegar a 300 watts de painel solar por pessoa até dez/2027.', '2027-12-01',")
+w("     " + q("Painéis solares em todas as escolas municipais\nIPTU Verde com 10% de desconto\nFeira anual de energia solar com instaladores locais").replace("\\n", "\n") + ");")
 w("SET @m = (SELECT MAX(id_meta) FROM meta);")
-w("CALL sp_parecer_meta(@m, 5, FALSE, 'O ritmo atual da ANEEL (cerca de 1% ao mês) leva a cidade a uns 230 W/hab em 2027; 300 W/hab não é realista. Sugiro 230.');")
+w("CALL sp_parecer_meta(@m, 5, FALSE, 'O ritmo atual da ANEEL (cerca de 1% ao mês) leva a cidade a uns 230 W por pessoa no fim de 2027; 300 W não é realista nem com os 3 projetos. Sugiro 230 W.');")
 w("CALL sp_decidir_meta(@m, 3, FALSE);\n")
 
 w("-- =================== LOGIN: exemplos registrados pelo banco ===================")

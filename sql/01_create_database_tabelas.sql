@@ -365,19 +365,19 @@ CREATE TABLE credencial_analista (
 -- (O cidadão não tem esta tabela: o cadastro dele é só nome, e-mail, telefone e cidade.)
 CREATE TABLE cadastro_profissional (
   id_usuario          INT UNSIGNED NOT NULL,
-  cpf_hash            CHAR(64)     NOT NULL,             -- SHA-256 do CPF: impede cadastro duplicado sem guardar o número (LGPD)
-  cpf_final           CHAR(2)      NOT NULL,             -- 2 últimos dígitos, só para conferência visual
+  cpf_hash            CHAR(64)     NULL,                 -- (opcional) SHA-256 do CPF: impede cadastro duplicado sem guardar o número (LGPD)
+  cpf_final           CHAR(2)      NULL,                 -- 2 últimos dígitos, só para conferência visual
   email_institucional VARCHAR(120) NOT NULL,             -- e-mail do órgão (gmail, hotmail etc. são recusados)
-  telefone_institucional VARCHAR(20) NOT NULL,
+  telefone_institucional VARCHAR(20) NULL,              -- (opcional)
   orgao               VARCHAR(120) NOT NULL,             -- prefeitura, secretaria, concessionária, universidade...
   cargo               VARCHAR(80)  NOT NULL,
-  matricula           VARCHAR(30)  NOT NULL,             -- matrícula funcional no órgão
-  formacao            VARCHAR(120) NOT NULL,             -- ex.: Engenharia Ambiental (USP, 2018)
+  matricula           VARCHAR(30)  NULL,                 -- (opcional) matrícula funcional no órgão
+  formacao            VARCHAR(120) NULL,                 -- (opcional) ex.: Engenharia Ambiental (USP, 2018)
   registro_conselho   VARCHAR(40)  NULL,                 -- CREA, CRQ, CRBio, CORECON... (analista)
-  portaria_nomeacao   VARCHAR(120) NULL,                 -- ato de nomeação no Diário Oficial (obrigatório para gestor)
+  portaria_nomeacao   VARCHAR(120) NULL,                 -- (opcional) ato de nomeação no Diário Oficial
   id_municipio_atuacao SMALLINT UNSIGNED NULL,           -- cidade onde atua (obrigatório para gestor)
-  documento_url       VARCHAR(300) NOT NULL,             -- declaração de vínculo assinada pelo órgão (PDF)
-  justificativa       VARCHAR(600) NOT NULL,             -- por que precisa do acesso
+  documento_url       VARCHAR(300) NULL,                 -- (opcional) declaração de vínculo assinada pelo órgão (PDF)
+  justificativa       VARCHAR(600) NULL,                 -- (opcional) para que vai usar o acesso
   aceite_termo_em     DATETIME     NOT NULL,             -- aceitou o termo de responsabilidade e uso dos dados
   ip_aceite           VARCHAR(45)  NULL,
   status              ENUM('EM_ANALISE','APROVADO','RECUSADO','SUSPENSO') NOT NULL DEFAULT 'EM_ANALISE',
@@ -407,6 +407,10 @@ CREATE TABLE meta (
   vigencia_fim     DATE NULL,                            -- NULL = em vigor
   justificativa    VARCHAR(600) NOT NULL,                -- por que esse valor
   referencia       VARCHAR(200) NOT NULL,                -- base técnica: ODS, ISO 37120, lei, plano municipal...
+  descricao        VARCHAR(300) NULL,                    -- a meta ESCRITA: "Reduzir de 192 para 182 L por pessoa por dia até dez/2027"
+  linha_base       DECIMAL(12,4) NULL,                   -- valor de partida (último valor da cidade quando a meta foi proposta)
+  prazo            DATE NULL,                            -- até quando a meta deve ser atingida
+  como_atingir     VARCHAR(2000) NULL,                   -- plano: projetos e ações (um por linha)
   status           ENUM('PROPOSTA','PARECER_EMITIDO','APROVADA','REJEITADA','SUBSTITUIDA') NOT NULL DEFAULT 'PROPOSTA',
   proposta_por     INT UNSIGNED NOT NULL,                -- gestor
   parecer_por      INT UNSIGNED NULL,                    -- analista credenciado
@@ -423,7 +427,8 @@ CREATE TABLE meta (
   CONSTRAINT fk_meta_aprovada  FOREIGN KEY (aprovada_por) REFERENCES usuario (id_usuario),
   CONSTRAINT ck_meta_valor     CHECK (valor > 0),
   CONSTRAINT ck_meta_vigencia  CHECK (DAY(vigencia_inicio) = 1 AND (vigencia_fim IS NULL OR vigencia_fim >= vigencia_inicio)),
-  CONSTRAINT ck_meta_aprovada  CHECK (status NOT IN ('APROVADA','SUBSTITUIDA') OR (parecer_por IS NOT NULL AND aprovada_por IS NOT NULL))
+  CONSTRAINT ck_meta_aprovada  CHECK (status NOT IN ('APROVADA','SUBSTITUIDA') OR (parecer_por IS NOT NULL AND aprovada_por IS NOT NULL)),
+  CONSTRAINT ck_meta_prazo     CHECK (prazo IS NULL OR prazo >= vigencia_inicio)
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------

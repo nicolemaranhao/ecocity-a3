@@ -45,8 +45,8 @@ async function relatorio(codigos, cids, per) {
   const resumo = blocos.length === 1
     ? `${blocos[0].u.indicador} em ${blocos[0].u.municipio} ${melhorou(blocos[0].e, blocos[0].u.sentido) ? 'melhorou' : 'piorou'} ${n(Math.abs(blocos[0].e.var_pct), 1)}% no período e ${blocos[0].u.atingiu_meta ? 'está dentro' : 'segue fora'} da meta (${n(blocos[0].u.meta, casas(blocos[0].u.meta))} ${blocos[0].u.unidade}).`
     : nomesCid.length === 1
-      ? `Em ${nomesCid[0]}, o ponto forte é ${melhor.u.indicador.toLowerCase()} (nota ${n(melhor.u.score, 0)}) e o ponto fraco é ${pior.u.indicador.toLowerCase()} (nota ${n(pior.u.score, 0)}). ${naMeta} de ${blocos.length} indicadores estão na meta no último mês.`
-      : `Melhor desempenho: ${melhor.u.municipio} (${melhor.u.indicador}, nota ${n(melhor.u.score, 0)}). Maior atenção: ${pior.u.municipio} (${pior.u.indicador}, nota ${n(pior.u.score, 0)}). ${naMeta} de ${blocos.length} séries estão na meta no último mês.`;
+      ? `Em ${nomesCid[0]}, o ponto forte é ${melhor.u.indicador.toLowerCase()} e o ponto fraco é ${pior.u.indicador.toLowerCase()}. ${naMeta} de ${blocos.length} indicadores estão na meta no último mês.`
+      : `Melhor desempenho: ${melhor.u.municipio} (${melhor.u.indicador}). Maior atenção: ${pior.u.municipio} (${pior.u.indicador}). ${naMeta} de ${blocos.length} séries estão na meta no último mês.`;
 
   md.push('## Resumo', resumo, '', '## O que os dados mostram', ...destaques, '');
   if (blocos.length > 1) {

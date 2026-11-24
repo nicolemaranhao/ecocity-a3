@@ -34,7 +34,7 @@ function analisar(serie, mes) {
     out.push({
       tipo: 'ALERTA_META', severidade: sc < 55 ? 'CRITICO' : 'ATENCAO', confianca: 90,
       titulo: `${municipio}: ${indicador} fora da meta há 3 meses`,
-      descricao: `Nos últimos 3 meses o valor ficou em ${fmt(media(ult3.map((x) => x.valor)))} ${unidade}, e a meta é ${fmt(meta)} ${unidade}. Nota média do indicador: ${fmt(sc)} de 100.`,
+      descricao: `Nos últimos 3 meses o valor ficou em ${fmt(media(ult3.map((x) => x.valor)))} ${unidade}, e a meta é ${fmt(meta)} ${unidade} (${fmt(Math.abs((media(ult3.map((x) => x.valor)) - meta) / meta) * 100)}% de distância).`,
     });
   }
 
@@ -116,16 +116,21 @@ async function riscos() {
   const nivel = (r) => (r >= 50 ? 'ALTO' : r >= 30 ? 'MEDIO' : 'BAIXO');
   const lista = cidades.map((c) => {
     const al = abertos.find((a) => a.id_municipio === c.id_municipio) || { criticos: 0, atencao: 0 };
-    const risco = Math.min(100, Math.round(0.7 * (100 - c.ies) + 6 * Number(al.criticos) + 2 * Number(al.atencao)));
+    const ar = areas.filter((a) => a.id_municipio === c.id_municipio);
+    const cumpridas = ar.reduce((t, a) => t + Number(a.metas), 0); const total = ar.reduce((t, a) => t + Number(a.total), 0) || 8;
+    // risco = metas NÃO cumpridas (cada uma vale 7) + alertas abertos (crítico 6, atenção 2), no máximo 100
+    const risco = Math.min(100, Math.round(7 * (total - cumpridas) + 6 * Number(al.criticos) + 2 * Number(al.atencao)));
     return {
       id_municipio: c.id_municipio, municipio: c.municipio, ies: c.ies, risco, nivel: nivel(risco),
+      metas_cumpridas: cumpridas, metas_total: total,
       criticos: Number(al.criticos), atencao: Number(al.atencao),
-      areas: areas.filter((a) => a.id_municipio === c.id_municipio).map((a) => ({
-        servico: a.servico, score: a.score, risco: Math.round(100 - a.score), nivel: nivel(100 - a.score), metas: `${a.metas}/${a.total}`,
+      areas: ar.map((a) => ({
+        servico: a.servico, score: a.score, metas: `${a.metas}/${a.total}`, cumpridas: Number(a.metas), total: Number(a.total),
+        nivel: Number(a.metas) === Number(a.total) ? 'BOM' : Number(a.metas) === 0 ? 'CRITICO' : 'ATENCAO',
       })),
     };
   }).sort((a, b) => b.risco - a.risco);
-  return { mes, cidades: lista, explicacao: 'Risco = 70% da distância da nota até 100 + peso dos alertas abertos (crítico 6, atenção 2). Alto ≥ 50, médio ≥ 30.' };
+  return { mes, cidades: lista, explicacao: 'Risco = cada meta não cumprida soma 7 pontos + alertas abertos (crítico 6, atenção 2). Alto a partir de 50, médio a partir de 30.' };
 }
 
 module.exports = { gerar, riscos, analisar, MODELO };

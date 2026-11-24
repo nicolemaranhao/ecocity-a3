@@ -5,7 +5,7 @@
  -->
 <!-- Title: DER Pages: 1 -->
 <svg width="1662pt" height="586pt"
- viewBox="0.00 0.00 1662.40 585.90" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+ viewBox="0.00 0.00 1662.40 585.90" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:c2pa="http://c2pa.org/manifest">
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(25.2 560.7)">
 <title>DER</title>
 <polygon fill="white" stroke="transparent" points="-25.2,25.2 -25.2,-560.7 1637.2,-560.7 1637.2,25.2 -25.2,25.2"/>
@@ -27,39 +27,39 @@
 <text text-anchor="start" x="499.5" y="-144.5" font-family="Helvetica,sans-Serif" font-size="10.00">versão</text>
 <polygon fill="#1e293b" stroke="#1e293b" points="497.5,-259.5 497.5,-259.5 652.5,-259.5 652.5,-259.5 497.5,-259.5"/>
 </g>
-<!-- R40 -->
+<!-- R44 -->
 <g id="node15" class="node">
-<title>R40</title>
+<title>R44</title>
 <polygon fill="#fde68a" stroke="#1e293b" points="861,-232 807,-208.5 861,-185 915,-208.5 861,-232"/>
 <text text-anchor="middle" x="861" y="-205.7" font-family="Helvetica,sans-Serif" font-size="11.00">trata de</text>
 </g>
-<!-- ANALISE_PUBLICADA&#45;&#45;R40 -->
+<!-- ANALISE_PUBLICADA&#45;&#45;R44 -->
 <g id="edge13" class="edge">
-<title>ANALISE_PUBLICADA&#45;&#45;R40</title>
+<title>ANALISE_PUBLICADA&#45;&#45;R44</title>
 <path fill="none" stroke="#475569" stroke-width="1.4" d="M659.32,-208.5C707.02,-208.5 765.32,-208.5 806.77,-208.5"/>
 <text text-anchor="middle" x="733" y="-212.1" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="13.00" fill="#b45309">(0,N)</text>
 </g>
-<!-- R41 -->
+<!-- R45 -->
 <g id="node16" class="node">
-<title>R41</title>
+<title>R45</title>
 <polygon fill="#ffffff" stroke="#1e293b" points="861,-304 807,-280.5 861,-257 915,-280.5 861,-304"/>
 <text text-anchor="middle" x="861" y="-277.7" font-family="Helvetica,sans-Serif" font-size="11.00">comprova</text>
 </g>
-<!-- ANALISE_PUBLICADA&#45;&#45;R41 -->
+<!-- ANALISE_PUBLICADA&#45;&#45;R45 -->
 <g id="edge15" class="edge">
-<title>ANALISE_PUBLICADA&#45;&#45;R41</title>
+<title>ANALISE_PUBLICADA&#45;&#45;R45</title>
 <path fill="none" stroke="#475569" stroke-width="1.4" d="M659.32,-229.71C715.05,-243.82 785.26,-261.58 826.14,-271.93"/>
 <text text-anchor="middle" x="733" y="-264.1" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="13.00" fill="#b45309">(1,1)</text>
 </g>
-<!-- R43 -->
+<!-- R47 -->
 <g id="node18" class="node">
-<title>R43</title>
+<title>R47</title>
 <polygon fill="#ffffff" stroke="#1e293b" points="861,-160 807,-136.5 861,-113 915,-136.5 861,-160"/>
 <text text-anchor="middle" x="861" y="-133.7" font-family="Helvetica,sans-Serif" font-size="11.00">recebe</text>
 </g>
-<!-- ANALISE_PUBLICADA&#45;&#45;R43 -->
+<!-- ANALISE_PUBLICADA&#45;&#45;R47 -->
 <g id="edge19" class="edge">
-<title>ANALISE_PUBLICADA&#45;&#45;R43</title>
+<title>ANALISE_PUBLICADA&#45;&#45;R47</title>
 <path fill="none" stroke="#475569" stroke-width="1.4" d="M659.32,-187.29C715.05,-173.18 785.26,-155.42 826.14,-145.07"/>
 <text text-anchor="middle" x="733" y="-184.1" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="13.00" fill="#b45309">(1,1)</text>
 </g>
@@ -107,51 +107,51 @@
 <polygon fill="#f8fafc" stroke="#94a3b8" stroke-dasharray="5,2" points="158,-218.5 0,-218.5 0,-178.5 158,-178.5 158,-218.5"/>
 <text text-anchor="start" x="46" y="-196.1" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="13.00" fill="#64748b">USUARIO</text>
 </g>
-<!-- R22 -->
+<!-- R24 -->
 <g id="node11" class="node">
-<title>R22</title>
+<title>R24</title>
 <polygon fill="#ffffff" stroke="#1e293b" points="416,-446 362,-422.5 416,-399 470,-422.5 416,-446"/>
 <text text-anchor="middle" x="416" y="-419.7" font-family="Helvetica,sans-Serif" font-size="11.00">valida</text>
 </g>
-<!-- USUARIO&#45;&#45;R22 -->
+<!-- USUARIO&#45;&#45;R24 -->
 <g id="edge5" class="edge">
-<title>USUARIO&#45;&#45;R22</title>
+<title>USUARIO&#45;&#45;R24</title>
 <path fill="none" stroke="#475569" stroke-width="1.4" d="M110.02,-218.58C176.83,-263.25 336.41,-369.95 393.9,-408.39"/>
 <text text-anchor="middle" x="196" y="-290.1" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="13.00" fill="#b45309">(0,1)</text>
 </g>
-<!-- R38 -->
+<!-- R42 -->
 <g id="node13" class="node">
-<title>R38</title>
+<title>R42</title>
 <polygon fill="#ffffff" stroke="#1e293b" points="288,-258 234,-234.5 288,-211 342,-234.5 288,-258"/>
 <text text-anchor="middle" x="288" y="-231.7" font-family="Helvetica,sans-Serif" font-size="11.00">escreve</text>
 </g>
-<!-- USUARIO&#45;&#45;R38 -->
+<!-- USUARIO&#45;&#45;R42 -->
 <g id="edge9" class="edge">
-<title>USUARIO&#45;&#45;R38</title>
+<title>USUARIO&#45;&#45;R42</title>
 <path fill="none" stroke="#475569" stroke-width="1.4" d="M158.26,-212.11C189.28,-217.51 223.53,-223.46 248.9,-227.87"/>
 <text text-anchor="middle" x="196" y="-224.1" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="13.00" fill="#b45309">(1,1)</text>
 </g>
-<!-- R39 -->
+<!-- R43 -->
 <g id="node14" class="node">
-<title>R39</title>
+<title>R43</title>
 <polygon fill="#ffffff" stroke="#1e293b" points="288,-186 234,-162.5 288,-139 342,-162.5 288,-186"/>
 <text text-anchor="middle" x="288" y="-159.7" font-family="Helvetica,sans-Serif" font-size="11.00">revisa</text>
 </g>
-<!-- USUARIO&#45;&#45;R39 -->
+<!-- USUARIO&#45;&#45;R43 -->
 <g id="edge11" class="edge">
-<title>USUARIO&#45;&#45;R39</title>
+<title>USUARIO&#45;&#45;R43</title>
 <path fill="none" stroke="#475569" stroke-width="1.4" d="M158.26,-184.89C189.28,-179.49 223.53,-173.54 248.9,-169.13"/>
 <text text-anchor="middle" x="196" y="-184.1" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="13.00" fill="#b45309">(0,1)</text>
 </g>
-<!-- R44 -->
+<!-- R48 -->
 <g id="node19" class="node">
-<title>R44</title>
+<title>R48</title>
 <polygon fill="#ffffff" stroke="#1e293b" points="733,-109 679,-85.5 733,-62 787,-85.5 733,-109"/>
 <text text-anchor="middle" x="733" y="-82.7" font-family="Helvetica,sans-Serif" font-size="11.00">comenta</text>
 </g>
-<!-- USUARIO&#45;&#45;R44 -->
+<!-- USUARIO&#45;&#45;R48 -->
 <g id="edge21" class="edge">
-<title>USUARIO&#45;&#45;R44</title>
+<title>USUARIO&#45;&#45;R48</title>
 <path fill="none" stroke="#475569" stroke-width="1.4" d="M106.95,-178.38C136.43,-157.64 185.91,-126.42 234,-112.5 316.24,-88.7 568.58,-85.56 679.16,-85.36"/>
 <text text-anchor="middle" x="288" y="-116.1" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="13.00" fill="#b45309">(1,1)</text>
 </g>
@@ -161,27 +161,27 @@
 <polygon fill="#f8fafc" stroke="#94a3b8" stroke-dasharray="5,2" points="653.5,-400.5 495.5,-400.5 495.5,-360.5 653.5,-360.5 653.5,-400.5"/>
 <text text-anchor="start" x="533.5" y="-378.1" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="13.00" fill="#64748b">INDICADOR</text>
 </g>
-<!-- R20 -->
+<!-- R22 -->
 <g id="node9" class="node">
-<title>R20</title>
+<title>R22</title>
 <polygon fill="#ffffff" stroke="#1e293b" points="989,-435 935,-411.5 989,-388 1043,-411.5 989,-435"/>
 <text text-anchor="middle" x="989" y="-408.7" font-family="Helvetica,sans-Serif" font-size="11.00">é analisado</text>
 </g>
-<!-- INDICADOR&#45;&#45;R20 -->
+<!-- INDICADOR&#45;&#45;R22 -->
 <g id="edge1" class="edge">
-<title>INDICADOR&#45;&#45;R20</title>
+<title>INDICADOR&#45;&#45;R22</title>
 <path fill="none" stroke="#475569" stroke-width="1.4" d="M653.57,-386.37C739.06,-392.79 873.22,-402.87 942.78,-408.1"/>
 <text text-anchor="middle" x="733" y="-399.1" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="13.00" fill="#b45309">(1,1)</text>
 </g>
-<!-- R42 -->
+<!-- R46 -->
 <g id="node17" class="node">
-<title>R42</title>
+<title>R46</title>
 <polygon fill="#ffffff" stroke="#1e293b" points="861,-376 807,-352.5 861,-329 915,-352.5 861,-376"/>
 <text text-anchor="middle" x="861" y="-349.7" font-family="Helvetica,sans-Serif" font-size="11.00">é citado</text>
 </g>
-<!-- INDICADOR&#45;&#45;R42 -->
+<!-- INDICADOR&#45;&#45;R46 -->
 <g id="edge17" class="edge">
-<title>INDICADOR&#45;&#45;R42</title>
+<title>INDICADOR&#45;&#45;R46</title>
 <path fill="none" stroke="#475569" stroke-width="1.4" d="M653.76,-372.08C662.28,-371.19 670.82,-370.32 679,-369.5 725.79,-364.82 779.43,-359.83 816.1,-356.47"/>
 <text text-anchor="middle" x="733" y="-373.1" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="13.00" fill="#b45309">(0,1)</text>
 </g>
@@ -191,15 +191,15 @@
 <polygon fill="#f8fafc" stroke="#94a3b8" stroke-dasharray="5,2" points="1234,-240.5 1076,-240.5 1076,-200.5 1234,-200.5 1234,-240.5"/>
 <text text-anchor="start" x="1115.5" y="-218.1" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="13.00" fill="#64748b">MUNICIPIO</text>
 </g>
-<!-- R21 -->
+<!-- R23 -->
 <g id="node10" class="node">
-<title>R21</title>
+<title>R23</title>
 <polygon fill="#ffffff" stroke="#1e293b" points="1379,-338 1325,-314.5 1379,-291 1433,-314.5 1379,-338"/>
 <text text-anchor="middle" x="1379" y="-311.7" font-family="Helvetica,sans-Serif" font-size="11.00">é analisado</text>
 </g>
-<!-- MUNICIPIO&#45;&#45;R21 -->
+<!-- MUNICIPIO&#45;&#45;R23 -->
 <g id="edge3" class="edge">
-<title>MUNICIPIO&#45;&#45;R21</title>
+<title>MUNICIPIO&#45;&#45;R23</title>
 <path fill="none" stroke="#475569" stroke-width="1.4" d="M1204.2,-240.54C1218.03,-246.31 1233.12,-252.64 1247,-258.5 1283.11,-273.76 1324.72,-291.59 1351.18,-302.96"/>
 <text text-anchor="middle" x="1286" y="-286.1" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="13.00" fill="#b45309">(1,1)</text>
 </g>
@@ -209,83 +209,83 @@
 <polygon fill="#f8fafc" stroke="#94a3b8" stroke-dasharray="5,2" points="158,-43.5 0,-43.5 0,-3.5 158,-3.5 158,-43.5"/>
 <text text-anchor="start" x="12" y="-21.1" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="13.00" fill="#64748b">SERVICO_PUBLICO</text>
 </g>
-<!-- R37 -->
+<!-- R41 -->
 <g id="node12" class="node">
-<title>R37</title>
+<title>R41</title>
 <polygon fill="#ffffff" stroke="#1e293b" points="288,-47 234,-23.5 288,0 342,-23.5 288,-47"/>
 <text text-anchor="middle" x="288" y="-20.7" font-family="Helvetica,sans-Serif" font-size="11.00">classifica</text>
 </g>
-<!-- SERVICO_PUBLICO&#45;&#45;R37 -->
+<!-- SERVICO_PUBLICO&#45;&#45;R41 -->
 <g id="edge7" class="edge">
-<title>SERVICO_PUBLICO&#45;&#45;R37</title>
+<title>SERVICO_PUBLICO&#45;&#45;R41</title>
 <path fill="none" stroke="#475569" stroke-width="1.4" d="M158.26,-23.5C183.45,-23.5 210.76,-23.5 233.72,-23.5"/>
 <text text-anchor="middle" x="196" y="-27.1" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="13.00" fill="#b45309">(1,1)</text>
 </g>
-<!-- R20&#45;&#45;ANALISE_IA -->
+<!-- R22&#45;&#45;ANALISE_IA -->
 <g id="edge2" class="edge">
-<title>R20&#45;&#45;ANALISE_IA</title>
+<title>R22&#45;&#45;ANALISE_IA</title>
 <path fill="none" stroke="#475569" stroke-width="1.4" d="M1043.16,-411.5C1153.11,-411.5 1404.16,-411.5 1510.95,-411.5"/>
 <text text-anchor="middle" x="1286" y="-415.1" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="13.00" fill="#b45309">(0,N)</text>
 </g>
-<!-- R21&#45;&#45;ANALISE_IA -->
+<!-- R23&#45;&#45;ANALISE_IA -->
 <g id="edge4" class="edge">
-<title>R21&#45;&#45;ANALISE_IA</title>
+<title>R23&#45;&#45;ANALISE_IA</title>
 <path fill="none" stroke="#475569" stroke-width="1.4" d="M1403.97,-327.38C1431.11,-341.97 1476.07,-366.13 1510.86,-384.82"/>
 <text text-anchor="middle" x="1472" y="-375.1" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="13.00" fill="#b45309">(0,N)</text>
 </g>
-<!-- R22&#45;&#45;ANALISE_IA -->
+<!-- R24&#45;&#45;ANALISE_IA -->
 <g id="edge6" class="edge">
-<title>R22&#45;&#45;ANALISE_IA</title>
+<title>R24&#45;&#45;ANALISE_IA</title>
 <path fill="none" stroke="#475569" stroke-width="1.4" d="M452.22,-430.49C510.21,-442.92 629.61,-465.5 732,-465.5 732,-465.5 732,-465.5 1380,-465.5 1425.63,-465.5 1475.13,-449.47 1510.73,-434.87"/>
 <text text-anchor="middle" x="989" y="-469.1" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="13.00" fill="#b45309">(0,N)</text>
 </g>
-<!-- R37&#45;&#45;ANALISE_PUBLICADA -->
+<!-- R41&#45;&#45;ANALISE_PUBLICADA -->
 <g id="edge8" class="edge">
-<title>R37&#45;&#45;ANALISE_PUBLICADA</title>
+<title>R41&#45;&#45;ANALISE_PUBLICADA</title>
 <path fill="none" stroke="#475569" stroke-width="1.4" d="M310.38,-37.41C347.99,-61.86 427.84,-113.78 489.77,-154.05"/>
 <text text-anchor="middle" x="416" y="-141.1" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="13.00" fill="#b45309">(0,N)</text>
 </g>
-<!-- R38&#45;&#45;ANALISE_PUBLICADA -->
+<!-- R42&#45;&#45;ANALISE_PUBLICADA -->
 <g id="edge10" class="edge">
-<title>R38&#45;&#45;ANALISE_PUBLICADA</title>
+<title>R42&#45;&#45;ANALISE_PUBLICADA</title>
 <path fill="none" stroke="#475569" stroke-width="1.4" d="M332.83,-230.49C374.52,-226.68 438.35,-220.85 489.79,-216.15"/>
 <text text-anchor="middle" x="416" y="-231.1" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="13.00" fill="#b45309">(0,N)</text>
 </g>
-<!-- R39&#45;&#45;ANALISE_PUBLICADA -->
+<!-- R43&#45;&#45;ANALISE_PUBLICADA -->
 <g id="edge12" class="edge">
-<title>R39&#45;&#45;ANALISE_PUBLICADA</title>
+<title>R43&#45;&#45;ANALISE_PUBLICADA</title>
 <path fill="none" stroke="#475569" stroke-width="1.4" d="M327.67,-168.75C369.14,-175.46 436.28,-186.31 489.92,-194.99"/>
 <text text-anchor="middle" x="416" y="-194.1" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="13.00" fill="#b45309">(0,N)</text>
 </g>
-<!-- R40&#45;&#45;MUNICIPIO -->
+<!-- R44&#45;&#45;MUNICIPIO -->
 <g id="edge14" class="edge">
-<title>R40&#45;&#45;MUNICIPIO</title>
+<title>R44&#45;&#45;MUNICIPIO</title>
 <path fill="none" stroke="#475569" stroke-width="1.4" d="M910.55,-210.5C955.55,-212.34 1023.28,-215.13 1075.89,-217.29"/>
 <text text-anchor="middle" x="989" y="-219.1" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="13.00" fill="#b45309">(0,N)</text>
 </g>
-<!-- R41&#45;&#45;ANALISE_EVIDENCIA -->
+<!-- R45&#45;&#45;ANALISE_EVIDENCIA -->
 <g id="edge16" class="edge">
-<title>R41&#45;&#45;ANALISE_EVIDENCIA</title>
+<title>R45&#45;&#45;ANALISE_EVIDENCIA</title>
 <path fill="none" stroke="#475569" stroke-width="1.4" d="M907.83,-283.74C944.47,-286.52 997.12,-290.96 1043,-296.5 1052.48,-297.64 1062.4,-298.97 1072.25,-300.37"/>
 <text text-anchor="middle" x="989" y="-300.1" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="13.00" fill="#b45309">(0,N)</text>
 </g>
-<!-- R42&#45;&#45;ANALISE_EVIDENCIA -->
+<!-- R46&#45;&#45;ANALISE_EVIDENCIA -->
 <g id="edge18" class="edge">
-<title>R42&#45;&#45;ANALISE_EVIDENCIA</title>
+<title>R46&#45;&#45;ANALISE_EVIDENCIA</title>
 <path fill="none" stroke="#475569" stroke-width="1.4" d="M902.6,-347.08C946.32,-341.24 1017.04,-331.79 1072.36,-324.4"/>
 <text text-anchor="middle" x="989" y="-345.1" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="13.00" fill="#b45309">(0,N)</text>
 </g>
-<!-- R43&#45;&#45;ANALISE_COMENTARIO -->
+<!-- R47&#45;&#45;ANALISE_COMENTARIO -->
 <g id="edge20" class="edge">
-<title>R43&#45;&#45;ANALISE_COMENTARIO</title>
+<title>R47&#45;&#45;ANALISE_COMENTARIO</title>
 <path fill="none" stroke="#475569" stroke-width="1.4" d="M906.67,-132.83C948.04,-129.43 1010.85,-124.27 1062.82,-119.99"/>
 <text text-anchor="middle" x="989" y="-133.1" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="13.00" fill="#b45309">(0,N)</text>
 </g>
-<!-- R44&#45;&#45;ANALISE_COMENTARIO -->
+<!-- R48&#45;&#45;ANALISE_COMENTARIO -->
 <g id="edge22" class="edge">
-<title>R44&#45;&#45;ANALISE_COMENTARIO</title>
+<title>R48&#45;&#45;ANALISE_COMENTARIO</title>
 <path fill="none" stroke="#475569" stroke-width="1.4" d="M784.76,-84.39C821.06,-83.93 871.08,-84 915,-86.5 963.96,-89.29 1018.33,-95 1062.82,-100.35"/>
 <text text-anchor="middle" x="861" y="-90.1" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="13.00" fill="#b45309">(0,N)</text>
 </g>
 </g>
-</svg>
+<metadata><c2pa:manifest>AAAWgmp1bWIAAAAeanVtZGMycGEAEQAQgAAAqgA4m3EDYzJwYQAAABZcanVtYgAAAEdqdW1kYzJtYQARABCAAACqADibcQN1cm46YzJwYToxNTcyNjIyMy00ZDc3LTRkZDgtYTA5Yi02NzIwNTAyYjQ1YzEAAAADl2p1bWIAAAApanVtZGMyYXMAEQAQgAAAqgA4m3EDYzJwYS5hc3NlcnRpb25zAAAAALxqdW1iAAAARGp1bWRjYm9yABEAEIAAAKoAOJtxE2MycGEuaW5ncmVkaWVudC52MwAAAAAYYzJzaEWR4FU6IK5eqMahf2aX4OEAAABwY2JvcqNpZGM6Zm9ybWF0bWltYWdlL3N2Zyt4bWxqaW5zdGFuY2VJRHgseG1wOmlpZDowZTZjOGZlNS1kNWVmLTRjYmUtOGZlNi1mZTliYzk2YzdjOWVscmVsYXRpb25zaGlwaHBhcmVudE9mAAAB4mp1bWIAAABBanVtZGNib3IAEQAQgAAAqgA4m3ETYzJwYS5hY3Rpb25zLnYyAAAAABhjMnNotBCikTpRoeE+qvZZCQBzDgAAAZljYm9yomdhY3Rpb25zgqJmYWN0aW9ua2MycGEub3BlbmVkanBhcmFtZXRlcnOha2luZ3JlZGllbnRzgaJjdXJseC1zZWxmI2p1bWJmPWMycGEuYXNzZXJ0aW9ucy9jMnBhLmluZ3JlZGllbnQudjNkaGFzaFggGGxGkMzclqlxvFM4peTRTrpjywTBAGu9L2ka7/cHk2+kZmFjdGlvbngdY29tLmFudGhyb3BpYy5jbGF1ZGUucHJvdmlkZWRqcGFyYW1ldGVyc6F4H2NvbS5hbnRocm9waWMub3JpZ2luLWNvbmZpZGVuY2VndW5rbm93bmtkZXNjcmlwdGlvbnhmQ2xhdWRlIHByb3ZpZGVkIHRoaXMgZmlsZSBhdCB0aGUgcmVxdWVzdCBvZiBhIHVzZXIgYW5kIG1heSBoYXZlIGNyZWF0ZWQgb3IgbW9kaWZpZWQgdGhlIGZpbGUgY29udGVudHMubXNvZnR3YXJlQWdlbnShZG5hbWVmQ2xhdWRlcmFsbEFjdGlvbnNJbmNsdWRlZPUAAADIanVtYgAAAEBqdW1kY2JvcgARABCAAACqADibcRNjMnBhLmhhc2guZGF0YQAAAAAYYzJzaExNdl0OJttyf0KbPOst3/AAAACAY2JvcqVjYWxnZnNoYTI1NmNwYWRMAAAAAAAAAAAAAAAAZGhhc2hYIEpxIB3KPmoMulDtfZ2a0uK8x018q3lKiJOPsugC2yb7ZG5hbWVuanVtYmYgbWFuaWZlc3RqZXhjbHVzaW9uc4GiZXN0YXJ0GUraZmxlbmd0aBkeBAAAAj5qdW1iAAAAJ2p1bWRjMmNsABEAEIAAAKoAOJtxA2MycGEuY2xhaW0udjIAAAACD2Nib3KlY2FsZ2ZzaGEyNTZpc2lnbmF0dXJleE1zZWxmI2p1bWJmPS9jMnBhL3VybjpjMnBhOjE1NzI2MjIzLTRkNzctNGRkOC1hMDliLTY3MjA1MDJiNDVjMS9jMnBhLnNpZ25hdHVyZWppbnN0YW5jZUlEeCx4bXA6aWlkOjZmYTc4Yzk5LTVjYzEtNGI1NC1hOWJjLTBjYjZjMTZlZWNkM3JjcmVhdGVkX2Fzc2VydGlvbnODomN1cmx4LXNlbGYjanVtYmY9YzJwYS5hc3NlcnRpb25zL2MycGEuaW5ncmVkaWVudC52M2RoYXNoWCAYbEaQzNyWqXG8Uzil5NFOumPLBMEAa70vaRrv9weTb6JjdXJseCpzZWxmI2p1bWJmPWMycGEuYXNzZXJ0aW9ucy9jMnBhLmFjdGlvbnMudjJkaGFzaFgg4/LNbD00pY8+my+5Dpe5sPQE6rlL5AqfptD57cZcaKGiY3VybHgpc2VsZiNqdW1iZj1jMnBhLmFzc2VydGlvbnMvYzJwYS5oYXNoLmRhdGFkaGFzaFgg7PW8tfRg/lxn2HeXtE3j6f+ruJ88qqGW32dfcsB0cXp0Y2xhaW1fZ2VuZXJhdG9yX2luZm+jZG5hbWVvQW50aHJvcGljIEZpbGVzZ3ZlcnNpb25lMS4wLjBrc3BlY1ZlcnNpb25lMi40LjAAABA4anVtYgAAAChqdW1kYzJjcwARABCAAACqADibcQNjMnBhLnNpZ25hdHVyZQAAABAIY2JvctKEWQISogEmGCFZAgowggIGMIIBjaADAgECAhRA5aAK7sI50L64g/oGQgU9Z1UTADAKBggqhkjOPQQDAzBJMRcwFQYDVQQKEw5BbnRocm9waWMsIFBCQzEuMCwGA1UEAxMlQW50aHJvcGljIENvbnRlbnQgQ3JlZGVudGlhbHMgUm9vdCBDQTAeFw0yNjA4MDcxODQzNTZaFw0yODA4MDYxOTQzNTZaMEQxFzAVBgNVBAoTDkFudGhyb3BpYywgUEJDMSkwJwYDVQQDEyBBbnRocm9waWMgQ2xhdWRlIENvbnRlbnQgU2lnbmluZzBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABJh6CmvLUBgFFNU0vUKlOVtE6djd17L5SuwX0LemFisBM3dkd/3cyjxFA3Qo5S46fX0/ihY0VZ7mfb9KF703t5OjWDBWMA4GA1UdDwEB/wQEAwIHgDAVBgNVHSUEDjAMBgorBgEEAYPoXgIBMAwGA1UdEwEB/wQCMAAwHwYDVR0jBBgwFoAUzlHiBIFOZFsj+OPEz5o+nMHXXMIwCgYIKoZIzj0EAwMDZwAwZAIwMXMdFJ4BetLLVY7ORuE9noqbbAZOZn/aArXyTwFAZfKrPzxF2vPoJNf1+UCdg1XGAjBwX1zd9WGqYkqmL5SFqw1QySjr1zJfpJM9+1rdDwSPLMOPOjKuiXjoU/pUUeG9RwmhY3BhZFkNngAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPZYQP2BjsNMcxJuCuSHWl+JZj3O4+27ZXcQcFyFjCXAUsprrxWrbpXBudQJFdF1wspDUt4EmGQZdE3Jpd1+V0cuCZg=</c2pa:manifest></metadata></svg>

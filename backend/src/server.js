@@ -8,6 +8,8 @@ const rateLimit = require('express-rate-limit');
 const api = require('./routes/api');
 
 const app = express();
+// Na nuvem (Render etc.) o site fica atrás de um proxy: assim o limite de tentativas conta por pessoa, não pelo proxy
+if (process.env.RENDER || process.env.TRUST_PROXY) app.set('trust proxy', 1);
 app.use(helmet({ contentSecurityPolicy: false }));
 app.use(cors({ origin: process.env.CORS_ORIGIN || '*' }));
 app.use(express.json({ limit: '100kb' }));

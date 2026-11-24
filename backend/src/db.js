@@ -9,8 +9,19 @@ const base = {
   charset: 'utf8mb4',
   decimalNumbers: true,
   dateStrings: true,
-  ssl: process.env.DB_SSL === 'true' ? { rejectUnauthorized: true } : undefined,
+  ssl: sslConfig(),
 };
+
+// SSL (obrigatório em bancos na nuvem como Aiven e Oracle Cloud).
+// DB_SSL_CA pode ser o CAMINHO do arquivo ca.pem ou o CONTEÚDO do certificado (útil no Render).
+function sslConfig() {
+  if (process.env.DB_SSL !== 'true') return undefined;
+  const ca = process.env.DB_SSL_CA;
+  if (!ca) return { rejectUnauthorized: true };
+  const fs = require('fs');
+  const texto = ca.includes('BEGIN CERTIFICATE') ? ca.replace(/\\n/g, '\n') : fs.readFileSync(require('path').resolve(ca), 'utf8');
+  return { ca: texto, rejectUnauthorized: true };
+}
 
 // API: perfis gestor/analista/cidadão (papéis r_gestor + r_cidadao no MySQL)
 const pool = mysql.createPool({ ...base, user: process.env.DB_USER, password: process.env.DB_PASS, connectionLimit: 10 });
@@ -25,6 +36,10 @@ const poolIA = mysql.createPool({
 const poolETL = mysql.createPool({
   ...base, user: process.env.DB_ETL_USER || 'ecocity_etl', password: process.env.DB_ETL_PASS || 'Etl#EcoCity2026!', connectionLimit: 3,
 });
+
+// Mesmo "sql_mode" do MySQL local em toda conexão (o banco na nuvem pode usar outro modo por padrão)
+const MODO = "SET SESSION sql_mode = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION'";
+for (const p of [pool, poolIA, poolETL]) p.pool.on('connection', (c) => c.query(MODO));
 
 async function query(sql, params = []) {
   const [rows] = await pool.execute(sql, params);

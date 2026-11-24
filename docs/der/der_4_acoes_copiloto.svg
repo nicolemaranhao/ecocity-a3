@@ -5,7 +5,7 @@
  -->
 <!-- Title: DER Pages: 1 -->
 <svg width="1976pt" height="507pt"
- viewBox="0.00 0.00 1975.92 506.90" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+ viewBox="0.00 0.00 1975.92 506.90" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:c2pa="http://c2pa.org/manifest">
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(25.2 481.7)">
 <title>DER</title>
 <polygon fill="white" stroke="transparent" points="-25.2,25.2 -25.2,-481.7 1950.72,-481.7 1950.72,25.2 -25.2,25.2"/>
@@ -25,15 +25,15 @@
 <text text-anchor="start" x="1456.52" y="-152.5" font-family="Helvetica,sans-Serif" font-size="10.00">status</text>
 <polygon fill="#1e293b" stroke="#1e293b" points="1454.52,-237.5 1454.52,-237.5 1552.52,-237.5 1552.52,-237.5 1454.52,-237.5"/>
 </g>
-<!-- R34 -->
+<!-- R38 -->
 <g id="node13" class="node">
-<title>R34</title>
+<title>R38</title>
 <polygon fill="#ffffff" stroke="#1e293b" points="1691.52,-279 1637.52,-255.5 1691.52,-232 1745.52,-255.5 1691.52,-279"/>
 <text text-anchor="middle" x="1691.52" y="-252.7" font-family="Helvetica,sans-Serif" font-size="11.00">produz</text>
 </g>
-<!-- ACAO&#45;&#45;R34 -->
+<!-- ACAO&#45;&#45;R38 -->
 <g id="edge9" class="edge">
-<title>ACAO&#45;&#45;R34</title>
+<title>ACAO&#45;&#45;R38</title>
 <path fill="none" stroke="#475569" stroke-width="1.4" d="M1559.57,-217.48C1591.81,-226.84 1631.4,-238.34 1658.56,-246.22"/>
 <text text-anchor="middle" x="1598.52" y="-236.1" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="13.00" fill="#b45309">(1,1)</text>
 </g>
@@ -66,15 +66,15 @@
 <text text-anchor="start" x="499.5" y="-186.5" font-family="Helvetica,sans-Serif" font-size="10.00">status</text>
 <polygon fill="#1e293b" stroke="#1e293b" points="497.5,-301.5 497.5,-301.5 604.5,-301.5 604.5,-301.5 497.5,-301.5"/>
 </g>
-<!-- R47 -->
+<!-- R51 -->
 <g id="node18" class="node">
-<title>R47</title>
+<title>R51</title>
 <polygon fill="#fde68a" stroke="#1e293b" points="823.52,-256 769.52,-232.5 823.52,-209 877.52,-232.5 823.52,-256"/>
 <text text-anchor="middle" x="823.52" y="-229.7" font-family="Helvetica,sans-Serif" font-size="11.00">abrange</text>
 </g>
-<!-- RELATORIO_IA&#45;&#45;R47 -->
+<!-- RELATORIO_IA&#45;&#45;R51 -->
 <g id="edge19" class="edge">
-<title>RELATORIO_IA&#45;&#45;R47</title>
+<title>RELATORIO_IA&#45;&#45;R51</title>
 <path fill="none" stroke="#475569" stroke-width="1.4" d="M611.31,-246.53C661.04,-243.22 730.79,-238.59 776.31,-235.57"/>
 <text text-anchor="middle" x="690.26" y="-248.1" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="13.00" fill="#b45309">(0,N)</text>
 </g>
@@ -97,63 +97,63 @@
 <polygon fill="#f8fafc" stroke="#94a3b8" stroke-dasharray="5,2" points="158,-222.5 0,-222.5 0,-182.5 158,-182.5 158,-222.5"/>
 <text text-anchor="start" x="46" y="-200.1" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="13.00" fill="#64748b">USUARIO</text>
 </g>
-<!-- R32 -->
+<!-- R36 -->
 <g id="node11" class="node">
-<title>R32</title>
+<title>R36</title>
 <polygon fill="#ffffff" stroke="#1e293b" points="690.26,-163 631.24,-139.5 690.26,-116 749.28,-139.5 690.26,-163"/>
 <text text-anchor="middle" x="690.26" y="-136.7" font-family="Helvetica,sans-Serif" font-size="11.00">é responsável</text>
 </g>
-<!-- USUARIO&#45;&#45;R32 -->
+<!-- USUARIO&#45;&#45;R36 -->
 <g id="edge5" class="edge">
-<title>USUARIO&#45;&#45;R32</title>
+<title>USUARIO&#45;&#45;R36</title>
 <path fill="none" stroke="#475569" stroke-width="1.4" d="M129.37,-182.48C159.14,-171.43 198.13,-158.7 234,-152.5 379.31,-127.37 554.52,-131.96 638.94,-136.3"/>
 <text text-anchor="middle" x="288" y="-156.1" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="13.00" fill="#b45309">(1,1)</text>
 </g>
-<!-- R36 -->
+<!-- R40 -->
 <g id="node15" class="node">
-<title>R36</title>
+<title>R40</title>
 <polygon fill="#ffffff" stroke="#1e293b" points="416,-397 362,-373.5 416,-350 470,-373.5 416,-397"/>
 <text text-anchor="middle" x="416" y="-370.7" font-family="Helvetica,sans-Serif" font-size="11.00">registra</text>
 </g>
-<!-- USUARIO&#45;&#45;R36 -->
+<!-- USUARIO&#45;&#45;R40 -->
 <g id="edge13" class="edge">
-<title>USUARIO&#45;&#45;R36</title>
+<title>USUARIO&#45;&#45;R40</title>
 <path fill="none" stroke="#475569" stroke-width="1.4" d="M103.99,-222.52C133.19,-246.1 184.73,-285.27 234,-310.5 283.01,-335.6 344.3,-354.58 381.51,-364.86"/>
 <text text-anchor="middle" x="196" y="-301.1" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="13.00" fill="#b45309">(1,1)</text>
 </g>
-<!-- R45 -->
+<!-- R49 -->
 <g id="node16" class="node">
-<title>R45</title>
+<title>R49</title>
 <polygon fill="#ffffff" stroke="#1e293b" points="288,-226 234,-202.5 288,-179 342,-202.5 288,-226"/>
 <text text-anchor="middle" x="288" y="-199.7" font-family="Helvetica,sans-Serif" font-size="11.00">solicita</text>
 </g>
-<!-- USUARIO&#45;&#45;R45 -->
+<!-- USUARIO&#45;&#45;R49 -->
 <g id="edge15" class="edge">
-<title>USUARIO&#45;&#45;R45</title>
+<title>USUARIO&#45;&#45;R49</title>
 <path fill="none" stroke="#475569" stroke-width="1.4" d="M158.26,-202.5C183.45,-202.5 210.76,-202.5 233.72,-202.5"/>
 <text text-anchor="middle" x="196" y="-206.1" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="13.00" fill="#b45309">(1,1)</text>
 </g>
-<!-- R46 -->
+<!-- R50 -->
 <g id="node17" class="node">
-<title>R46</title>
+<title>R50</title>
 <polygon fill="#ffffff" stroke="#1e293b" points="288,-298 234,-274.5 288,-251 342,-274.5 288,-298"/>
 <text text-anchor="middle" x="288" y="-271.7" font-family="Helvetica,sans-Serif" font-size="11.00">aprova</text>
 </g>
-<!-- USUARIO&#45;&#45;R46 -->
+<!-- USUARIO&#45;&#45;R50 -->
 <g id="edge17" class="edge">
-<title>USUARIO&#45;&#45;R46</title>
+<title>USUARIO&#45;&#45;R50</title>
 <path fill="none" stroke="#475569" stroke-width="1.4" d="M137.66,-222.56C176.54,-236.08 226.23,-253.36 257.35,-264.19"/>
 <text text-anchor="middle" x="196" y="-250.1" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="13.00" fill="#b45309">(0,1)</text>
 </g>
-<!-- R48 -->
+<!-- R52 -->
 <g id="node19" class="node">
-<title>R48</title>
+<title>R52</title>
 <polygon fill="#ffffff" stroke="#1e293b" points="288,-82 234,-58.5 288,-35 342,-58.5 288,-82"/>
 <text text-anchor="middle" x="288" y="-55.7" font-family="Helvetica,sans-Serif" font-size="11.00">pergunta</text>
 </g>
-<!-- USUARIO&#45;&#45;R48 -->
+<!-- USUARIO&#45;&#45;R52 -->
 <g id="edge21" class="edge">
-<title>USUARIO&#45;&#45;R48</title>
+<title>USUARIO&#45;&#45;R52</title>
 <path fill="none" stroke="#475569" stroke-width="1.4" d="M96.67,-182.31C114.91,-161.23 145.85,-128.26 178,-106.5 202.66,-89.81 234.06,-76.71 256.83,-68.44"/>
 <text text-anchor="middle" x="196" y="-110.1" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="13.00" fill="#b45309">(1,1)</text>
 </g>
@@ -163,27 +163,27 @@
 <polygon fill="#f8fafc" stroke="#94a3b8" stroke-dasharray="5,2" points="1113.52,-330.5 955.52,-330.5 955.52,-290.5 1113.52,-290.5 1113.52,-330.5"/>
 <text text-anchor="start" x="993.52" y="-308.1" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="13.00" fill="#64748b">INDICADOR</text>
 </g>
-<!-- R31 -->
+<!-- R35 -->
 <g id="node10" class="node">
-<title>R31</title>
+<title>R35</title>
 <polygon fill="#ffffff" stroke="#1e293b" points="1245.52,-297 1191.52,-273.5 1245.52,-250 1299.52,-273.5 1245.52,-297"/>
 <text text-anchor="middle" x="1245.52" y="-270.7" font-family="Helvetica,sans-Serif" font-size="11.00">é alvo de</text>
 </g>
-<!-- INDICADOR&#45;&#45;R31 -->
+<!-- INDICADOR&#45;&#45;R35 -->
 <g id="edge3" class="edge">
-<title>INDICADOR&#45;&#45;R31</title>
+<title>INDICADOR&#45;&#45;R35</title>
 <path fill="none" stroke="#475569" stroke-width="1.4" d="M1113.55,-294.21C1120.29,-292.92 1127.02,-291.66 1133.52,-290.5 1156.93,-286.32 1183.24,-282.26 1204.36,-279.16"/>
 <text text-anchor="middle" x="1152.52" y="-294.1" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="13.00" fill="#b45309">(1,1)</text>
 </g>
-<!-- R35 -->
+<!-- R39 -->
 <g id="node14" class="node">
-<title>R35</title>
+<title>R39</title>
 <polygon fill="#ffffff" stroke="#1e293b" points="1373.52,-359 1319.52,-335.5 1373.52,-312 1427.52,-335.5 1373.52,-359"/>
 <text text-anchor="middle" x="1373.52" y="-332.7" font-family="Helvetica,sans-Serif" font-size="11.00">mede</text>
 </g>
-<!-- INDICADOR&#45;&#45;R35 -->
+<!-- INDICADOR&#45;&#45;R39 -->
 <g id="edge11" class="edge">
-<title>INDICADOR&#45;&#45;R35</title>
+<title>INDICADOR&#45;&#45;R39</title>
 <path fill="none" stroke="#475569" stroke-width="1.4" d="M1113.68,-316.3C1179.79,-321.2 1272.24,-328.06 1326.89,-332.12"/>
 <text text-anchor="middle" x="1152.52" y="-323.1" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="13.00" fill="#b45309">(1,1)</text>
 </g>
@@ -193,15 +193,15 @@
 <polygon fill="#f8fafc" stroke="#94a3b8" stroke-dasharray="5,2" points="1113.52,-225.5 955.52,-225.5 955.52,-185.5 1113.52,-185.5 1113.52,-225.5"/>
 <text text-anchor="start" x="995.02" y="-203.1" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="13.00" fill="#64748b">MUNICIPIO</text>
 </g>
-<!-- R30 -->
+<!-- R34 -->
 <g id="node9" class="node">
-<title>R30</title>
+<title>R34</title>
 <polygon fill="#ffffff" stroke="#1e293b" points="1245.52,-225 1191.52,-201.5 1245.52,-178 1299.52,-201.5 1245.52,-225"/>
 <text text-anchor="middle" x="1245.52" y="-198.7" font-family="Helvetica,sans-Serif" font-size="11.00">recebe</text>
 </g>
-<!-- MUNICIPIO&#45;&#45;R30 -->
+<!-- MUNICIPIO&#45;&#45;R34 -->
 <g id="edge1" class="edge">
-<title>MUNICIPIO&#45;&#45;R30</title>
+<title>MUNICIPIO&#45;&#45;R34</title>
 <path fill="none" stroke="#475569" stroke-width="1.4" d="M1113.64,-204C1140.42,-203.49 1169.68,-202.93 1193.72,-202.47"/>
 <text text-anchor="middle" x="1152.52" y="-207.1" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="13.00" fill="#b45309">(1,1)</text>
 </g>
@@ -211,83 +211,83 @@
 <polygon fill="#f8fafc" stroke="#94a3b8" stroke-dasharray="5,2" points="1113.52,-89.5 955.52,-89.5 955.52,-49.5 1113.52,-49.5 1113.52,-89.5"/>
 <text text-anchor="start" x="993.02" y="-67.1" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="13.00" fill="#64748b">ANALISE_IA</text>
 </g>
-<!-- R33 -->
+<!-- R37 -->
 <g id="node12" class="node">
-<title>R33</title>
+<title>R37</title>
 <polygon fill="#ffffff" stroke="#1e293b" points="1245.52,-97 1191.52,-73.5 1245.52,-50 1299.52,-73.5 1245.52,-97"/>
 <text text-anchor="middle" x="1245.52" y="-70.7" font-family="Helvetica,sans-Serif" font-size="11.00">motiva</text>
 </g>
-<!-- ANALISE_IA&#45;&#45;R33 -->
+<!-- ANALISE_IA&#45;&#45;R37 -->
 <g id="edge7" class="edge">
-<title>ANALISE_IA&#45;&#45;R33</title>
+<title>ANALISE_IA&#45;&#45;R37</title>
 <path fill="none" stroke="#475569" stroke-width="1.4" d="M1113.64,-71C1140.42,-71.51 1169.68,-72.07 1193.72,-72.53"/>
 <text text-anchor="middle" x="1152.52" y="-75.1" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="13.00" fill="#b45309">(0,1)</text>
 </g>
-<!-- R30&#45;&#45;ACAO -->
+<!-- R34&#45;&#45;ACAO -->
 <g id="edge2" class="edge">
-<title>R30&#45;&#45;ACAO</title>
+<title>R34&#45;&#45;ACAO</title>
 <path fill="none" stroke="#475569" stroke-width="1.4" d="M1299.56,-201.5C1342.76,-201.5 1403.56,-201.5 1447.33,-201.5"/>
 <text text-anchor="middle" x="1373.52" y="-205.1" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="13.00" fill="#b45309">(0,N)</text>
 </g>
-<!-- R31&#45;&#45;ACAO -->
+<!-- R35&#45;&#45;ACAO -->
 <g id="edge4" class="edge">
-<title>R31&#45;&#45;ACAO</title>
+<title>R35&#45;&#45;ACAO</title>
 <path fill="none" stroke="#475569" stroke-width="1.4" d="M1278.94,-264.38C1321.32,-252.46 1396.18,-231.41 1447.51,-216.97"/>
 <text text-anchor="middle" x="1373.52" y="-255.1" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="13.00" fill="#b45309">(0,N)</text>
 </g>
-<!-- R32&#45;&#45;ACAO -->
+<!-- R36&#45;&#45;ACAO -->
 <g id="edge6" class="edge">
-<title>R32&#45;&#45;ACAO</title>
+<title>R36&#45;&#45;ACAO</title>
 <path fill="none" stroke="#475569" stroke-width="1.4" d="M749.34,-139.5C794.62,-139.5 859.06,-139.5 915.52,-139.5 915.52,-139.5 915.52,-139.5 1246.52,-139.5 1317.4,-139.5 1396.29,-162.23 1447.52,-180.16"/>
 <text text-anchor="middle" x="1034.52" y="-143.1" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="13.00" fill="#b45309">(0,N)</text>
 </g>
-<!-- R33&#45;&#45;ACAO -->
+<!-- R37&#45;&#45;ACAO -->
 <g id="edge8" class="edge">
-<title>R33&#45;&#45;ACAO</title>
+<title>R37&#45;&#45;ACAO</title>
 <path fill="none" stroke="#475569" stroke-width="1.4" d="M1299.51,-73.42C1337.57,-75.58 1388.78,-83.21 1427.52,-106.5 1442.82,-115.7 1456.23,-129.27 1467.32,-143.29"/>
 <text text-anchor="middle" x="1373.52" y="-110.1" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="13.00" fill="#b45309">(0,N)</text>
 </g>
-<!-- R34&#45;&#45;RESULTADO -->
+<!-- R38&#45;&#45;RESULTADO -->
 <g id="edge10" class="edge">
-<title>R34&#45;&#45;RESULTADO</title>
+<title>R38&#45;&#45;RESULTADO</title>
 <path fill="none" stroke="#475569" stroke-width="1.4" d="M1720.02,-266.79C1742.56,-276.12 1775.24,-289.86 1803.52,-302.5 1809.89,-305.35 1816.57,-308.41 1823.16,-311.47"/>
 <text text-anchor="middle" x="1784.52" y="-306.1" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="13.00" fill="#b45309">(0,N)</text>
 </g>
-<!-- R35&#45;&#45;RESULTADO -->
+<!-- R39&#45;&#45;RESULTADO -->
 <g id="edge12" class="edge">
-<title>R35&#45;&#45;RESULTADO</title>
+<title>R39&#45;&#45;RESULTADO</title>
 <path fill="none" stroke="#475569" stroke-width="1.4" d="M1427.92,-335.5C1524.97,-335.5 1728.95,-335.5 1823.47,-335.5"/>
 <text text-anchor="middle" x="1598.52" y="-339.1" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="13.00" fill="#b45309">(0,N)</text>
 </g>
-<!-- R36&#45;&#45;RESULTADO -->
+<!-- R40&#45;&#45;RESULTADO -->
 <g id="edge14" class="edge">
-<title>R36&#45;&#45;RESULTADO</title>
+<title>R40&#45;&#45;RESULTADO</title>
 <path fill="none" stroke="#475569" stroke-width="1.4" d="M462.25,-376.98C516.25,-380.83 609.29,-386.5 689.26,-386.5 689.26,-386.5 689.26,-386.5 1692.52,-386.5 1738.06,-386.5 1787.71,-371.36 1823.48,-357.57"/>
 <text text-anchor="middle" x="1152.52" y="-390.1" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="13.00" fill="#b45309">(0,N)</text>
 </g>
-<!-- R45&#45;&#45;RELATORIO_IA -->
+<!-- R49&#45;&#45;RELATORIO_IA -->
 <g id="edge16" class="edge">
-<title>R45&#45;&#45;RELATORIO_IA</title>
+<title>R49&#45;&#45;RELATORIO_IA</title>
 <path fill="none" stroke="#475569" stroke-width="1.4" d="M326.32,-209.38C368.95,-217.23 439.29,-230.19 489.61,-239.46"/>
 <text text-anchor="middle" x="416" y="-238.1" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="13.00" fill="#b45309">(0,N)</text>
 </g>
-<!-- R46&#45;&#45;RELATORIO_IA -->
+<!-- R50&#45;&#45;RELATORIO_IA -->
 <g id="edge18" class="edge">
-<title>R46&#45;&#45;RELATORIO_IA</title>
+<title>R50&#45;&#45;RELATORIO_IA</title>
 <path fill="none" stroke="#475569" stroke-width="1.4" d="M332.9,-270.46C375.96,-266.49 441.95,-260.41 489.77,-256"/>
 <text text-anchor="middle" x="416" y="-270.1" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="13.00" fill="#b45309">(0,N)</text>
 </g>
-<!-- R47&#45;&#45;MUNICIPIO -->
+<!-- R51&#45;&#45;MUNICIPIO -->
 <g id="edge20" class="edge">
-<title>R47&#45;&#45;MUNICIPIO</title>
+<title>R51&#45;&#45;MUNICIPIO</title>
 <path fill="none" stroke="#475569" stroke-width="1.4" d="M865.81,-227.17C891.39,-223.86 925.05,-219.51 955.51,-215.58"/>
 <text text-anchor="middle" x="916.52" y="-226.1" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="13.00" fill="#b45309">(1,N)</text>
 </g>
-<!-- R48&#45;&#45;PERGUNTA_IA -->
+<!-- R52&#45;&#45;PERGUNTA_IA -->
 <g id="edge22" class="edge">
-<title>R48&#45;&#45;PERGUNTA_IA</title>
+<title>R52&#45;&#45;PERGUNTA_IA</title>
 <path fill="none" stroke="#475569" stroke-width="1.4" d="M338.61,-56.98C382.16,-55.64 445.53,-53.69 491.43,-52.28"/>
 <text text-anchor="middle" x="416" y="-59.1" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="13.00" fill="#b45309">(0,N)</text>
 </g>
 </g>
-</svg>
+<metadata><c2pa:manifest>AAAWgmp1bWIAAAAeanVtZGMycGEAEQAQgAAAqgA4m3EDYzJwYQAAABZcanVtYgAAAEdqdW1kYzJtYQARABCAAACqADibcQN1cm46YzJwYToyY2MwNDNkMC1iYjFjLTQ1YzQtOWI5ZS03NTVkN2U2N2IzNzQAAAADl2p1bWIAAAApanVtZGMyYXMAEQAQgAAAqgA4m3EDYzJwYS5hc3NlcnRpb25zAAAAALxqdW1iAAAARGp1bWRjYm9yABEAEIAAAKoAOJtxE2MycGEuaW5ncmVkaWVudC52MwAAAAAYYzJzaConYgfANFJ7HsbfAgZqkEIAAABwY2JvcqNpZGM6Zm9ybWF0bWltYWdlL3N2Zyt4bWxqaW5zdGFuY2VJRHgseG1wOmlpZDozM2ExZDc1NS0xOTFlLTQ4NGUtOGNkZC0xM2I3YjVjNDg0ZmFscmVsYXRpb25zaGlwaHBhcmVudE9mAAAB4mp1bWIAAABBanVtZGNib3IAEQAQgAAAqgA4m3ETYzJwYS5hY3Rpb25zLnYyAAAAABhjMnNoXLt7QNHU4nMyS+aT8S89nwAAAZljYm9yomdhY3Rpb25zgqJmYWN0aW9ua2MycGEub3BlbmVkanBhcmFtZXRlcnOha2luZ3JlZGllbnRzgaJjdXJseC1zZWxmI2p1bWJmPWMycGEuYXNzZXJ0aW9ucy9jMnBhLmluZ3JlZGllbnQudjNkaGFzaFggQ5Vtwbupv1KorW+EEpPKeMfdBOUTF3vEtDhiAH2vAbSkZmFjdGlvbngdY29tLmFudGhyb3BpYy5jbGF1ZGUucHJvdmlkZWRqcGFyYW1ldGVyc6F4H2NvbS5hbnRocm9waWMub3JpZ2luLWNvbmZpZGVuY2VndW5rbm93bmtkZXNjcmlwdGlvbnhmQ2xhdWRlIHByb3ZpZGVkIHRoaXMgZmlsZSBhdCB0aGUgcmVxdWVzdCBvZiBhIHVzZXIgYW5kIG1heSBoYXZlIGNyZWF0ZWQgb3IgbW9kaWZpZWQgdGhlIGZpbGUgY29udGVudHMubXNvZnR3YXJlQWdlbnShZG5hbWVmQ2xhdWRlcmFsbEFjdGlvbnNJbmNsdWRlZPUAAADIanVtYgAAAEBqdW1kY2JvcgARABCAAACqADibcRNjMnBhLmhhc2guZGF0YQAAAAAYYzJzaDIpcDg5n/dFJG0PsL8qtiEAAACAY2JvcqVjYWxnZnNoYTI1NmNwYWRMAAAAAAAAAAAAAAAAZGhhc2hYIDqioSWUcN3qGRfftbE6jL03Jf9qOuQLz8iklxZ/V5CeZG5hbWVuanVtYmYgbWFuaWZlc3RqZXhjbHVzaW9uc4GiZXN0YXJ0GUyFZmxlbmd0aBkeBAAAAj5qdW1iAAAAJ2p1bWRjMmNsABEAEIAAAKoAOJtxA2MycGEuY2xhaW0udjIAAAACD2Nib3KlY2FsZ2ZzaGEyNTZpc2lnbmF0dXJleE1zZWxmI2p1bWJmPS9jMnBhL3VybjpjMnBhOjJjYzA0M2QwLWJiMWMtNDVjNC05YjllLTc1NWQ3ZTY3YjM3NC9jMnBhLnNpZ25hdHVyZWppbnN0YW5jZUlEeCx4bXA6aWlkOjVkZjllOWRjLTQ0NTEtNDRjNi04N2FhLTM2ODU4MWJiMDFmYXJjcmVhdGVkX2Fzc2VydGlvbnODomN1cmx4LXNlbGYjanVtYmY9YzJwYS5hc3NlcnRpb25zL2MycGEuaW5ncmVkaWVudC52M2RoYXNoWCBDlW3Bu6m/Uqitb4QSk8p4x90E5RMXe8S0OGIAfa8BtKJjdXJseCpzZWxmI2p1bWJmPWMycGEuYXNzZXJ0aW9ucy9jMnBhLmFjdGlvbnMudjJkaGFzaFggt7WFaK+v5NHg9XE6ZJJ1/fpduA8Af3fb3ELZaFUnr4yiY3VybHgpc2VsZiNqdW1iZj1jMnBhLmFzc2VydGlvbnMvYzJwYS5oYXNoLmRhdGFkaGFzaFggr6mGVi6SSpC7n5YbKguGaEeLoKIuMv8juH1jpwGcqdd0Y2xhaW1fZ2VuZXJhdG9yX2luZm+jZG5hbWVvQW50aHJvcGljIEZpbGVzZ3ZlcnNpb25lMS4wLjBrc3BlY1ZlcnNpb25lMi40LjAAABA4anVtYgAAAChqdW1kYzJjcwARABCAAACqADibcQNjMnBhLnNpZ25hdHVyZQAAABAIY2JvctKEWQISogEmGCFZAgowggIGMIIBjaADAgECAhRA5aAK7sI50L64g/oGQgU9Z1UTADAKBggqhkjOPQQDAzBJMRcwFQYDVQQKEw5BbnRocm9waWMsIFBCQzEuMCwGA1UEAxMlQW50aHJvcGljIENvbnRlbnQgQ3JlZGVudGlhbHMgUm9vdCBDQTAeFw0yNjA4MDcxODQzNTZaFw0yODA4MDYxOTQzNTZaMEQxFzAVBgNVBAoTDkFudGhyb3BpYywgUEJDMSkwJwYDVQQDEyBBbnRocm9waWMgQ2xhdWRlIENvbnRlbnQgU2lnbmluZzBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABJh6CmvLUBgFFNU0vUKlOVtE6djd17L5SuwX0LemFisBM3dkd/3cyjxFA3Qo5S46fX0/ihY0VZ7mfb9KF703t5OjWDBWMA4GA1UdDwEB/wQEAwIHgDAVBgNVHSUEDjAMBgorBgEEAYPoXgIBMAwGA1UdEwEB/wQCMAAwHwYDVR0jBBgwFoAUzlHiBIFOZFsj+OPEz5o+nMHXXMIwCgYIKoZIzj0EAwMDZwAwZAIwMXMdFJ4BetLLVY7ORuE9noqbbAZOZn/aArXyTwFAZfKrPzxF2vPoJNf1+UCdg1XGAjBwX1zd9WGqYkqmL5SFqw1QySjr1zJfpJM9+1rdDwSPLMOPOjKuiXjoU/pUUeG9RwmhY3BhZFkNngAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPZYQNA9gEdcXVFtEIuT52710VegMhzFBGYrJXs+4SqyXIPm76+INJa8lqwk9rY9OpxVnD8bLBe9DaBX7Y5546aHOnc=</c2pa:manifest></metadata></svg>

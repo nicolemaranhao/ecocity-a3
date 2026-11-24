@@ -49,9 +49,9 @@ INSERT INTO analise_comentario (id_analise_pub, id_usuario, texto) VALUES (3, 5,
 -- T20 CHECK: evidência do tipo INDICADOR sem dizer qual indicador
 INSERT INTO analise_evidencia (id_analise_pub, tipo, descricao) VALUES (5, 'INDICADOR', 'sem indicador');
 -- T21 PROCEDURE: meta com vigência no passado (não se muda a régua de meses já medidos)
-CALL sp_propor_meta(2, 'AGU-01', NULL, 140, '2025-01-01', 'Tentativa de mudar a meta de meses que já passaram.', 'ODS 6.4');
+CALL sp_propor_meta(2, 'AGU-01', NULL, 140, '2025-01-01', 'Tentativa de mudar a meta de meses que já passaram.', 'ODS 6.4', 'Meta de teste com descrição suficiente', '2027-12-01', 'Plano de teste com mais de trinta caracteres.');
 -- T22 PROCEDURE: só GESTOR propõe meta (analista tentando)
-CALL sp_propor_meta(4, 'AGU-01', NULL, 140, '2027-06-01', 'Analista tentando propor uma meta sem ser gestor.', 'ODS 6.4');
+CALL sp_propor_meta(4, 'AGU-01', NULL, 140, '2027-06-01', 'Analista tentando propor uma meta sem ser gestor.', 'ODS 6.4', 'Meta de teste com descrição suficiente', '2027-12-01', 'Plano de teste com mais de trinta caracteres.');
 -- T23 PROCEDURE: parecer de analista de outra área (Lúcia é de Energia; meta 10 é de Água)
 CALL sp_parecer_meta(10, 5, TRUE, 'Parecer de uma analista que não é da área de água.');
 -- T24 PROCEDURE: quem propôs a meta não pode aprová-la (meta 11 foi proposta pelo Carlos)
@@ -67,8 +67,8 @@ CALL sp_avaliar_fonte(4, 2, 5, 'Gestora tentando mudar a nota da fonte');
 CALL sp_solicitar_acesso('ANALISTA','Fulano de Tal','123.456.789-00','fulano@cetesb.sp.gov.br','11 3133-3000','$2b$10$x','CETESB','Analista','C-1','Engenharia Química (2015)','CRQ-IV 123456',NULL,NULL,'https://doc.pdf','Preciso dos dados mensais de resíduos para o relatório estadual de 2027.',TRUE,'1.1.1.1');
 -- T29 PROCEDURE: e-mail pessoal (gmail) não é aceito para analista ou gestor
 CALL sp_solicitar_acesso('ANALISTA','Fulano de Tal','714.602.583-71','fulano@gmail.com','11 3133-3000','$2b$10$x','CETESB','Analista','C-1','Engenharia Química (2015)','CRQ-IV 123456',NULL,NULL,'https://doc.pdf','Preciso dos dados mensais de resíduos para o relatório estadual de 2027.',TRUE,'1.1.1.1');
--- T30 PROCEDURE: gestor sem portaria de nomeação
-CALL sp_solicitar_acesso('GESTOR','Fulano de Tal','862.035.914-24','fulano@campinas.sp.gov.br','19 2116-0000','$2b$10$x','Prefeitura de Campinas','Diretor','PMC-1','Administração Pública (2010)',NULL,NULL,2,'https://doc.pdf','Preciso aprovar as metas de água de Campinas para o próximo ano.',TRUE,'1.1.1.1');
+-- T30 PROCEDURE: gestor sem a cidade em que atua
+CALL sp_solicitar_acesso('GESTOR','Fulano de Tal','862.035.914-24','fulano@campinas.sp.gov.br','19 2116-0000','$2b$10$x','Prefeitura de Campinas','Diretor','PMC-1','Administração Pública (2010)',NULL,NULL,NULL,'https://doc.pdf','Preciso aprovar as metas de água de Campinas para o próximo ano.',TRUE,'1.1.1.1');
 -- T31 PROCEDURE: ninguém se cadastra como ADMIN pelo site
 CALL sp_solicitar_acesso('ADMIN','Fulano de Tal','390.533.447-05','fulano@ecocity.local','11 3133-3000','$2b$10$x','EcoCity','Admin','A-1','Computação (2010)',NULL,NULL,NULL,'https://doc.pdf','Quero ser administrador do sistema para gerenciar tudo.',TRUE,'1.1.1.1');
 -- T32 TRIGGER: criar ADMIN direto na tabela, sem chave individual
