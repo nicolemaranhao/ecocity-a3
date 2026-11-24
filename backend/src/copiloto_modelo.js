@@ -143,11 +143,6 @@
   function textoGestor({ cidades, resumo, dados, periodoTxt, pctOficial, cont, codigos, acoes, meses }) {
     const L = [];
     L.push(`## Resumo executivo`);
-    const iesTxt = cidades.filter((c) => dados.ies[c]).map((c) => {
-      const x = dados.ies[c], d = x.fim - x.inicio;
-      return `**${c}**: índice EcoCity médio de **${num(x.media, 1)}** no período (${d >= 0 ? 'subiu' : 'caiu'} ${num(Math.abs(d), 1)} ponto${Math.abs(d) >= 2 ? 's' : ''} do primeiro ao último mês)`;
-    });
-    if (iesTxt.length) L.push(iesTxt.map((t) => `- ${t}`).join('\n'));
     // pontos fortes e fracos
     const todos = [];
     for (const c of cidades) for (const cod of codigos) if (resumo[c][cod]) todos.push({ c, cod, ...resumo[c][cod] });
@@ -156,11 +151,13 @@
     if (fortes.length) L.push(`\n**Dentro da meta em todos os meses:** ${fortes.map((x) => `${x.nome.toLowerCase()} em ${x.c} (média ${fmt(x.cod, x.media)} ${x.unidade})`).join('; ')}.`);
     if (fracos.length) L.push(`\n**Fora da meta em todos os meses:** ${fracos.map((x) => `${x.nome.toLowerCase()} em ${x.c} (média ${fmt(x.cod, x.media)} ${x.unidade}; meta ${fmt(x.cod, x.meta)})`).join('; ')}.`);
 
-    if (cidades.length > 1 && Object.keys(dados.ies).length > 1) {
+    if (cidades.length > 1) {
+      // comparação pelas METAS (sem nota): em quantos números cada cidade ficou dentro da meta em todos os meses
       L.push(`\n## Comparação entre as cidades`);
-      L.push(`| Posição | Cidade | Índice médio | Primeiro mês | Último mês |\n|---|---|---|---|---|`);
-      Object.entries(dados.ies).sort((a, b) => b[1].media - a[1].media).forEach(([c, x], i) =>
-        L.push(`| ${i + 1}º | ${c} | ${num(x.media, 1)} | ${num(x.inicio, 1)} | ${num(x.fim, 1)} |`));
+      L.push(`| Cidade | Números dentro da meta o período todo | Números fora da meta o período todo |\n|---|---|---|`);
+      cidades.map((c) => { const xs = codigos.map((cod) => resumo[c][cod]).filter(Boolean);
+        return { c, ok: xs.filter((x) => x.mesesNaMeta === x.meses).length, fora: xs.filter((x) => x.mesesNaMeta === 0).length, n: xs.length }; })
+        .sort((a, b) => b.ok - a.ok).forEach((x) => L.push(`| ${x.c} | ${x.ok} de ${x.n} | ${x.fora} de ${x.n} |`));
     }
 
     L.push(`\n## Indicadores no período (${periodoTxt})`);
@@ -297,10 +294,7 @@
       return plano('ACOES', `SELECT titulo, municipio, indicador_alvo, status, efeito, variacao_pct FROM vw_acoes_resultados${cidades.length ? ` WHERE municipio IN (${cidades.map(q).join(', ')})` : ''} ORDER BY FIELD(efeito,'MELHOROU','ESTAVEL','PIOROU','AGUARDANDO_AVALIACAO')`, {});
     }
     if ((/ranking|classifica|mais sustentavel|menos sustentavel|melhor cidade|pior cidade|indice|nota/.test(t)) && !codigo) {
-      if (cidades.length && /evolu|historico|mes a mes|ao longo|variou|mudou/.test(t)) {
-        return plano('IES_SERIE', `SELECT municipio, ano_mes, ies FROM vw_ies_municipio_mensal WHERE 1=1${inCidades} ORDER BY municipio, ano_mes`, { cidades });
-      }
-      return plano('RANKING', `SELECT posicao, municipio, ies, classificacao, variacao_mes, variacao_12m FROM vw_ies_ranking ORDER BY posicao`, {});
+      return plano('RANKING', `SELECT municipio, metas_atingidas, ano_mes FROM vw_ies_ranking ORDER BY metas_atingidas DESC, municipio`, {});
     }
     if (/fora da meta|nao (atingiu|bateu|cumpriu)|abaixo da meta|precisa melhorar|problema/.test(t)) {
       return plano('FORA_META', `SELECT municipio, codigo, indicador, ROUND(valor, 2) AS valor, meta, unidade, origem FROM vw_indicador_desempenho WHERE ano_mes = ${q(mes)} AND atingiu_meta = 0${inCidades}${codigo ? ` AND codigo = ${q(codigo)}` : ''} ORDER BY score`, { mes });
@@ -346,7 +340,7 @@
     const r0 = linhas[0];
     switch (plano.intencao) {
       case 'RANKING':
-        return `No último mês, a cidade mais sustentável pelo índice EcoCity é **${r0.municipio}** (${num(r0.ies, 1)} pontos), e a última é **${linhas[linhas.length - 1].municipio}** (${num(linhas[linhas.length - 1].ies, 1)}).`;
+        return `No último mês, a cidade que cumpre mais metas é **${r0.municipio}** (${r0.metas_atingidas} de 8 metas), e a que cumpre menos é **${linhas[linhas.length - 1].municipio}** (${linhas[linhas.length - 1].metas_atingidas} de 8). Veja todas as cidades na tabela.`;
       case 'IES_SERIE': {
         const por = {};
         linhas.forEach((r) => (por[r.municipio] = por[r.municipio] || []).push(r));
